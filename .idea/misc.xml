@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_category_item.xml" value="0.23148148148148148" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_search_edit_text.xml" value="0.156" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shadow_for_home_grid_item.xml" value="0.22592592592592592" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_favorite.xml" value="0.25925925925925924" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_search.xml" value="0.156" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_search_focus.xml" value="0.156" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/selector_search_edit_text.xml" value="0.102" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/selector_search_edit_text_icon.xml" value="0.156" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/shape_category_recyler_view.xml" value="0.23148148148148148" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_films.xml" value="0.176" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_app_bar.xml" value="0.1" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_bottom_navigation_bar.xml" value="0.1" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_categories_bar.xml" value="0.2" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_recycler_categories_item.xml" value="0.4" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_recycler_films_grid_item.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
