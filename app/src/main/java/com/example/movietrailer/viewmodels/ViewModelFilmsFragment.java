@@ -12,6 +12,8 @@ import java.util.List;
 public class ViewModelFilmsFragment extends ViewModel {
 
     private MutableLiveData<List<ResultsItem>> films_list = new MutableLiveData<>();
+    public MutableLiveData<Integer> page = new MutableLiveData<>(1);
+    public MutableLiveData<Boolean> loading = new MutableLiveData<>(true);
 
     public LiveData<List<ResultsItem>> getFilmList(){
 
@@ -20,9 +22,16 @@ public class ViewModelFilmsFragment extends ViewModel {
                 films_list,
                 "en",
                 "popularity.desc",
-                1,
-                "flatrate"
+                page.getValue(),
+                "flatrate",
+                loading
         );
+    }
+
+    public void incrementPageNumber(){
+
+        page.setValue(page.getValue() + 1);
+
     }
 
 }

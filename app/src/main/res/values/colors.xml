@@ -9,5 +9,10 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="shadow">#B8B7B7</color>
+    <color name="gray">#757575</color>
+    <color name="green">#45FF00</color>
+    <color name="progress_red">#F0DC1200</color>
+    <color name="progress_orange">#FF6F00</color>
+    <color name="progress_yellow">#FFD500</color>
 
 </resources>

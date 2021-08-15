@@ -10,38 +10,55 @@
         android:id="@+id/layout_app_bar"
         layout="@layout/layout_app_bar" />
 
-    <RelativeLayout
-        android:id="@+id/rel_category"
-        android:layout_below="@+id/layout_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <androidx.recyclerview.widget.RecyclerView
+        <RelativeLayout
+            android:layout_below="@+id/layout_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recycler_categories"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/shape_category_recycler_view"/>
+            android:layout_height="match_parent">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/ic_filter"-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_marginRight="10dp"-->
-<!--            android:src="@drawable/ic_filter"-->
-<!--            app:tint="#C8832D"/>-->
+            <RelativeLayout
+                android:id="@+id/rel_category"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp">
 
-    </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:background="@android:color/transparent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rel_category"
-        android:layout_above="@+id/bottom_navigation_bar"
-        android:id="@+id/film_recycler_view"/>
+                <!--        <ImageView-->
+                <!--            android:id="@+id/ic_filter"-->
+                <!--            android:layout_width="35dp"-->
+                <!--            android:layout_height="35dp"-->
+                <!--            android:layout_alignParentEnd="true"-->
+                <!--            android:layout_centerVertical="true"-->
+                <!--            android:layout_marginRight="10dp"-->
+                <!--            android:src="@drawable/ic_filter"-->
+                <!--            app:tint="#C8832D"/>-->
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutAnimation="@anim/grid_layout_animation"
+                android:layout_below="@id/rel_category"
+                android:layout_above="@+id/circularProgressBar"
+                android:id="@+id/film_recycler_view"/>
+
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/circularProgressBar"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="70dp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
     <include
         android:id="@+id/bottom_navigation_bar"

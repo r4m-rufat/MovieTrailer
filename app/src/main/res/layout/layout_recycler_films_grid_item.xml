@@ -2,40 +2,94 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:layout_margin="10dp">
+    android:layout_height="300dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp">
+        android:elevation="10dp"
+        android:outlineSpotShadowColor="@color/white"
+        app:cardCornerRadius="10dp">
 
-        <ImageView
-            android:id="@+id/film_image"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher_background" />
+            android:background="@drawable/background_shape_grid_item"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@drawable/background_shadow_for_home_grid_item"
-            android:layout_gravity="bottom"/>
+            <ImageView
+                android:id="@+id/film_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_launcher_background" />
 
-        <TextView
-            android:id="@+id/film_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:maxLines="2"
-            android:padding="10dp"
-            android:text="Sherlock Holmes"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <RelativeLayout
+                android:id="@+id/rel_progress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/film_image"
+                android:background="@drawable/background_progress_indicator"
+                android:layout_marginTop="-25dp"
+                android:layout_marginLeft="5dp">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:id="@+id/circularProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cpb_round_border="true"
+                    app:cpb_background_progressbar_color="@color/gray"
+                    app:cpb_background_progressbar_width="3dp"
+                    app:cpb_progress_direction="to_right"
+                    app:cpb_progressbar_color="@color/green"
+                    app:cpb_progress_max="100"
+                    app:cpb_progress="70"
+                    android:layout_margin="2dp"
+                    app:cpb_progressbar_width="3.5dp"/>
+
+                <TextView
+                    android:id="@+id/film_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:text="70%"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/film_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel_progress"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:maxLines="2"
+                android:text="Sherlock Holmes"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/film_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/film_title"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="5dp"
+                android:fontFamily="sans-serif-light"
+                android:maxLines="1"
+                android:text="10 May, 2019"
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
