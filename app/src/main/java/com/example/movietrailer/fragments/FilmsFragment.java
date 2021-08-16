@@ -6,10 +6,13 @@ import static com.example.movietrailer.utils.default_lists.FilmCategoriesListKt.
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -38,11 +41,15 @@ public class FilmsFragment extends Fragment {
     private HorizontalCategoryAdapter horizontalCategoryAdapter;
     private ViewModelFilmsFragment viewModelFilmsFragment;
     private ProgressBar progressBar;
+    private EditText editSearch;
+    private RecyclerFilmsAdapter recyclerFilmsAdapter;
 
     // var
     boolean isLoading = false;
     boolean isScrolling = false;
     boolean isLastPage = false;
+    private String query = "";
+    private boolean clickSearchButton = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,8 @@ public class FilmsFragment extends Fragment {
         // when progressbar visible or gone in loading proses
         showOrHideProgressBar();
 
+        clickedEditSearchRightDrawable();
+
         return view;
     }
 
@@ -74,6 +83,7 @@ public class FilmsFragment extends Fragment {
         categoryRecyclerView = view.findViewById(R.id.recycler_categories);
         filmsRecyclerView = view.findViewById(R.id.film_recycler_view);
         progressBar = view.findViewById(R.id.circularProgressBar);
+        editSearch = view.findViewById(R.id.edit_search);
 
     }
 
@@ -91,7 +101,7 @@ public class FilmsFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
         filmsRecyclerView.setLayoutManager(gridLayoutManager);
         filmsRecyclerView.setHasFixedSize(false);
-        RecyclerFilmsAdapter recyclerFilmsAdapter = new RecyclerFilmsAdapter(getActivity());
+        recyclerFilmsAdapter = new RecyclerFilmsAdapter(getActivity());
 
         viewModelFilmsFragment.getFilmList().observe(getActivity(), new Observer<List<ResultsItem>>() {
             @Override
@@ -125,8 +135,12 @@ public class FilmsFragment extends Fragment {
 
                 if (paginateOrNot){
                     viewModelFilmsFragment.incrementPageNumber();
-                    viewModelFilmsFragment.getFilmList();
                     isScrolling = false;
+                    if (clickSearchButton){
+                        viewModelFilmsFragment.getSearchResult();
+                    }else{
+                        viewModelFilmsFragment.getFilmList();
+                    }
                 }
 
             }
@@ -144,7 +158,7 @@ public class FilmsFragment extends Fragment {
 
     private void showOrHideProgressBar() {
 
-        viewModelFilmsFragment.loading.observe(getActivity(), new Observer<Boolean>() {
+        viewModelFilmsFragment.getLoading().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loading) {
                 if (loading) {
@@ -158,5 +172,40 @@ public class FilmsFragment extends Fragment {
         });
 
     }
+
+    private void clickedEditSearchRightDrawable(){
+
+        editSearch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (editSearch.getRight() - editSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                        // edit text string
+                        query = editSearch.getText().toString().trim();
+                        viewModelFilmsFragment.getQuery().setValue(query);
+                        viewModelFilmsFragment.getSearchResult().observe(getActivity(), new Observer<List<ResultsItem>>() {
+                            @Override
+                            public void onChanged(List<ResultsItem> list) {
+                                recyclerFilmsAdapter.updateFilmList(list);
+                            }
+                        });
+
+                        clickSearchButton = true;
+
+                        // when clicked search button, should reset film list
+                        viewModelFilmsFragment.resetSearchVariables();
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+    }
+
 
 }

@@ -18,6 +18,7 @@
             android:src="@drawable/ic_logo" />
 
         <EditText
+            android:id="@+id/edit_search"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/selector_search_edit_text"

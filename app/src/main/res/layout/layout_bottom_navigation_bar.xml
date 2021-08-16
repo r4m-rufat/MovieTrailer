@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:mbn_backgroundBottomColor="@color/teal_200"
+        app:mbn_backgroundBottomColor="#F6721A"
         app:mbn_defaultIconColor="@color/white"
-        app:mbn_selectedIconColor="@color/teal_200"
+        app:mbn_selectedIconColor="#F6721A"
         app:mbn_circleColor="@color/white"
         app:mbn_shadowColor="@color/shadow" />
 
