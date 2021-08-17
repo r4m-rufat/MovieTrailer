@@ -26,4 +26,32 @@ interface IApi {
         @Query("page") page: Int,
     ): Call<DiscoverResponse>
 
+    @GET("movie/top_rated?")
+    fun getTopRatedInformations(
+        @Query("api_key") api_key: String?,
+        @Query("language") language: String?,
+        @Query("page") page: Int,
+    ): Call<DiscoverResponse>
+
+    @GET("movie/popular?")
+    fun getPopularInformations(
+        @Query("api_key") api_key: String?,
+        @Query("language") language: String?,
+        @Query("page") page: Int,
+    ): Call<DiscoverResponse>
+
+    @GET("movie/upcoming?")
+    fun getUpComingInformations(
+        @Query("api_key") api_key: String?,
+        @Query("language") language: String?,
+        @Query("page") page: Int,
+    ): Call<DiscoverResponse>
+
+    @GET("movie/now_playing?")
+    fun getNowPlayingInformations(
+        @Query("api_key") api_key: String?,
+        @Query("language") language: String?,
+        @Query("page") page: Int,
+    ): Call<DiscoverResponse>
+
 }

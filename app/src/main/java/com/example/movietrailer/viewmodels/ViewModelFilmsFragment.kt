@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movietrailer.models.discover_model.ResultsItem
+import com.example.movietrailer.repository.films_page.CategoryFilmsRepository
 import com.example.movietrailer.repository.films_page.DiscoverFilmsRepository
 import com.example.movietrailer.repository.films_page.SearchFilmsRepository
+import com.example.movietrailer.utils.default_lists.TopCategoriesItem
 import kotlinx.coroutines.launch
 
 class ViewModelFilmsFragment : ViewModel() {
@@ -57,6 +59,60 @@ class ViewModelFilmsFragment : ViewModel() {
                 loading,
                 page.value!!
             )
+
+        }
+
+    }
+
+    private fun getCategoryFilmListWhenClicked(clickedItem: TopCategoriesItem){
+
+        viewModelScope.launch {
+
+            when(clickedItem){
+
+                TopCategoriesItem.TOP_RATED -> {
+                    CategoryFilmsRepository.instance()!!.getTopRatedFilmList(
+                        films_list,
+                        "en",
+                        loading,
+                        page.value!!
+                    )
+                }
+
+                TopCategoriesItem.POPULAR -> {
+
+                    CategoryFilmsRepository.instance()!!.getPopularFilmList(
+                        films_list,
+                        "en",
+                        loading,
+                        page.value!!
+                    )
+
+                }
+
+                TopCategoriesItem.UP_COMING -> {
+
+                    CategoryFilmsRepository.instance()!!.getUpComingFilmList(
+                        films_list,
+                        "en",
+                        loading,
+                        page.value!!
+                    )
+
+                }
+
+                TopCategoriesItem.NOW_PLAYING -> {
+
+                    CategoryFilmsRepository.instance()!!.getNowPlayingFilmList(
+                        films_list,
+                        "en",
+                        loading,
+                        page.value!!
+                    )
+
+                }
+
+            }
 
         }
 
