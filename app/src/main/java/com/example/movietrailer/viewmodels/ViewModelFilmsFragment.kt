@@ -1,5 +1,7 @@
 package com.example.movietrailer.viewmodels
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,10 +14,14 @@ import com.example.movietrailer.utils.default_lists.TopCategoriesItem
 import kotlinx.coroutines.launch
 
 class ViewModelFilmsFragment : ViewModel() {
+
+    private val TAG = "ViewModelFilmsFragment"
+
     private val films_list = MutableLiveData<List<ResultsItem>?>()
     var page = MutableLiveData(1)
     var loading = MutableLiveData(true)
     var query = MutableLiveData<String>()
+    var categorySelectedItem = MutableLiveData<TopCategoriesItem>(null)
 
     val filmList: LiveData<List<ResultsItem>?>
         get() {
@@ -64,7 +70,7 @@ class ViewModelFilmsFragment : ViewModel() {
 
     }
 
-    private fun getCategoryFilmListWhenClicked(clickedItem: TopCategoriesItem){
+    fun getCategoryFilmListWhenClicked(clickedItem: TopCategoriesItem): LiveData<List<ResultsItem>?>{
 
         viewModelScope.launch {
 
@@ -116,6 +122,8 @@ class ViewModelFilmsFragment : ViewModel() {
 
         }
 
+        return films_list
+
     }
 
     fun incrementPageNumber() {
@@ -125,6 +133,7 @@ class ViewModelFilmsFragment : ViewModel() {
     fun resetSearchVariables(){
 
         films_list.value = null
+        page.value = 1
 
     }
 

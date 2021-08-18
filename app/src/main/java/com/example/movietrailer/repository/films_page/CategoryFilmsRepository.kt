@@ -94,8 +94,9 @@ class CategoryFilmsRepository {
                 new_film_list!!.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
                 loading.postValue(false)
+                Log.d(TAG, "getPopularFilmList: Popular films comes")
             } else {
-                Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
+                Log.d(TAG, "getSearchFilmList: Category result is failed ${response.code()}")
                 loading.postValue(true)
             }
 
@@ -133,7 +134,7 @@ class CategoryFilmsRepository {
                 film_list.postValue(new_film_list)
                 loading.postValue(false)
             } else {
-                Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
+                Log.d(TAG, "getSearchFilmList: Upcoming result is failed ${response.code()}")
                 loading.postValue(true)
             }
 
@@ -171,7 +172,7 @@ class CategoryFilmsRepository {
                 film_list.postValue(new_film_list)
                 loading.postValue(false)
             } else {
-                Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
+                Log.d(TAG, "getSearchFilmList: No-ing result is failed ${response.code()}")
                 loading.postValue(true)
             }
 

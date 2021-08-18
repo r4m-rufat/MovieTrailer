@@ -28,11 +28,12 @@ import com.example.movietrailer.R;
 import com.example.movietrailer.adapters.home_page.HorizontalCategoryAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerFilmsAdapter;
 import com.example.movietrailer.models.discover_model.ResultsItem;
+import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
 import com.example.movietrailer.viewmodels.ViewModelFilmsFragment;
 
 import java.util.List;
 
-public class FilmsFragment extends Fragment {
+public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter.OnClickedCategoryItemListener{
 
     private static final String TAG = "FilmsFragment";
 
@@ -50,6 +51,8 @@ public class FilmsFragment extends Fragment {
     boolean isLastPage = false;
     private String query = "";
     private boolean clickSearchButton = false;
+    private boolean clickCategoryItem = false;
+    private TopCategoriesItem item;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class FilmsFragment extends Fragment {
 
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         categoryRecyclerView.setHasFixedSize(false);
-        horizontalCategoryAdapter = new HorizontalCategoryAdapter(FilmCategoriesList(), getActivity());
+        horizontalCategoryAdapter = new HorizontalCategoryAdapter(FilmCategoriesList(), getActivity(), viewModelFilmsFragment, FilmsFragment.this);
         categoryRecyclerView.setAdapter(horizontalCategoryAdapter);
 
     }
@@ -138,6 +141,8 @@ public class FilmsFragment extends Fragment {
                     isScrolling = false;
                     if (clickSearchButton){
                         viewModelFilmsFragment.getSearchResult();
+                    }else if (clickCategoryItem){
+                        viewModelFilmsFragment.getCategoryFilmListWhenClicked(item);
                     }else{
                         viewModelFilmsFragment.getFilmList();
                     }
@@ -194,6 +199,7 @@ public class FilmsFragment extends Fragment {
                         });
 
                         clickSearchButton = true;
+                        clickCategoryItem = false;
 
                         // when clicked search button, should reset film list
                         viewModelFilmsFragment.resetSearchVariables();
@@ -207,5 +213,27 @@ public class FilmsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClickCategoryItem(TopCategoriesItem item) {
+        viewModelFilmsFragment.resetSearchVariables();
+        viewModelFilmsFragment.getCategorySelectedItem().setValue(item);
+        viewModelFilmsFragment.
+                getCategoryFilmListWhenClicked(item)
+                .observe(getActivity(), new Observer<List<ResultsItem>>() {
+                    @Override
+                    public void onChanged(List<ResultsItem> list) {
+                        recyclerFilmsAdapter.notifyDataSetChanged();
+                        horizontalCategoryAdapter.notifyDataSetChanged(); // because change color of top item text
+                    }
+                });
 
+        /**
+         * this setup for pagination, look through setupPagination
+          */
+
+        clickCategoryItem = true;
+        clickSearchButton = false;
+        this.item = item;
+
+    }
 }
