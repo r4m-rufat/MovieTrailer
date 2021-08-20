@@ -14,5 +14,6 @@
     <color name="progress_red">#F0DC1200</color>
     <color name="progress_orange">#FF6F00</color>
     <color name="progress_yellow">#FFD500</color>
+    <color name="red">#F0DC1200</color>
 
 </resources>

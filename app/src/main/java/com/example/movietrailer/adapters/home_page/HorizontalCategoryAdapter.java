@@ -9,14 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movietrailer.R;
-import com.example.movietrailer.models.discover_model.ResultsItem;
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
-import com.example.movietrailer.viewmodels.ViewModelFilmsFragment;
+import com.example.movietrailer.viewmodels.FilmsFragmentViewModel;
 
 import java.util.List;
 
@@ -24,14 +21,14 @@ public class HorizontalCategoryAdapter extends RecyclerView.Adapter<HorizontalCa
 
     private List<String> categoryList;
     private Context context;
-    private ViewModelFilmsFragment viewModelFilmsFragment;
+    private FilmsFragmentViewModel filmsFragmentViewModel;
     private int positionIndex = -1;
     private OnClickedCategoryItemListener listener;
 
-    public HorizontalCategoryAdapter(List<String> categoryList, Context context, ViewModelFilmsFragment viewModelFilmsFragment, OnClickedCategoryItemListener listener) {
+    public HorizontalCategoryAdapter(List<String> categoryList, Context context, FilmsFragmentViewModel filmsFragmentViewModel, OnClickedCategoryItemListener listener) {
         this.categoryList = categoryList;
         this.context = context;
-        this.viewModelFilmsFragment = viewModelFilmsFragment;
+        this.filmsFragmentViewModel = filmsFragmentViewModel;
         this.listener = listener;
     }
 

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -29,7 +28,7 @@ import com.example.movietrailer.adapters.home_page.HorizontalCategoryAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerFilmsAdapter;
 import com.example.movietrailer.models.discover_model.ResultsItem;
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
-import com.example.movietrailer.viewmodels.ViewModelFilmsFragment;
+import com.example.movietrailer.viewmodels.FilmsFragmentViewModel;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
     private MeowBottomNavigation bottomNavigation;
     private RecyclerView categoryRecyclerView, filmsRecyclerView;
     private HorizontalCategoryAdapter horizontalCategoryAdapter;
-    private ViewModelFilmsFragment viewModelFilmsFragment;
+    private FilmsFragmentViewModel filmsFragmentViewModel;
     private ProgressBar progressBar;
     private EditText editSearch;
     private RecyclerFilmsAdapter recyclerFilmsAdapter;
@@ -57,7 +56,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModelFilmsFragment = new ViewModelProvider(this).get(ViewModelFilmsFragment.class);
+        filmsFragmentViewModel = new ViewModelProvider(this).get(FilmsFragmentViewModel.class);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         categoryRecyclerView.setHasFixedSize(false);
-        horizontalCategoryAdapter = new HorizontalCategoryAdapter(FilmCategoriesList(), getActivity(), viewModelFilmsFragment, FilmsFragment.this);
+        horizontalCategoryAdapter = new HorizontalCategoryAdapter(FilmCategoriesList(), getActivity(), filmsFragmentViewModel, FilmsFragment.this);
         categoryRecyclerView.setAdapter(horizontalCategoryAdapter);
 
     }
@@ -106,7 +105,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
         filmsRecyclerView.setHasFixedSize(false);
         recyclerFilmsAdapter = new RecyclerFilmsAdapter(getActivity());
 
-        viewModelFilmsFragment.getFilmList().observe(getActivity(), new Observer<List<ResultsItem>>() {
+        filmsFragmentViewModel.getFilmList().observe(getActivity(), new Observer<List<ResultsItem>>() {
             @Override
             public void onChanged(List<ResultsItem> resultsItems) {
                 recyclerFilmsAdapter.updateFilmList(resultsItems);
@@ -137,14 +136,14 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                 boolean paginateOrNot = isNotLoadingAndLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling;
 
                 if (paginateOrNot){
-                    viewModelFilmsFragment.incrementPageNumber();
+                    filmsFragmentViewModel.incrementPageNumber();
                     isScrolling = false;
                     if (clickSearchButton){
-                        viewModelFilmsFragment.getSearchResult();
+                        filmsFragmentViewModel.getSearchResult();
                     }else if (clickCategoryItem){
-                        viewModelFilmsFragment.getCategoryFilmListWhenClicked(item);
+                        filmsFragmentViewModel.getCategoryFilmListWhenClicked(item);
                     }else{
-                        viewModelFilmsFragment.getFilmList();
+                        filmsFragmentViewModel.getFilmList();
                     }
                 }
 
@@ -163,7 +162,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
     private void showOrHideProgressBar() {
 
-        viewModelFilmsFragment.getLoading().observe(getActivity(), new Observer<Boolean>() {
+        filmsFragmentViewModel.getLoading().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loading) {
                 if (loading) {
@@ -190,8 +189,8 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
                         // edit text string
                         query = editSearch.getText().toString().trim();
-                        viewModelFilmsFragment.getQuery().setValue(query);
-                        viewModelFilmsFragment.getSearchResult().observe(getActivity(), new Observer<List<ResultsItem>>() {
+                        filmsFragmentViewModel.getQuery().setValue(query);
+                        filmsFragmentViewModel.getSearchResult().observe(getActivity(), new Observer<List<ResultsItem>>() {
                             @Override
                             public void onChanged(List<ResultsItem> list) {
                                 recyclerFilmsAdapter.updateFilmList(list);
@@ -202,7 +201,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                         clickCategoryItem = false;
 
                         // when clicked search button, should reset film list
-                        viewModelFilmsFragment.resetSearchVariables();
+                        filmsFragmentViewModel.resetSearchVariables();
 
                         return true;
                     }
@@ -215,9 +214,9 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
     @Override
     public void onClickCategoryItem(TopCategoriesItem item) {
-        viewModelFilmsFragment.resetSearchVariables();
-        viewModelFilmsFragment.getCategorySelectedItem().setValue(item);
-        viewModelFilmsFragment.
+        filmsFragmentViewModel.resetSearchVariables();
+        filmsFragmentViewModel.getCategorySelectedItem().setValue(item);
+        filmsFragmentViewModel.
                 getCategoryFilmListWhenClicked(item)
                 .observe(getActivity(), new Observer<List<ResultsItem>>() {
                     @Override

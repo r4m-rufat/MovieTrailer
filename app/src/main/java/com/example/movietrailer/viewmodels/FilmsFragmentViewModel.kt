@@ -13,7 +13,7 @@ import com.example.movietrailer.repository.films_page.SearchFilmsRepository
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem
 import kotlinx.coroutines.launch
 
-class ViewModelFilmsFragment : ViewModel() {
+class FilmsFragmentViewModel : ViewModel() {
 
     private val TAG = "ViewModelFilmsFragment"
 

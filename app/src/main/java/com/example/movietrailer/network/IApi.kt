@@ -1,10 +1,12 @@
 package com.example.movietrailer.network
 
+import com.example.movietrailer.models.detail_model.details.DetailResponse
 import com.example.movietrailer.models.discover_model.DiscoverResponse
 import com.example.movietrailer.models.discover_model.ResultsItem
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IApi {
@@ -53,5 +55,13 @@ interface IApi {
         @Query("language") language: String?,
         @Query("page") page: Int,
     ): Call<DiscoverResponse>
+
+    @GET("movie/{movie_id}?")
+    fun getFilmDetailInformations(
+        @Path("movie_id") id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String?,
+
+    ): Call<DetailResponse>
 
 }

@@ -9,8 +9,16 @@
         android:name="com.example.movietrailer.fragments.FilmsFragment"
         android:label="FilmsFragment">
 
-
+        <action
+            android:id="@+id/viewFilmDetail"
+            app:destination="@+id/viewFilmDetailFragment"/>
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/viewFilmDetailFragment"
+        android:name="com.example.movietrailer.fragments.FilmDetailFragment"
+        android:label="FilmDetailFragment"/>
 
 </navigation>

@@ -70,6 +70,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:maxLines="2"
+                android:ellipsize="end"
                 android:text="Sherlock Holmes"
                 android:textColor="@color/black"
                 android:textSize="16sp"

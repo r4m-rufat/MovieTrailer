@@ -3,13 +3,244 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.FilmDetailFragment">
 
-    <ImageView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/background_shape_grid_item"
-        android:id="@+id/detailVide"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:id="@+id/rel_video">
+
+                    <ImageView
+                        android:id="@+id/detailVideoPicture"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/background_shape_grid_item"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_logo" />
+
+                    <ImageView
+                        android:id="@+id/ic_play_video"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/ic_play_video"
+                        android:layout_centerInParent="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/background_shadow_item"/>
+
+                    <TextView
+                        android:id="@+id/txt_film_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textStyle="bold"
+                        android:text="Sherlock Holmes"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:layout_below="@+id/rel_video"
+                    android:layout_marginTop="-75dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/small_card_image">
+
+                    <ImageView
+                        android:id="@+id/film_backdrop_image"
+                        android:layout_width="100dp"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_launcher_background"
+                        />
+
+                </androidx.cardview.widget.CardView>
+
+                <RelativeLayout
+                    android:id="@+id/rel_time_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/small_card_image"
+                    android:layout_below="@id/rel_video"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/ic_time"/>
+
+                        <TextView
+                            android:id="@+id/txt_trailer_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/gray"
+                            android:paddingLeft="5dp"
+                            android:fontFamily="monospace"
+                            android:text="loading..."/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/ic_star"/>
+
+                        <TextView
+                            android:id="@+id/txt_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/gray"
+                            android:textStyle="bold"
+                            android:paddingLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:fontFamily="monospace"
+                            android:text="8.9"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+               <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="5dp"
+                   android:layout_marginLeft="5dp"
+                   android:layout_centerVertical="true"
+                   android:layout_below="@id/rel_time_rating"
+                   android:layout_toRightOf="@id/small_card_image">
+
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal"
+                       android:gravity="center">
+
+                       <ImageView
+                           android:layout_width="24dp"
+                           android:layout_height="24dp"
+                           android:src="@drawable/ic_dollar"/>
+
+                       <TextView
+                           android:id="@+id/txt_budget"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="100 M"
+                           android:fontFamily="monospace"
+                           android:layout_marginLeft="5dp"
+                           android:textStyle="bold"
+                           android:textSize="12sp"/>
+
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_alignParentRight="true"
+                       android:orientation="horizontal"
+                       android:gravity="center">
+
+                       <ImageView
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:src="@drawable/ic_calendar"/>
+
+                       <TextView
+                           android:id="@+id/txt_release_date"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="04-01-2001"
+                           android:fontFamily="monospace"
+                           android:layout_marginLeft="5dp"
+                           android:layout_marginRight="10dp"
+                           android:textStyle="bold"
+                           android:textSize="12sp"/>
+
+                   </LinearLayout>
+
+               </RelativeLayout>
+
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:layout_below="@id/rel_time_rating"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:layout_marginTop="5dp" />-->
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About Film"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/txt_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:text="loading..."
+                android:textSize="14sp"/>
+
+            <include
+                layout="@layout/layout_detail_cast_recycler_view"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

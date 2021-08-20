@@ -3,14 +3,20 @@ package com.example.movietrailer.adapters.home_page;
 import static com.example.movietrailer.utils.canditions.ProgressIndicatorColorConditionKt.setProgressIndicatorColor;
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -42,7 +48,7 @@ public class RecyclerFilmsAdapter extends RecyclerView.Adapter<RecyclerFilmsAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerFilmsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerFilmsAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder._film_title.setText(films_list.get(position).getTitle());
         holder._film_release_date.setText(films_list.get(position).getReleaseDate());
@@ -51,6 +57,15 @@ public class RecyclerFilmsAdapter extends RecyclerView.Adapter<RecyclerFilmsAdap
         setProgressIndicatorColor(rate, holder._progress_bar, context);
         Glide.with(context).load(IMAGE_BEGIN_URL + films_list.get(position).getPosterPath()).into(holder._film_image);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", films_list.get(position).getId());
+                Navigation.findNavController(view).navigate(R.id.viewFilmDetail, bundle);
+            }
+        });
+
     }
 
     @Override
@@ -58,9 +73,7 @@ public class RecyclerFilmsAdapter extends RecyclerView.Adapter<RecyclerFilmsAdap
         if (films_list != null){
             return films_list.size();
         }
-
         return 0;
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
