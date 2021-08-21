@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="120dp"
-    android:layout_height="250dp"
+    android:layout_width="140dp"
+    android:layout_height="230dp"
     android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
     android:background="@drawable/background_cast_item"
     android:layout_marginTop="10dp">
 
@@ -22,15 +21,15 @@
 
                <ImageView
                    android:layout_width="match_parent"
-                   android:layout_height="160dp"
-                   android:src="@drawable/ic_logo"
+                   android:layout_height="150dp"
+                   android:src="@drawable/ic_person"
                    android:id="@+id/cast_image"
                    android:scaleType="centerCrop"/>
 
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:id="@+id/txt_actor_name"
+                   android:id="@+id/txt_cast_name_inFilm"
                    android:textSize="14sp"
                    android:paddingLeft="5dp"
                    android:paddingTop="5dp"
@@ -39,12 +38,12 @@
                    android:ellipsize="end"
                    android:textColor="@color/black"
                    android:textStyle="bold"
-                   android:text="Freddie Highmore"/>
+                   android:text="Loading..."/>
 
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:id="@+id/txt_cast_name"
+                   android:id="@+id/txt_cast_name_inReal"
                    android:textSize="13sp"
                    android:paddingLeft="5dp"
                    android:paddingRight="5dp"
@@ -52,7 +51,7 @@
                    android:ellipsize="end"
                    android:textColor="@color/black"
                    android:fontFamily="sans-serif-thin"
-                   android:text="Dr. Shaun Murphy"/>
+                   android:text="Loading..."/>
 
 
            </LinearLayout>

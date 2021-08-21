@@ -2,4 +2,9 @@
     <string name="app_name">MovieTrailer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="cast_series">Cast Series</string>
+    <string name="personal_staff">Personal Staff</string>
+    <string name="similar_films">Similar Films</string>
+
 </resources>

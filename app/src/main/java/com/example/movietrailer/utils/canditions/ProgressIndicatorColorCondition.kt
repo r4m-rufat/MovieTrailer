@@ -20,6 +20,9 @@ fun setProgressIndicatorColor(rate: Int, circularProgressBar: CircularProgressBa
         rate in 1..29 -> {
             circularProgressBar.progressBarColor = ContextCompat.getColor(context, R.color.progress_red)
         }
+        rate == 0 -> {
+            circularProgressBar.progressBarColor = ContextCompat.getColor(context, R.color.gray)
+        }
     }
 
 }

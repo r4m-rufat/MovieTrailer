@@ -1,10 +1,11 @@
 package com.example.movietrailer.network
 
+import com.example.movietrailer.models.detail_model.casts.CastResponse
 import com.example.movietrailer.models.detail_model.details.DetailResponse
+import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse
+import com.example.movietrailer.models.detail_model.video.VideoResponse
 import com.example.movietrailer.models.discover_model.DiscoverResponse
-import com.example.movietrailer.models.discover_model.ResultsItem
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -62,6 +63,30 @@ interface IApi {
         @Query("api_key") api_key: String,
         @Query("language") language: String?,
 
-    ): Call<DetailResponse>
+        ): Call<DetailResponse>
+
+    @GET("movie/{movie_id}/credits?")
+    fun getFilmCastsInformation(
+        @Path("movie_id") id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String?,
+
+        ): Call<CastResponse>
+
+    @GET("movie/{movie_id}/similar?")
+    fun getSimilarFilmsInformation(
+        @Path("movie_id") id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String?,
+
+        ): Call<SimilarResponse>
+
+    @GET("movie/{movie_id}/videos?")
+    fun getVideoTrailer(
+        @Path("movie_id") id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String?,
+
+        ): Call<VideoResponse>
 
 }

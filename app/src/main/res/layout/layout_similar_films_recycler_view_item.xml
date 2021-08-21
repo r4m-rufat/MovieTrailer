@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:orientation="vertical"
+    android:layout_width="140dp"
+    android:layout_height="220dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/background_cast_item"
+    android:layout_marginTop="10dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="10dp"
-        android:outlineSpotShadowColor="@color/white"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="20dp"
+        android:layout_margin="0.5dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background_shape_grid_item"
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/film_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background" />
+                android:layout_height="150dp"
+                android:src="@drawable/ic_logo"
+                android:id="@+id/similar_film_image"
+                android:scaleType="centerCrop"/>
 
             <RelativeLayout
                 android:id="@+id/rel_progress"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_below="@+id/film_image"
                 android:background="@drawable/background_progress_indicator"
                 android:layout_marginTop="-25dp"
                 android:layout_marginLeft="5dp">
 
                 <com.mikhaellopez.circularprogressbar.CircularProgressBar
-                    android:id="@+id/circularProgressBar"
+                    android:id="@+id/similar_circularProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -54,7 +52,7 @@
                     app:cpb_round_border="true" />
 
                 <TextView
-                    android:id="@+id/film_rate"
+                    android:id="@+id/similar_film_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
@@ -65,36 +63,21 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/film_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rel_progress"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
+                android:id="@+id/txt_film_title"
+                android:textSize="14sp"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:text="Sherlock Holmes"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="Uday Chopra"/>
 
-            <TextView
-                android:id="@+id/film_release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/film_title"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginRight="5dp"
-                android:fontFamily="sans-serif-light"
-                android:maxLines="1"
-                android:text="10 May, 2019"
-                android:textColor="@color/gray"
-                android:textSize="14sp" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+</LinearLayout>

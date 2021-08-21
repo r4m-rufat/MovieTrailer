@@ -36,8 +36,8 @@
                         android:id="@+id/ic_play_video"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:background="@drawable/ic_play_video"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_play_circle" />
 
                 </RelativeLayout>
 
@@ -59,10 +59,10 @@
                         android:layout_marginRight="10dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textStyle="bold"
                         android:text="Sherlock Holmes"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
@@ -140,7 +140,7 @@
                             android:paddingLeft="5dp"
                             android:layout_marginRight="10dp"
                             android:fontFamily="monospace"
-                            android:text="8.9"/>
+                            android:text="loading..."/>
 
                     </LinearLayout>
 
@@ -170,7 +170,7 @@
                            android:id="@+id/txt_budget"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="100 M"
+                           android:text="loading..."
                            android:fontFamily="monospace"
                            android:layout_marginLeft="5dp"
                            android:textStyle="bold"
@@ -194,7 +194,7 @@
                            android:id="@+id/txt_release_date"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="04-01-2001"
+                           android:text="loading..."
                            android:fontFamily="monospace"
                            android:layout_marginLeft="5dp"
                            android:layout_marginRight="10dp"
@@ -205,15 +205,17 @@
 
                </RelativeLayout>
 
-
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="20dp"-->
-<!--                    android:layout_below="@id/rel_time_rating"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:layout_marginTop="5dp" />-->
-
             </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/genreRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_below="@id/rel_time_rating"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -238,6 +240,16 @@
 
             <include
                 layout="@layout/layout_detail_cast_recycler_view"/>
+
+            <include
+                layout="@layout/layout_detail_personal_staff_recycler_view"/>
+
+            <include
+                layout="@layout/layout_similar_films_recycler_view"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
 
         </LinearLayout>
 
