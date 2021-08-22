@@ -1,4 +1,4 @@
-package com.example.movietrailer.fragments;
+package com.example.movietrailer.fragments.films;
 
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 import static com.example.movietrailer.utils.converters.BudgetConverterKt.convertValueToBudget;

@@ -1,4 +1,4 @@
-package com.example.movietrailer.fragments;
+package com.example.movietrailer.fragments.films;
 
 import static com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarSetupKt.setUpBottomNavigationView;
 import static com.example.movietrailer.utils.constants.ConstantsKt.PAGE_SIZE;
