@@ -30,4 +30,13 @@
         <item name="colorControlActivated">@color/white</item>
     </style>
 
+    <style name="Theme.MovieTrailer.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MovieTrailer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MovieTrailer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

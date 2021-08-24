@@ -12,8 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieTrailer">
         <activity
+            android:name=".activities.registration.ResetActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.registration.RegisterActivity"
-            android:exported="true" >
+            android:exported="true" />
+        <activity
+            android:name=".activities.registration.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,13 +27,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.registration.LoginActivity"
-            android:exported="true" />
-        <activity
             android:name=".activities.HomeActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>
