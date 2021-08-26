@@ -18,6 +18,7 @@
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_grid_item.xml" value="0.2194871794871795" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_of_reset_page_image.xml" value="0.23072916666666668" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_signup_button.xml" value="0.2703125" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_account.xml" value="0.11927083333333334" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_favorite.xml" value="0.25925925925925924" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_search.xml" value="0.156" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/ic_search_focus.xml" value="0.156" />
@@ -35,8 +36,12 @@
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/activity_login.xml" value="0.536" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/activity_register.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/activity_reset.xml" value="0.264" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/dialog_for_change_password.xml" value="0.25416666666666665" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/dialog_for_edit_account_name.xml" value="0.25416666666666665" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_account.xml" value="0.2" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_film_detail.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_films.xml" value="0.1" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_wish_list.xml" value="0.18125" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_app_bar.xml" value="0.1" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_bottom_navigation_bar.xml" value="0.1" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_categories_bar.xml" value="0.2" />

@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activities.HomeActivity">
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/main_nav_graph"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:defaultNavHost="true"
         app:navGraph="@navigation/home_graph"/>
+
 
 </RelativeLayout>

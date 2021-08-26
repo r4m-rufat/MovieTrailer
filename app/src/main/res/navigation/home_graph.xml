@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/filmsFragment">
 
@@ -13,12 +14,47 @@
             android:id="@+id/viewFilmDetail"
             app:destination="@+id/viewFilmDetailFragment"/>
 
-    </fragment>
+        <action
+            android:id="@+id/action_to_viewAccountFragment"
+            app:destination="@id/viewAccountFragment" />
+        <action
+            android:id="@+id/action_to_wishListFragment"
+            app:destination="@id/wishListFragment" />
 
+    </fragment>
 
     <fragment
         android:id="@+id/viewFilmDetailFragment"
         android:name="com.example.movietrailer.fragments.films.FilmDetailFragment"
-        android:label="FilmDetailFragment"/>
+        android:label="FilmDetailFragment">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/viewAccountFragment"
+        android:name="com.example.movietrailer.fragments.account.AccountFragment"
+        android:label="AccountFragment">
+
+
+        <action
+            android:id="@+id/action_to_filmsFragment"
+            app:destination="@id/filmsFragment" />
+        <action
+            android:id="@+id/action_to_wishListFragment"
+            app:destination="@id/wishListFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/wishListFragment"
+        android:name="com.example.movietrailer.fragments.wish_list.WishListFragment"
+        android:label="fragment_wish_list"
+        tools:layout="@layout/fragment_wish_list" >
+        <action
+            android:id="@+id/action_to_viewAccountFragment"
+            app:destination="@id/viewAccountFragment" />
+        <action
+            android:id="@+id/action_to_filmsFragment"
+            app:destination="@id/filmsFragment" />
+    </fragment>
 
 </navigation>

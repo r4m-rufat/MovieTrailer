@@ -17,4 +17,11 @@
     <string name="login_failed">"Login failed"</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="users">users</string>
+    <string name="edit_account">Edit account name</string>
+    <string name="change_password">Change password</string>
+    <string name="save">Save</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm password</string>
 </resources>

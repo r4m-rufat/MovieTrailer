@@ -137,6 +137,10 @@ public class LoginActivity extends AppCompatActivity {
             auth = FirebaseAuth.getInstance();
             user = auth.getCurrentUser();
 
+            /**
+             * checks username is email type or not if
+             * it is email type then goes to database and is checked this username
+             */
             if (!PatternsCompat.EMAIL_ADDRESS.matcher(usernameValue).matches()) {
 
                 db.collection("users").whereEqualTo("username", usernameValue).whereEqualTo("password", passwordValue)
@@ -151,35 +155,52 @@ public class LoginActivity extends AppCompatActivity {
                                     for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
 
                                         dbEmail = documentSnapshot.getString("email");
+                                        Log.d(TAG, "onComplete: Email is " + dbEmail);
                                     }
 
-                                    auth.signInWithEmailAndPassword(dbEmail, passwordValue)
-                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    /**
+                                     * maybe task is successful but there is no that username
+                                     * in this situation email equals ""
+                                     */
+                                    if (!dbEmail.equals("")){
+                                        auth.signInWithEmailAndPassword(dbEmail, passwordValue)
+                                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                                    if (auth.getCurrentUser().isEmailVerified()){
-                                                        Intent intent = new Intent(context, HomeActivity.class);
-                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                        startActivity(intent);
-                                                    }else{
-                                                        Toast.makeText(context, "Email is not verified", Toast.LENGTH_SHORT).show();
+                                                        try {
+                                                            if (task.isSuccessful()){
+                                                                if (auth.getCurrentUser().isEmailVerified()){
+                                                                    Intent intent = new Intent(context, HomeActivity.class);
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                    startActivity(intent);
+                                                                }else{
+                                                                    Toast.makeText(context, "Email is not verified", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                        }catch (NullPointerException e){
+                                                            Log.d(TAG, "onComplete: Exception is " + e.getMessage());
+                                                        }
+
+                                                        circularSignInButton.revertAnimation();
+
                                                     }
-
-                                                    circularSignInButton.revertAnimation();
-
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-
-                                                }
-                                            });
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        circularSignInButton.revertAnimation();
+                                                    }
+                                                });
+                                    }else{
+                                        Toast.makeText(context, "Please write your account informations correctly.", Toast.LENGTH_SHORT).show();
+                                        circularSignInButton.revertAnimation();
+                                    }
 
 
                                 } else {
-                                    Toast.makeText(context, "Please write informations correctly.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Please write your account informations correctly.", Toast.LENGTH_SHORT).show();
+                                    circularSignInButton.revertAnimation();
                                 }
 
                             }
@@ -188,11 +209,16 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Toast.makeText(context, "Please write informations correctly.", Toast.LENGTH_SHORT).show();
+                                circularSignInButton.revertAnimation();
                             }
                         });
 
             } else {
 
+                /**
+                 * otherwise username is email type and sign in
+                 * account successfully
+                 */
                 auth.signInWithEmailAndPassword(usernameValue, passwordValue)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -220,10 +246,9 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-
+                                circularSignInButton.revertAnimation();
                             }
                         });
-
 
             }
 

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -35,7 +36,7 @@ import com.example.movietrailer.models.detail_model.details.GenresItem;
 import com.example.movietrailer.models.detail_model.similar_films.SimilarItem;
 import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse;
 import com.example.movietrailer.models.detail_model.video.VideoResponse;
-import com.example.movietrailer.viewmodels.FilmDetailFragmentViewModel;
+import com.example.movietrailer.viewmodels.films.FilmDetailFragmentViewModel;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -157,6 +158,7 @@ public class FilmDetailFragment extends Fragment {
 
     /**
      * set all items to ui
+     *
      * @param detailResponse
      */
     private void setItemsToWidgets(DetailResponse detailResponse) {
@@ -212,29 +214,37 @@ public class FilmDetailFragment extends Fragment {
 
     }
 
-    private void getVideoLiveData(){
+    private void getVideoLiveData() {
 
         filmDetailFragmentViewModel.getVideo(id).observe(getActivity(), new Observer<VideoResponse>() {
             @Override
             public void onChanged(VideoResponse videoResponse) {
                 // needed only one video id
-                playVideo(videoResponse.getResults().get(0).getKey());
+                try {
+                    if (videoResponse.getResults() != null) {
+                        String videoID = videoResponse.getResults().get(0).getKey();
+                        playVideo(videoID);
+
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    playVideo(null);
+                    Log.d(TAG, "onChanged: Exception is " + e.getMessage());
+                }
             }
         });
 
     }
 
 
-    private void playVideo(String videoID){
+    private void playVideo(String videoID) {
 
         icPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (videoID != null){
+                if (videoID != null) {
                     showVideoDialogue(videoID);
                 }else{
-                    // because api is not perfect sometimes video id can be null
-                    Toast.makeText(getContext(), "Video is not available yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Video is not available yet.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -243,9 +253,10 @@ public class FilmDetailFragment extends Fragment {
 
     /**
      * video id is setted and then is showing with youtube player
+     *
      * @param id
      */
-    private void showVideoDialogue(String id){
+    private void showVideoDialogue(String id) {
 
         videoDialog = new Dialog(context, R.style.AppTheme_FullScreenDialog); // custom style in for full screen and also it's background
         videoDialog.setContentView(R.layout.layout_video_dialog);

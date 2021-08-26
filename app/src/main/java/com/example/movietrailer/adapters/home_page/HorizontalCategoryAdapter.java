@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movietrailer.R;
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
-import com.example.movietrailer.viewmodels.FilmsFragmentViewModel;
+import com.example.movietrailer.viewmodels.films.FilmsFragmentViewModel;
 
 import java.util.List;
 

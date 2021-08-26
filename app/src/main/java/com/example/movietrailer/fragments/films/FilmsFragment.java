@@ -27,22 +27,22 @@ import com.example.movietrailer.R;
 import com.example.movietrailer.adapters.home_page.HorizontalCategoryAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerFilmsAdapter;
 import com.example.movietrailer.models.discover_model.ResultsItem;
+import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems;
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
-import com.example.movietrailer.viewmodels.FilmsFragmentViewModel;
+import com.example.movietrailer.viewmodels.films.FilmsFragmentViewModel;
 
 import java.util.List;
 
 public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter.OnClickedCategoryItemListener{
 
     private static final String TAG = "FilmsFragment";
-
-    private MeowBottomNavigation bottomNavigation;
     private RecyclerView categoryRecyclerView, filmsRecyclerView;
     private HorizontalCategoryAdapter horizontalCategoryAdapter;
     private FilmsFragmentViewModel filmsFragmentViewModel;
     private ProgressBar progressBar;
     private EditText editSearch;
     private RecyclerFilmsAdapter recyclerFilmsAdapter;
+    private MeowBottomNavigation bottomNavigation;
 
     // var
     boolean isLoading = false;
@@ -66,8 +66,6 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
         View view = inflater.inflate(R.layout.fragment_films, container, false);
 
         getWidgets(view);
-        setUpBottomNavigationView(bottomNavigation);
-        ViewCompat.setNestedScrollingEnabled(filmsRecyclerView, false);
         setCategoryRecyclerViewSetups();
         setFilmsRecyclerView();
 
@@ -76,16 +74,19 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
         clickedEditSearchRightDrawable();
 
+        bottomNavigation.show(BottomNavigationBarItems.FILMS.ordinal(), true);
+        setUpBottomNavigationView(bottomNavigation, view);
+
         return view;
     }
 
     private void getWidgets(View view) {
 
-        bottomNavigation = view.findViewById(R.id.bottom_navigation_view);
         categoryRecyclerView = view.findViewById(R.id.recycler_categories);
         filmsRecyclerView = view.findViewById(R.id.film_recycler_view);
         progressBar = view.findViewById(R.id.circularProgressBar);
         editSearch = view.findViewById(R.id.edit_search);
+        bottomNavigation = view.findViewById(R.id.bottom_navigation_view);
 
     }
 

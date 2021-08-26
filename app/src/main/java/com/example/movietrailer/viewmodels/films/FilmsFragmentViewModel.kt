@@ -1,4 +1,4 @@
-package com.example.movietrailer.viewmodels
+package com.example.movietrailer.viewmodels.films
 
 import android.util.Log
 import android.widget.Toast
