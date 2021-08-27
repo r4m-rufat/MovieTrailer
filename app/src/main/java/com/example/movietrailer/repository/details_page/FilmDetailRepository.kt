@@ -5,9 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.movietrailer.models.detail_model.casts.CastResponse
 import com.example.movietrailer.models.detail_model.details.DetailResponse
 import com.example.movietrailer.models.detail_model.video.VideoResponse
+import com.example.movietrailer.models.wish_list.WishList
 import com.example.movietrailer.network.ApiClient
 import com.example.movietrailer.network.IApi
 import com.example.movietrailer.utils.constants.API_KEY
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -19,6 +25,10 @@ class FilmDetailRepository {
 
         private const val TAG = "FilmDetailRepository"
         private var INSTANCE: FilmDetailRepository? = null
+
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val db = FirebaseDatabase.getInstance()
+        val reference = db.reference
 
         fun instance(): FilmDetailRepository? {
             if (INSTANCE == null) {
@@ -122,6 +132,84 @@ class FilmDetailRepository {
 
     }
 
+    fun addFilmToGlobalDatabase(filmID: Int, filmImage: String, filmTitle: String){
 
+        val wishList = WishList(filmID, filmImage, filmTitle)
+
+        reference.child("user_wish_list")
+            .child(firebaseUser!!.uid)
+            .push()
+            .setValue(wishList)
+
+    }
+
+    fun checkFilmInDatabase(filmID: Int, boolean: MutableLiveData<Boolean>): MutableLiveData<Boolean>{
+
+        CoroutineScope(IO).launch {
+
+            reference.child("user_wish_list")
+                .child(firebaseUser!!.uid)
+                .addValueEventListener(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+
+                        if (snapshot.exists()){
+                            for (single_snapshot in snapshot.children){
+
+                                if (filmID == single_snapshot.getValue(WishList::class.java)?.filmID){
+                                    boolean.postValue(true)
+                                    break
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        boolean.postValue(true)
+                        Log.d(TAG, "onCancelled: ${error.message}")
+                    }
+
+                })
+
+        }
+
+        return boolean
+
+    }
+
+    fun removeFilmFromGlobalDatabase(filmID: Int){
+
+
+        CoroutineScope(IO).launch {
+
+            reference.child("user_wish_list")
+                .child(firebaseUser!!.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()){
+
+                            for (single_snapshot in snapshot.children){
+
+                                if (filmID == single_snapshot.getValue(WishList::class.java)?.filmID){
+
+                                    single_snapshot.ref.removeValue()
+
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d(TAG, "onCancelled: ${error.message}")
+                    }
+
+                })
+
+        }
+
+    }
 
 }

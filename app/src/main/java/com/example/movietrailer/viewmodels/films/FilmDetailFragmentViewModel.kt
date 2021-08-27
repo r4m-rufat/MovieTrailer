@@ -17,6 +17,7 @@ class FilmDetailFragmentViewModel: ViewModel() {
     private val similarList: MutableLiveData<SimilarResponse> = MutableLiveData()
     private val videoResponse: MutableLiveData<VideoResponse> = MutableLiveData()
     private var loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    private var filmInWishListOrNot: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun getFilmList(id: Int): LiveData<DetailResponse>{
 
@@ -58,6 +59,24 @@ class FilmDetailFragmentViewModel: ViewModel() {
             "en",
             videoID
         )
+
+    }
+
+    fun checkFilmInWishList(id: Int): LiveData<Boolean>{
+
+        return FilmDetailRepository.instance()!!.checkFilmInDatabase(id, filmInWishListOrNot)
+
+    }
+
+    fun addFilmToWishListDatabase(id: Int, title: String, image: String){
+
+        FilmDetailRepository.instance()!!.addFilmToGlobalDatabase(filmID = id, filmTitle = title, filmImage = image)
+
+    }
+
+    fun removeFilmToWishListDatabase(id: Int){
+
+        FilmDetailRepository.instance()!!.removeFilmFromGlobalDatabase(id)
 
     }
 

@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -59,6 +61,7 @@ public class FilmDetailFragment extends Fragment {
     private Dialog videoDialog;
     private YouTubePlayerView youTubePlayerView;
     private ImageView closeDialog;
+    private ToggleButton heartButton;
 
     /**
      * get film id in onCreate and also FilmDetailFragmentViewModel
@@ -89,6 +92,7 @@ public class FilmDetailFragment extends Fragment {
         getCastsLiveData();
         getSimilarFilmsLiveData();
         getVideoLiveData();
+        setHeartBorderOrFill();
 
         return view;
 
@@ -104,6 +108,7 @@ public class FilmDetailFragment extends Fragment {
             public void onChanged(DetailResponse detailResponse) {
                 setItemsToWidgets(detailResponse);
                 setupGenreRecyclerView(detailResponse.getGenres());
+                clickedHeartButton(id, detailResponse.getTitle(), detailResponse.getPosterPath());
             }
         });
 
@@ -154,6 +159,7 @@ public class FilmDetailFragment extends Fragment {
         castsRecyclerView = view.findViewById(R.id.castsRecyclerView);
         personalStaffRecyclerView = view.findViewById(R.id.personalStaffRecyclerView);
         similarFilmsRecyclerView = view.findViewById(R.id.similar_filmsRecyclerView);
+        heartButton = view.findViewById(R.id.heart_button);
     }
 
     /**
@@ -226,7 +232,7 @@ public class FilmDetailFragment extends Fragment {
                         playVideo(videoID);
 
                     }
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     playVideo(null);
                     Log.d(TAG, "onChanged: Exception is " + e.getMessage());
                 }
@@ -243,7 +249,7 @@ public class FilmDetailFragment extends Fragment {
             public void onClick(View v) {
                 if (videoID != null) {
                     showVideoDialogue(videoID);
-                }else{
+                } else {
                     Toast.makeText(context, "Video is not available yet.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -284,4 +290,31 @@ public class FilmDetailFragment extends Fragment {
         videoDialog.show();
 
     }
+
+    private void setHeartBorderOrFill() {
+
+        filmDetailFragmentViewModel.checkFilmInWishList(id).observe(getActivity(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean checkedFilm) {
+                heartButton.setChecked(checkedFilm);
+            }
+        });
+
+    }
+
+    private void clickedHeartButton(int id, String film_title, String film_image){
+
+        heartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    filmDetailFragmentViewModel.addFilmToWishListDatabase(id, film_title, film_image);
+                }else{
+                    filmDetailFragmentViewModel.removeFilmToWishListDatabase(id);
+                }
+            }
+        });
+
+    }
+
 }

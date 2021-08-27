@@ -58,6 +58,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-database:20.0.1'
     def arch_version = "2.1.0"
     def glide_version = "4.12.0"
 
@@ -98,7 +99,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     // ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha03")
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha03"
 
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$arch_version"

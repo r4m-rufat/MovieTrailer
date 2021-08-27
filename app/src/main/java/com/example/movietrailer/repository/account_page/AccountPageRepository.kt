@@ -5,11 +5,13 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.movietrailer.R
 import com.example.movietrailer.models.authentication.User
+import com.example.movietrailer.models.wish_list.WishList
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source

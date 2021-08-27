@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
 
                                     String dbEmail = "";
-                                    for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
                                         dbEmail = documentSnapshot.getString("email");
                                         Log.d(TAG, "onComplete: Email is " + dbEmail);
@@ -162,23 +162,24 @@ public class LoginActivity extends AppCompatActivity {
                                      * maybe task is successful but there is no that username
                                      * in this situation email equals ""
                                      */
-                                    if (!dbEmail.equals("")){
+                                    if (!dbEmail.equals("")) {
                                         auth.signInWithEmailAndPassword(dbEmail, passwordValue)
                                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                                         try {
-                                                            if (task.isSuccessful()){
-                                                                if (auth.getCurrentUser().isEmailVerified()){
+                                                            if (task.isSuccessful()) {
+                                                                if (auth.getCurrentUser().isEmailVerified()) {
                                                                     Intent intent = new Intent(context, HomeActivity.class);
                                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     startActivity(intent);
-                                                                }else{
+                                                                } else {
                                                                     Toast.makeText(context, "Email is not verified", Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
-                                                        }catch (NullPointerException e){
+                                                        } catch (NullPointerException e) {
+                                                            Toast.makeText(context, "Authentication error. Please contact us", Toast.LENGTH_SHORT).show();
                                                             Log.d(TAG, "onComplete: Exception is " + e.getMessage());
                                                         }
 
@@ -189,10 +190,12 @@ public class LoginActivity extends AppCompatActivity {
                                                 .addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        Log.d(TAG, "onFailure: Authentication error. Reason is --- " + e.getMessage());
                                                         circularSignInButton.revertAnimation();
                                                     }
                                                 });
-                                    }else{
+                                    } else {
                                         Toast.makeText(context, "Please write your account informations correctly.", Toast.LENGTH_SHORT).show();
                                         circularSignInButton.revertAnimation();
                                     }
@@ -227,18 +230,18 @@ public class LoginActivity extends AppCompatActivity {
                                 FirebaseUser firebaseUser = auth.getCurrentUser();
 
                                 try {
-                                    if (firebaseUser.isEmailVerified()){
+                                    if (firebaseUser.isEmailVerified()) {
                                         Intent intent = new Intent(context, HomeActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
-                                    }else{
+                                    } else {
                                         Toast.makeText(context, "Email is not verified", Toast.LENGTH_SHORT).show();
                                     }
 
                                     circularSignInButton.revertAnimation();
-                                }catch (NullPointerException e){
+                                } catch (NullPointerException e) {
                                     e.printStackTrace();
-                                    Toast.makeText(context, "Maybe email is not verified", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "There is no an account.", Toast.LENGTH_SHORT).show();
                                 }
 
                             }
