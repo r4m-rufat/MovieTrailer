@@ -90,9 +90,9 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
 
     // These are for Retrofit
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
@@ -106,6 +106,10 @@ dependencies {
 
     // Annotation processor
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$arch_version"
+
+    // RxJava and RxAndroid
+    implementation "io.reactivex.rxjava3:rxjava:3.0.13"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
     // Circular Progress Indicator
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'

@@ -10,7 +10,7 @@ import com.example.movietrailer.models.detail_model.video.VideoResponse
 import com.example.movietrailer.repository.details_page.FilmDetailRepository
 import com.example.movietrailer.repository.details_page.SimilarFilmsRepository
 
-class FilmDetailFragmentViewModel: ViewModel() {
+class FilmDetailFragmentViewModel : ViewModel() {
 
     private val filmDetail: MutableLiveData<DetailResponse> = MutableLiveData()
     private val castList: MutableLiveData<CastResponse> = MutableLiveData()
@@ -19,7 +19,7 @@ class FilmDetailFragmentViewModel: ViewModel() {
     private var loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     private var filmInWishListOrNot: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    fun getFilmList(id: Int): LiveData<DetailResponse>{
+    fun getFilmList(id: Int): LiveData<DetailResponse> {
 
         return FilmDetailRepository.instance()!!.getFilmDetailData(
             filmDetail,
@@ -30,7 +30,7 @@ class FilmDetailFragmentViewModel: ViewModel() {
 
     }
 
-    fun getCastsList(id: Int): LiveData<CastResponse>{
+    fun getCastsList(id: Int): LiveData<CastResponse> {
 
         return FilmDetailRepository.instance()!!.getCastsData(
             castList,
@@ -41,7 +41,7 @@ class FilmDetailFragmentViewModel: ViewModel() {
 
     }
 
-    fun getSimilarFilmList(id: Int): LiveData<SimilarResponse>{
+    fun getSimilarFilmList(id: Int): LiveData<SimilarResponse> {
 
         return SimilarFilmsRepository.instance()!!.getSimilarFilmData(
             similarList,
@@ -52,7 +52,7 @@ class FilmDetailFragmentViewModel: ViewModel() {
 
     }
 
-    fun getVideo(videoID: Int): LiveData<VideoResponse>{
+    fun getVideo(videoID: Int): LiveData<VideoResponse> {
 
         return FilmDetailRepository.instance()!!.getVideoData(
             videoResponse,
@@ -62,19 +62,31 @@ class FilmDetailFragmentViewModel: ViewModel() {
 
     }
 
-    fun checkFilmInWishList(id: Int): LiveData<Boolean>{
+    fun checkFilmInWishList(id: Int): LiveData<Boolean> {
 
         return FilmDetailRepository.instance()!!.checkFilmInDatabase(id, filmInWishListOrNot)
 
     }
 
-    fun addFilmToWishListDatabase(id: Int, title: String, image: String){
+    fun addFilmToWishListDatabase(
+        id: Int,
+        title: String,
+        image: String,
+        filmGenres: String,
+        voteAverage: Double
+    ) {
 
-        FilmDetailRepository.instance()!!.addFilmToGlobalDatabase(filmID = id, filmTitle = title, filmImage = image)
+        FilmDetailRepository.instance()!!.addFilmToGlobalDatabase(
+            filmID = id,
+            filmTitle = title,
+            filmImage = image,
+            filmGenres = filmGenres,
+            voteAverage = voteAverage
+        )
 
     }
 
-    fun removeFilmToWishListDatabase(id: Int){
+    fun removeFilmToWishListDatabase(id: Int) {
 
         FilmDetailRepository.instance()!!.removeFilmFromGlobalDatabase(id)
 

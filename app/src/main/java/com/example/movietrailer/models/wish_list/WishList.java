@@ -5,6 +5,8 @@ public class WishList {
     private int filmID;
     private String filmImage;
     private String filmTitle;
+    private String filmGenres;
+    private double voteAverage;
 
     /**
      * this WishList constructor is required otherwise
@@ -13,10 +15,12 @@ public class WishList {
     public WishList() {
     }
 
-    public WishList(int filmID, String filmImage, String filmTitle) {
+    public WishList(int filmID, String filmImage, String filmTitle, String filmGenres, double voteAverage) {
         this.filmID = filmID;
         this.filmImage = filmImage;
         this.filmTitle = filmTitle;
+        this.filmGenres = filmGenres;
+        this.voteAverage = voteAverage;
     }
 
     public int getFilmID() {
@@ -30,4 +34,13 @@ public class WishList {
     public String getFilmTitle() {
         return filmTitle;
     }
+
+    public String getFilmGenres() {
+        return filmGenres;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
 }

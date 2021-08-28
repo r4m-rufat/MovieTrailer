@@ -24,7 +24,9 @@ public class DetailResponse{
 	@SerializedName("overview")
 	private String overview;
 
+	@SerializedName("original_title")
 	private String originalTitle;
+
 	private int runtime;
 
 	@SerializedName("poster_path")

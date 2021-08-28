@@ -2,6 +2,7 @@ package com.example.movietrailer.fragments.films;
 
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 import static com.example.movietrailer.utils.converters.BudgetConverterKt.convertValueToBudget;
+import static com.example.movietrailer.utils.converters.GenresListToStringConverterKt.convertGenresListToString;
 import static com.example.movietrailer.utils.converters.SecondToTimeConverterKt.convertSecondToTime;
 
 import android.app.Dialog;
@@ -11,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -108,7 +108,11 @@ public class FilmDetailFragment extends Fragment {
             public void onChanged(DetailResponse detailResponse) {
                 setItemsToWidgets(detailResponse);
                 setupGenreRecyclerView(detailResponse.getGenres());
-                clickedHeartButton(id, detailResponse.getTitle(), detailResponse.getPosterPath());
+                clickedHeartButton(id,
+                        detailResponse.getTitle(),
+                        detailResponse.getPosterPath(),
+                        detailResponse.getVoteAverage(),
+                        convertGenresListToString(detailResponse.getGenres()));
             }
         });
 
@@ -302,14 +306,14 @@ public class FilmDetailFragment extends Fragment {
 
     }
 
-    private void clickedHeartButton(int id, String film_title, String film_image){
+    private void clickedHeartButton(int id, String film_title, String film_image, double vote_average, String genresList) {
 
-        heartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        heartButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    filmDetailFragmentViewModel.addFilmToWishListDatabase(id, film_title, film_image);
-                }else{
+            public void onClick(View v) {
+                if (heartButton.isChecked()) {
+                    filmDetailFragmentViewModel.addFilmToWishListDatabase(id, film_title, film_image, genresList, vote_average);
+                } else {
                     filmDetailFragmentViewModel.removeFilmToWishListDatabase(id);
                 }
             }

@@ -27,7 +27,7 @@ class FilmDetailRepository {
         private var INSTANCE: FilmDetailRepository? = null
 
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val db = FirebaseDatabase.getInstance()
+        private val db = FirebaseDatabase.getInstance()
         val reference = db.reference
 
         fun instance(): FilmDetailRepository? {
@@ -132,9 +132,9 @@ class FilmDetailRepository {
 
     }
 
-    fun addFilmToGlobalDatabase(filmID: Int, filmImage: String, filmTitle: String){
+    fun addFilmToGlobalDatabase(filmID: Int, filmImage: String, filmTitle: String, filmGenres: String, voteAverage: Double){
 
-        val wishList = WishList(filmID, filmImage, filmTitle)
+        val wishList = WishList(filmID, filmImage, filmTitle, filmGenres, voteAverage)
 
         reference.child("user_wish_list")
             .child(firebaseUser!!.uid)
