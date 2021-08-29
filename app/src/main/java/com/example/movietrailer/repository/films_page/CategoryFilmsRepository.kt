@@ -37,7 +37,7 @@ class CategoryFilmsRepository {
 
         // loading starts in here and that's why set true
         loading.value = true
-        var new_film_list: ArrayList<ResultsItem>? = ArrayList()
+        var new_film_list = ArrayList<ResultsItem>()
         var old_film_list: List<ResultsItem>?
         val iApi = ApiClient.getInstance().retrofit.create(IApi::class.java)
         CoroutineScope(Dispatchers.IO).launch {
@@ -49,12 +49,14 @@ class CategoryFilmsRepository {
             ).awaitResponse()
 
             if (response.isSuccessful) {
-                old_film_list = film_list.value
-                old_film_list?.let {
-                    new_film_list!!.addAll(it)
+                if (film_list.value != null){
+                    old_film_list = film_list.value
+                    old_film_list?.let {
+                        new_film_list!!.addAll(it)
+                    }
+                    new_film_list!!.addAll(response.body()!!.results)
+                    film_list.postValue(new_film_list)
                 }
-                new_film_list!!.addAll(response.body()!!.results)
-                film_list.postValue(new_film_list)
                 loading.postValue(false)
             } else {
                 Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")

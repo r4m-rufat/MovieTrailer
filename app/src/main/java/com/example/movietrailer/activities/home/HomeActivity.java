@@ -1,8 +1,9 @@
-package com.example.movietrailer.activities;
+package com.example.movietrailer.activities.home;
+
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
 import com.example.movietrailer.R;
 
 public class HomeActivity extends AppCompatActivity {

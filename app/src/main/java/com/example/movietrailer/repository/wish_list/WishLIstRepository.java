@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -37,7 +38,9 @@ public class WishLIstRepository {
         return repository;
     }
 
-    public MutableLiveData<List<WishList>> getWishList() {
+    public MutableLiveData<List<WishList>> getWishList(
+            MutableLiveData<Boolean> loading
+    ) {
 
         MutableLiveData<List<WishList>> listMutableLiveData = new MutableLiveData<>();
 
@@ -52,6 +55,15 @@ public class WishLIstRepository {
                             for (DataSnapshot single_snapshot: snapshot.getChildren()){
 
                                 wishList.add(single_snapshot.getValue(WishList.class));
+                                /**
+                                 * list should reverse because last element which
+                                 * is added should show in the top of recycler view
+                                 */
+                                Collections.reverse(wishList);
+                                if (wishList.size() > 20){
+                                    wishList.subList(20, (wishList.size())).clear();
+                                }
+                                loading.setValue(false);
 
                             }
 
@@ -70,7 +82,7 @@ public class WishLIstRepository {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        loading.setValue(false);
                     }
                 });
 

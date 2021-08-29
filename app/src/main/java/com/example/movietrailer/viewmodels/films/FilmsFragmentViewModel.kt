@@ -76,6 +76,19 @@ class FilmsFragmentViewModel : ViewModel() {
 
             when(clickedItem){
 
+                TopCategoriesItem.DISCOVER -> {
+
+                    DiscoverFilmsRepository().getFilmList(
+                        films_list,
+                        "en",
+                        "popularity.desc",
+                        page.value!!,
+                        "flatrate",
+                        loading
+                    )
+
+                }
+
                 TopCategoriesItem.TOP_RATED -> {
                     CategoryFilmsRepository.instance()!!.getTopRatedFilmList(
                         films_list,

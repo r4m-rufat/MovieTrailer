@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.PatternsCompat;
 
 import com.example.movietrailer.R;
-import com.example.movietrailer.activities.HomeActivity;
+import com.example.movietrailer.activities.home.HomeActivity;
 import com.example.movietrailer.models.authentication.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

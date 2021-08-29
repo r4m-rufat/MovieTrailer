@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <xyz.peridy.shimmerlayout.ShimmerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_wish_list"
+                android:layout_width="120dp"
+                android:layout_height="140dp"
+                app:cardBackgroundColor="#E1E1E1"
+                app:cardCornerRadius="20dp">
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/txt_film_titleWishList"
+                android:layout_width="170dp"
+                android:layout_height="25dp"
+                app:cardCornerRadius="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="#E1E1E1"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/card_wish_list"
+                android:fontFamily="@font/libre_baskerville_regular"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/txt_film_genresWishList"
+                android:layout_width="120dp"
+                android:layout_height="15dp"
+                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="#E1E1E1"
+                android:layout_below="@+id/txt_film_titleWishList"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/card_wish_list" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lin_popularity"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                app:cardBackgroundColor="#E1E1E1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="5dp" />
+
+        </RelativeLayout>
+
+    </xyz.peridy.shimmerlayout.ShimmerLayout>
+
+    <xyz.peridy.shimmerlayout.ShimmerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_wish_list2"
+                android:layout_width="120dp"
+                android:layout_height="140dp"
+                app:cardBackgroundColor="#E1E1E1"
+                app:cardCornerRadius="20dp">
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/txt_film_titleWishList2"
+                android:layout_width="170dp"
+                android:layout_height="25dp"
+                app:cardCornerRadius="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="#E1E1E1"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/card_wish_list2"
+                android:fontFamily="@font/libre_baskerville_regular"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/txt_film_genresWishList2"
+                android:layout_width="120dp"
+                android:layout_height="15dp"
+                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="#E1E1E1"
+                android:layout_below="@+id/txt_film_titleWishList2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/card_wish_list2" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lin_popularity2"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                app:cardBackgroundColor="#E1E1E1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="5dp" />
+
+        </RelativeLayout>
+
+    </xyz.peridy.shimmerlayout.ShimmerLayout>
+
+</LinearLayout>

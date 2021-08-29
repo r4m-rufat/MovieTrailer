@@ -17,6 +17,7 @@
         <action
             android:id="@+id/action_to_viewAccountFragment"
             app:destination="@id/viewAccountFragment" />
+
         <action
             android:id="@+id/action_to_wishListFragment"
             app:destination="@id/wishListFragment" />
@@ -49,12 +50,19 @@
         android:name="com.example.movietrailer.fragments.wish_list.WishListFragment"
         android:label="fragment_wish_list"
         tools:layout="@layout/fragment_wish_list" >
+
         <action
             android:id="@+id/action_to_viewAccountFragment"
             app:destination="@id/viewAccountFragment" />
+
         <action
             android:id="@+id/action_to_filmsFragment"
             app:destination="@id/filmsFragment" />
+
+        <action
+            android:id="@+id/viewFilmDetail"
+            app:destination="@+id/viewFilmDetailFragment"/>
+
     </fragment>
 
 </navigation>

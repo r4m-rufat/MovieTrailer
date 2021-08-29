@@ -1,14 +1,9 @@
 package com.example.movietrailer.utils.bottom_navigation
 
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.example.movietrailer.R
-import com.example.movietrailer.activities.HomeActivity
 
 fun setUpBottomNavigationView(bottomNavigation: MeowBottomNavigation, view: View) {
     bottomNavigation.add(

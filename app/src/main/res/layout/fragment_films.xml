@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragments.films.FilmsFragment">
 
@@ -10,55 +11,57 @@
         android:id="@+id/layout_app_bar"
         layout="@layout/layout_app_bar" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_app_bar">
+
         <RelativeLayout
-            android:layout_below="@+id/layout_app_bar"
+            android:id="@+id/rel_category"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:id="@+id/rel_category"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="5dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_categories"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:background="@android:color/transparent" />
-
-                <!--        <ImageView-->
-                <!--            android:id="@+id/ic_filter"-->
-                <!--            android:layout_width="35dp"-->
-                <!--            android:layout_height="35dp"-->
-                <!--            android:layout_alignParentEnd="true"-->
-                <!--            android:layout_centerVertical="true"-->
-                <!--            android:layout_marginRight="10dp"-->
-                <!--            android:src="@drawable/ic_filter"-->
-                <!--            app:tint="#C8832D"/>-->
-
-            </RelativeLayout>
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layoutAnimation="@anim/grid_layout_animation"
-                android:layout_below="@id/rel_category"
-                android:layout_above="@+id/circularProgressBar"
-                android:id="@+id/film_recycler_view"/>
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@android:color/transparent" />
 
-            <ProgressBar
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/circularProgressBar"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="70dp"
-                android:visibility="gone"/>
+            <!--        <ImageView-->
+            <!--            android:id="@+id/ic_filter"-->
+            <!--            android:layout_width="35dp"-->
+            <!--            android:layout_height="35dp"-->
+            <!--            android:layout_alignParentEnd="true"-->
+            <!--            android:layout_centerVertical="true"-->
+            <!--            android:layout_marginRight="10dp"-->
+            <!--            android:src="@drawable/ic_filter"-->
+            <!--            app:tint="#C8832D"/>-->
 
         </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/film_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/circularProgressBar"
+            android:layout_below="@id/rel_category"
+            android:layoutAnimation="@anim/grid_layout_animation" />
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/circularProgressBar"
+            style="@style/SpinKitView.FadingCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="70dp"
+            android:visibility="gone"
+            app:SpinKit_Color="@color/progress_orange" />
+
+    </RelativeLayout>
 
     <include
         android:id="@+id/bottom_navigation_bar"
@@ -67,5 +70,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
+    <ImageView
+        android:id="@+id/ic_arrowUp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/background_shape_arrow_up_icon"
+        android:src="@drawable/ic_arrow_up" />
 
 </RelativeLayout>

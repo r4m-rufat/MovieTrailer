@@ -129,4 +129,10 @@ dependencies {
     // Circleimageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    // Shimmer Animation
+    implementation 'xyz.peridy.shimmer:shimmerlayout:1.1'
+
+    // Circular progress bar
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 }

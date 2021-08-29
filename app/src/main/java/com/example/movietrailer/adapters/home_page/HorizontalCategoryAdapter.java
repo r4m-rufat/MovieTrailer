@@ -22,7 +22,7 @@ public class HorizontalCategoryAdapter extends RecyclerView.Adapter<HorizontalCa
     private List<String> categoryList;
     private Context context;
     private FilmsFragmentViewModel filmsFragmentViewModel;
-    private int positionIndex = -1;
+    private int positionIndex = 0;
     private OnClickedCategoryItemListener listener;
 
     public HorizontalCategoryAdapter(List<String> categoryList, Context context, FilmsFragmentViewModel filmsFragmentViewModel, OnClickedCategoryItemListener listener) {

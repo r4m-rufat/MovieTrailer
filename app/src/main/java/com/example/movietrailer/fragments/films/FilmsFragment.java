@@ -4,17 +4,20 @@ import static com.example.movietrailer.utils.bottom_navigation.BottomNavigationB
 import static com.example.movietrailer.utils.constants.ConstantsKt.PAGE_SIZE;
 import static com.example.movietrailer.utils.default_lists.FilmCategoriesListKt.FilmCategoriesList;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,21 +31,27 @@ import com.example.movietrailer.adapters.home_page.HorizontalCategoryAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerFilmsAdapter;
 import com.example.movietrailer.models.discover_model.ResultsItem;
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems;
+import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously;
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
 import com.example.movietrailer.viewmodels.films.FilmsFragmentViewModel;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.List;
 
+@SuppressLint("ClickableViewAccessibility")
 public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter.OnClickedCategoryItemListener{
 
     private static final String TAG = "FilmsFragment";
     private RecyclerView categoryRecyclerView, filmsRecyclerView;
     private HorizontalCategoryAdapter horizontalCategoryAdapter;
     private FilmsFragmentViewModel filmsFragmentViewModel;
-    private ProgressBar progressBar;
+    private SpinKitView progressBar;
     private EditText editSearch;
     private RecyclerFilmsAdapter recyclerFilmsAdapter;
     private MeowBottomNavigation bottomNavigation;
+    private Context context;
+    private GridLayoutManager gridLayoutManager;
+    private ImageView ic_arrowUp;
 
     // var
     boolean isLoading = false;
@@ -56,6 +65,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getContext();
         filmsFragmentViewModel = new ViewModelProvider(this).get(FilmsFragmentViewModel.class);
     }
 
@@ -67,12 +77,25 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
         getWidgets(view);
         setCategoryRecyclerViewSetups();
-        setFilmsRecyclerView();
+        setUpRecyclerView();
+
+        CheckConnectionAsynchronously.INSTANCE.init(context);
+        CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean connection) {
+                if (connection){
+                    setFilmsRecyclerView();
+                }else{
+                    Toast.makeText(context, "Check internet connection!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // when progressbar visible or gone in loading proses
         showOrHideProgressBar();
 
         clickedEditSearchRightDrawable();
+        clickedArrowUp();
 
         bottomNavigation.show(BottomNavigationBarItems.FILMS.ordinal(), true);
         setUpBottomNavigationView(bottomNavigation, view);
@@ -87,6 +110,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
         progressBar = view.findViewById(R.id.circularProgressBar);
         editSearch = view.findViewById(R.id.edit_search);
         bottomNavigation = view.findViewById(R.id.bottom_navigation_view);
+        ic_arrowUp = view.findViewById(R.id.ic_arrowUp);
 
     }
 
@@ -101,11 +125,6 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
     private void setFilmsRecyclerView() {
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
-        filmsRecyclerView.setLayoutManager(gridLayoutManager);
-        filmsRecyclerView.setHasFixedSize(false);
-        recyclerFilmsAdapter = new RecyclerFilmsAdapter(getActivity());
-
         filmsFragmentViewModel.getFilmList().observe(getActivity(), new Observer<List<ResultsItem>>() {
             @Override
             public void onChanged(List<ResultsItem> resultsItems) {
@@ -113,10 +132,19 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
             }
         });
 
+
+    }
+
+    private void setUpRecyclerView(){
+
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
+        filmsRecyclerView.setLayoutManager(gridLayoutManager);
+        filmsRecyclerView.setHasFixedSize(false);
+        recyclerFilmsAdapter = new RecyclerFilmsAdapter(getActivity());
+
         filmsRecyclerView.setAdapter(recyclerFilmsAdapter);
 
         setupPagination(gridLayoutManager);
-
     }
 
     private void setupPagination(GridLayoutManager gridLayoutManager) {
@@ -148,6 +176,15 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                     }
                 }
 
+                /**
+                 * if item position is more than 1 then arrow up button will be visible
+                 */
+                if (gridLayoutManager.findFirstVisibleItemPosition() > 1){
+                    ic_arrowUp.setVisibility(View.VISIBLE);
+                }else{
+                    ic_arrowUp.setVisibility(View.GONE);
+                }
+
             }
 
             @Override
@@ -156,6 +193,16 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
                     isScrolling = true;
                 }
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) { // No scrolling
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ic_arrowUp.setVisibility(View.GONE);
+                        }
+                    }, 7000); // delay of 2 seconds before hiding the fab
+                }
+
             }
         });
 
@@ -208,6 +255,17 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                     }
                 }
                 return false;
+            }
+        });
+
+    }
+
+    private void clickedArrowUp(){
+
+        ic_arrowUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filmsRecyclerView.smoothScrollToPosition(0);
             }
         });
 

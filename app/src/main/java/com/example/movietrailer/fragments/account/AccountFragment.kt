@@ -1,5 +1,6 @@
 package com.example.movietrailer.fragments.account
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
@@ -19,15 +17,18 @@ import com.example.movietrailer.activities.registration.LoginActivity
 import com.example.movietrailer.models.authentication.User
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems
 import com.example.movietrailer.utils.bottom_navigation.setUpBottomNavigationView
+import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously
 import com.example.movietrailer.utils.constants.TAG
 import com.example.movietrailer.utils.dialogs.changePasswordBottomSheetDialog
 import com.example.movietrailer.utils.dialogs.editAccountBottomSheetDialog
 import com.example.movietrailer.viewmodels.account.AccountFragmentViewModel
+import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -44,6 +45,9 @@ class AccountFragment : Fragment() {
     private lateinit var editAccountName: ImageView
     private lateinit var editPassword: ImageView
     private lateinit var signOut: Button
+    private lateinit var circularProgressBar: SpinKitView
+    private lateinit var linearLayout: LinearLayout
+
     private lateinit var db: FirebaseFirestore
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomNavigation: MeowBottomNavigation
@@ -68,13 +72,18 @@ class AccountFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        CheckConnectionAsynchronously.init(requireContext())
+
         initializeWidgets(view)
         getAccountInfo()
         clickedSignOutButton()
         clickedEditAccountName()
         clickedChangePasswordButton()
+
         bottomNavigation.show(BottomNavigationBarItems.ACCOUNT.ordinal, true);
         setUpBottomNavigationView(bottomNavigation, view)
+
+        setProgressBar()
 
         return view
     }
@@ -88,25 +97,31 @@ class AccountFragment : Fragment() {
         editPassword = view.findViewById(R.id.ic_editPassword)
         signOut = view.findViewById(R.id.button_signOut)
         bottomNavigation = view.findViewById(R.id.bottom_navigation_view)
+        circularProgressBar = view.findViewById(R.id.circularProgressBar)
+        linearLayout = view.findViewById(R.id.linearAccount)
     }
 
     private fun getAccountInfo(){
 
-        viewModel!!.getUserInfo().observe(requireActivity(),
-            { user ->
-                user?.let {
+        CheckConnectionAsynchronously.observe(viewLifecycleOwner, {
 
-                    CoroutineScope(Main).launch {
+            viewModel!!.getUserInfo().observe(requireActivity(),
+                    { user ->
+                        user?.let {
 
-                        accountName.text = user.username
-                        emailName.text = user.email
-                        capitalOfName.text = user.username[0].uppercase()
-                        Log.d(TAG, "getAccountInfo: user info came")
+                            CoroutineScope(Main).launch {
 
-                    }
+                                accountName.text = user.username
+                                emailName.text = user.email
+                                capitalOfName.text = user.username[0].uppercase()
+                                Log.d(TAG, "getAccountInfo: user info came")
 
-                }
-            })
+                            }
+
+                        }
+                    })
+
+        })
     }
 
     private fun clickedSignOutButton(){
@@ -169,6 +184,27 @@ class AccountFragment : Fragment() {
                 bottomSheetDialog
             )
         }
+
+    }
+
+    private fun setProgressBar(){
+        viewModel!!.loading.observe(viewLifecycleOwner,
+            { loading ->
+                loading?.let {
+
+                    CoroutineScope(Main).launch {
+
+                        if (!it){
+                            circularProgressBar.visibility = View.GONE
+                            linearLayout.visibility = View.VISIBLE
+                        }else{
+                            circularProgressBar.visibility = View.VISIBLE
+                            linearLayout.visibility = View.GONE
+                        }
+                    }
+
+                }
+            })
 
     }
 
