@@ -54,10 +54,11 @@ class CategoryFilmsRepository {
                     old_film_list?.let {
                         new_film_list!!.addAll(it)
                     }
-                    new_film_list!!.addAll(response.body()!!.results)
-                    film_list.postValue(new_film_list)
                 }
+                new_film_list!!.addAll(response.body()!!.results)
+                film_list.postValue(new_film_list)
                 loading.postValue(false)
+                Log.d(TAG, "getTopRatedFilmList: top rated films successfully comes")
             } else {
                 Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
                 loading.postValue(true)
@@ -96,7 +97,7 @@ class CategoryFilmsRepository {
                 new_film_list!!.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
                 loading.postValue(false)
-                Log.d(TAG, "getPopularFilmList: Popular films comes")
+                Log.d(TAG, "getPopularFilmList: Popular films comes ${response.body()!!.results[0].id}")
             } else {
                 Log.d(TAG, "getSearchFilmList: Category result is failed ${response.code()}")
                 loading.postValue(true)
@@ -174,7 +175,7 @@ class CategoryFilmsRepository {
                 film_list.postValue(new_film_list)
                 loading.postValue(false)
             } else {
-                Log.d(TAG, "getSearchFilmList: No-ing result is failed ${response.code()}")
+                Log.d(TAG, "getSearchFilmList: Noting result is failed ${response.code()}")
                 loading.postValue(true)
             }
 

@@ -1,9 +1,9 @@
 package com.example.movietrailer.fragments.films;
 
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
-import static com.example.movietrailer.utils.converters.BudgetConverterKt.convertValueToBudget;
-import static com.example.movietrailer.utils.converters.GenresListToStringConverterKt.convertGenresListToString;
-import static com.example.movietrailer.utils.converters.SecondToTimeConverterKt.convertSecondToTime;
+import static com.example.movietrailer.converters.BudgetConverterKt.convertValueToBudget;
+import static com.example.movietrailer.converters.GenresListToStringConverterKt.convertGenresListToString;
+import static com.example.movietrailer.converters.SecondToTimeConverterKt.convertSecondToTime;
 
 import android.app.Dialog;
 import android.content.Context;

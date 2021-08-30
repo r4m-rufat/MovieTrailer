@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".fragments.films.FilmsFragment">
 
     <include
@@ -29,16 +28,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:background="@android:color/transparent" />
-
-            <!--        <ImageView-->
-            <!--            android:id="@+id/ic_filter"-->
-            <!--            android:layout_width="35dp"-->
-            <!--            android:layout_height="35dp"-->
-            <!--            android:layout_alignParentEnd="true"-->
-            <!--            android:layout_centerVertical="true"-->
-            <!--            android:layout_marginRight="10dp"-->
-            <!--            android:src="@drawable/ic_filter"-->
-            <!--            app:tint="#C8832D"/>-->
 
         </RelativeLayout>
 
@@ -82,5 +71,23 @@
         android:layout_marginBottom="60dp"
         android:background="@drawable/background_shape_arrow_up_icon"
         android:src="@drawable/ic_arrow_up" />
+
+    <LinearLayout
+        android:id="@+id/layout_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_app_bar"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp">
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/layout_filter" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

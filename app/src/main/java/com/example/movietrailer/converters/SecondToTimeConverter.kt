@@ -1,4 +1,4 @@
-package com.example.movietrailer.utils.converters
+package com.example.movietrailer.converters
 
 fun convertSecondToTime(time: Int): String{
 

@@ -1,4 +1,4 @@
-package com.example.movietrailer.utils.converters
+package com.example.movietrailer.converters
 
 import com.example.movietrailer.models.detail_model.details.GenresItem
 

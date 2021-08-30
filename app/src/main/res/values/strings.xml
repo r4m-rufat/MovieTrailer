@@ -24,4 +24,16 @@
     <string name="current_password">Current password</string>
     <string name="new_password">New password</string>
     <string name="confirm_password">Confirm password</string>
+
+    <string-array name="sort_by">
+        <item>popularity.desc</item>
+        <item>popularity.asc</item>
+        <item>release_date.desc</item>
+        <item>release_date.asc</item>
+        <item>revenue.desc</item>
+        <item>revenue.asc</item>
+        <item>vote_average.desc</item>
+        <item>vote_average.asc</item>
+    </string-array>
+
 </resources>

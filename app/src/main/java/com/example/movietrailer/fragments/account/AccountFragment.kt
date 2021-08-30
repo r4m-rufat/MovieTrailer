@@ -19,8 +19,8 @@ import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems
 import com.example.movietrailer.utils.bottom_navigation.setUpBottomNavigationView
 import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously
 import com.example.movietrailer.utils.constants.TAG
-import com.example.movietrailer.utils.dialogs.changePasswordBottomSheetDialog
-import com.example.movietrailer.utils.dialogs.editAccountBottomSheetDialog
+import com.example.movietrailer.dialogs.changePasswordBottomSheetDialog
+import com.example.movietrailer.dialogs.editAccountBottomSheetDialog
 import com.example.movietrailer.viewmodels.account.AccountFragmentViewModel
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.bottomsheet.BottomSheetDialog

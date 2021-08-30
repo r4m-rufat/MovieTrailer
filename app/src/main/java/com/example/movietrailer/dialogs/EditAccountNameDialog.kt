@@ -1,4 +1,4 @@
-package com.example.movietrailer.utils.dialogs
+package com.example.movietrailer.dialogs
 
 import android.content.Context
 import android.widget.Button
