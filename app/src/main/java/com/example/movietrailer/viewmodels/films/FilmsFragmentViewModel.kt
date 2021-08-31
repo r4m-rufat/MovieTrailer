@@ -16,12 +16,16 @@ import kotlinx.coroutines.launch
 class FilmsFragmentViewModel : ViewModel() {
 
     private val TAG = "ViewModelFilmsFragment"
-
     private val films_list = MutableLiveData<List<ResultsItem>?>()
     var page = MutableLiveData(1)
     var loading = MutableLiveData(true)
     var query = MutableLiveData<String>()
     var categorySelectedItem = MutableLiveData<TopCategoriesItem>(null)
+    var sort_by = MutableLiveData("popularity.desc")
+    var genreIds = MutableLiveData("")
+    var voteAverage = MutableLiveData(5)
+
+    var filterGenreList: MutableLiveData<List<Int>> = MutableLiveData(mutableListOf())
 
     val filmList: LiveData<List<ResultsItem>?>
         get() {
@@ -38,11 +42,15 @@ class FilmsFragmentViewModel : ViewModel() {
             discoverFilmsRepository.getFilmList(
                 films_list,
                 "en",
-                "popularity.desc",
+                sort_by.value,
+                genreIds.value,
+                voteAverage.value,
                 page.value!!,
                 "flatrate",
                 loading
             )
+
+            Log.d(TAG, "getDataSetToMutableLiveData: " + sort_by.value)
 
         }
 
@@ -81,7 +89,9 @@ class FilmsFragmentViewModel : ViewModel() {
                     DiscoverFilmsRepository().getFilmList(
                         films_list,
                         "en",
-                        "popularity.desc",
+                        sort_by.value,
+                        genreIds.value,
+                        voteAverage.value,
                         page.value!!,
                         "flatrate",
                         loading
@@ -143,11 +153,9 @@ class FilmsFragmentViewModel : ViewModel() {
         page.value = page.value!! + 1
     }
 
-    fun resetSearchVariables(){
-
+    fun resetVariables(){
         films_list.value = null
         page.value = 1
-
     }
 
 }

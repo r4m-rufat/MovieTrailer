@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
-    android:background="@color/white"
+    app:cardBackgroundColor="#EFEFEF"
     android:orientation="vertical"
     app:cardCornerRadius="10dp">
 
@@ -33,13 +33,14 @@
                 android:textStyle="bold" />
 
             <Spinner
+                android:id="@+id/sortBySpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/background_spinner_filter"
                 android:entries="@array/sort_by"
-                android:padding="8dp" />
+                android:padding="8dp"/>
 
         </LinearLayout>
 
@@ -51,7 +52,7 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
+                android:layout_height="220dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
@@ -99,6 +100,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/saveFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

@@ -17,6 +17,8 @@ interface IApi {
         @Query("api_key") api_key: String?,
         @Query("language") language: String?,
         @Query("sort_by") sort_by: String?,
+        @Query("with_genres") genreIds: String?,
+        @Query("vote_average.gte") vote_average: Int?,
         @Query("page") page: Int,
         @Query("with_watch_monetization_types") with_watch_monetization_types: String?
     ): Call<DiscoverResponse?>?

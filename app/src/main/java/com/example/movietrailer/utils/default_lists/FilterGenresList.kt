@@ -1,22 +1,23 @@
 package com.example.movietrailer.utils.default_lists
 
-fun getGenreFilterHashMap(): LinkedHashMap<Int, String>{
+fun getGenreFilterHashMap(): LinkedHashMap<String, Int>{
 
-    val hashMap = LinkedHashMap<Int, String>()
-    hashMap[12] = "Adventure"
-    hashMap[14] = "Fantasy"
-    hashMap[16] = "Animation"
-    hashMap[27] = "Horror"
-    hashMap[35] = "Comedy"
-    hashMap[10749] = "Romance"
-    hashMap[36] = "History"
-    hashMap[53] = "Thriller"
-    hashMap[80] = "Crime"
-    hashMap[99] = "Documentary"
-    hashMap[878] = "Science"
-    hashMap[10402] = "Music"
-    hashMap[10751] = "Family"
-    hashMap[10752] = "War"
+    val hashMap = LinkedHashMap<String, Int>()
+
+    hashMap["Adventure"] = 12
+    hashMap["Fantasy"] = 14
+    hashMap["Animation"] = 16
+    hashMap["Horror"] = 27
+    hashMap["Comedy"] = 35
+    hashMap["Romance"] = 10749
+    hashMap["History"] = 36
+    hashMap["Thriller"] = 53
+    hashMap["Crime"] = 80
+    hashMap["Documentary"] = 99
+    hashMap["Science"] = 878
+    hashMap["Music"] = 10402
+    hashMap["Family"] = 10751
+    hashMap["War"] = 10752
 
     return hashMap
 
@@ -27,7 +28,7 @@ fun getGenresFilerList(): List<String>{
     var list = mutableListOf<String>()
 
     for (i in getGenreFilterHashMap()){
-        list.add(i.value)
+        list.add(i.key)
     }
 
     return list

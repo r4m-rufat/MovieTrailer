@@ -25,7 +25,10 @@ class DiscoverFilmsRepository {
     fun getFilmList(
         film_list: MutableLiveData<List<ResultsItem>?>,
         language: String?,
-        sort_by: String?, page: Int,
+        sort_by: String?,
+        genreIds: String?,
+        vote_average: Int?,
+        page: Int,
         with_watch_monetization_types: String?,
         loading: MutableLiveData<Boolean?>
     ): MutableLiveData<List<ResultsItem>?> {
@@ -40,6 +43,8 @@ class DiscoverFilmsRepository {
                 API_KEY,
                 language,
                 sort_by,
+                genreIds,
+                vote_average,
                 page,
                 with_watch_monetization_types
             )!!.enqueue(object : Callback<DiscoverResponse?> {

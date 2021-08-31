@@ -13,7 +13,7 @@ public class DetailResponse{
 	@SerializedName("backdrop_path")
 	private String backdropPath;
 
-	private int revenue;
+	private long revenue;
 	private List<GenresItem> genres;
 	private double popularity;
 	private List<ProductionCountriesItem> productionCountries;
@@ -67,7 +67,7 @@ public class DetailResponse{
 		return backdropPath;
 	}
 
-	public int getRevenue(){
+	public long getRevenue(){
 		return revenue;
 	}
 
@@ -146,4 +146,5 @@ public class DetailResponse{
 	public String getStatus(){
 		return status;
 	}
+
 }

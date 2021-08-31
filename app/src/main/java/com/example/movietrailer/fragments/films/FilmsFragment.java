@@ -1,8 +1,10 @@
 package com.example.movietrailer.fragments.films;
 
+import static com.example.movietrailer.converters.GenresIdToStringConverterKt.convertGenreIdsToString;
 import static com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarSetupKt.setUpBottomNavigationView;
 import static com.example.movietrailer.utils.constants.ConstantsKt.PAGE_SIZE;
 import static com.example.movietrailer.utils.default_lists.FilmCategoriesListKt.FilmCategoriesList;
+import static com.example.movietrailer.utils.default_lists.FilterGenresListKt.getGenreFilterHashMap;
 import static com.example.movietrailer.utils.default_lists.FilterGenresListKt.getGenresFilerList;
 
 import android.annotation.SuppressLint;
@@ -16,10 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,10 +47,13 @@ import com.example.movietrailer.utils.default_lists.TopCategoriesItem;
 import com.example.movietrailer.viewmodels.films.FilmsFragmentViewModel;
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ClickableViewAccessibility")
-public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter.OnClickedCategoryItemListener{
+public class FilmsFragment extends Fragment
+        implements HorizontalCategoryAdapter.OnClickedCategoryItemListener,
+        RecyclerGenresFilterAdapter.OnClickedGenreItemListener {
 
     private static final String TAG = "FilmsFragment";
     private RecyclerView categoryRecyclerView, filmsRecyclerView, genreFilterRecyclerView;
@@ -61,6 +69,10 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
     private LinearLayout layout_filter;
     private NumberPicker vote_averagePicker;
     private RecyclerGenresFilterAdapter genresFilterAdapter;
+    private List<Integer> filterList = new ArrayList<>();
+    private Spinner sortBySpinner;
+    private TextView saveFilter;
+    private boolean showFilter = true;
 
     // for width
     private WindowManager manager;
@@ -94,16 +106,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
         setUpRecyclerView();
 
         CheckConnectionAsynchronously.INSTANCE.init(context);
-        CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean connection) {
-                if (connection){
-                    setFilmsRecyclerView();
-                }else{
-                    Toast.makeText(context, "Check internet connection!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        checkInternetConnectionAndSetWidgetsItem();
 
         // when progressbar visible or gone in loading proses
         showOrHideProgressBar();
@@ -115,9 +118,11 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
         setUpBottomNavigationView(bottomNavigation, view);
 
         // filter setups
+        saveFilterOptionsWhenLandscapeMode();
         clickedFilterButton();
         setupPicker();
         setupGenreFilterRecyclerView();
+        clickedSaveFilter();
 
         return view;
     }
@@ -134,6 +139,8 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
         layout_filter = view.findViewById(R.id.layout_filter);
         vote_averagePicker = view.findViewById(R.id.vote_averageNumber);
         genreFilterRecyclerView = view.findViewById(R.id.recycler_filter_genre);
+        sortBySpinner = view.findViewById(R.id.sortBySpinner);
+        saveFilter = view.findViewById(R.id.saveFilter);
 
     }
 
@@ -155,14 +162,13 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
             }
         });
 
-
     }
 
-    private void setUpRecyclerView(){
+    private void setUpRecyclerView() {
 
-        if (display.getWidth() >= 1344){
+        if (display.getWidth() >= 1344) {
             gridLayoutManager = new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false);
-        }else{
+        } else {
             gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
         }
         filmsRecyclerView.setLayoutManager(gridLayoutManager);
@@ -191,14 +197,14 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
                 boolean paginateOrNot = isNotLoadingAndLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling;
 
-                if (paginateOrNot){
+                if (paginateOrNot) {
                     filmsFragmentViewModel.incrementPageNumber();
                     isScrolling = false;
-                    if (clickSearchButton){
+                    if (clickSearchButton) {
                         filmsFragmentViewModel.getSearchResult();
-                    }else if (clickCategoryItem){
+                    } else if (clickCategoryItem) {
                         filmsFragmentViewModel.getCategoryFilmListWhenClicked(item);
-                    }else{
+                    } else {
                         filmsFragmentViewModel.getFilmList();
                     }
                 }
@@ -206,9 +212,9 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                 /**
                  * if item position is more than 1 then arrow up button will be visible
                  */
-                if (gridLayoutManager.findFirstVisibleItemPosition() > 1){
+                if (gridLayoutManager.findFirstVisibleItemPosition() > 1) {
                     ic_arrowUp.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     ic_arrowUp.setVisibility(View.GONE);
                 }
 
@@ -217,7 +223,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     isScrolling = true;
                 }
 
@@ -252,20 +258,20 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
     }
 
-    private void clickedEditSearchRightDrawable(){
+    private void clickedEditSearchRightDrawable() {
 
         editSearch.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
 
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (editSearch.getRight() - editSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (editSearch.getRight() - editSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
 
                         CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
                             @Override
                             public void onChanged(Boolean connection) {
-                                if (connection){
+                                if (connection) {
                                     // edit text string
                                     query = editSearch.getText().toString().trim();
                                     filmsFragmentViewModel.getQuery().setValue(query);
@@ -280,7 +286,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
                                     clickCategoryItem = false;
 
                                     // when clicked search button, should reset film list
-                                    filmsFragmentViewModel.resetSearchVariables();
+                                    filmsFragmentViewModel.resetVariables();
 
                                 }
                             }
@@ -294,7 +300,7 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
     }
 
-    private void clickedArrowUp(){
+    private void clickedArrowUp() {
 
         ic_arrowUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,14 +313,14 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
 
     @Override
     public void onClickCategoryItem(TopCategoriesItem item) {
-        filmsFragmentViewModel.resetSearchVariables();
+        filmsFragmentViewModel.resetVariables();
         filmsFragmentViewModel.getCategorySelectedItem().setValue(item);
         horizontalCategoryAdapter.notifyDataSetChanged(); // because change color of top item text
 
         CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean connection) {
-                if (connection){
+                if (connection) {
                     filmsFragmentViewModel.
                             getCategoryFilmListWhenClicked(filmsFragmentViewModel.getCategorySelectedItem().getValue())
                             .observe(getActivity(), new Observer<List<ResultsItem>>() {
@@ -342,54 +348,144 @@ public class FilmsFragment extends Fragment implements HorizontalCategoryAdapter
      * filter visibility is only visible in Discover category
      * because api doesn't provide filter option with other categories
      */
-    private void filterVisibility(){
+    private void filterVisibility() {
 
-        if (item == TopCategoriesItem.DISCOVER){
+        if (item == TopCategoriesItem.DISCOVER) {
             filter.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             filter.setVisibility(View.GONE);
         }
     }
 
-    private void clickedFilterButton(){
+    private void clickedFilterButton() {
 
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layout_filter.setVisibility(View.VISIBLE);
+               if (showFilter){
+                   showFilter = false;
+                   layout_filter.setVisibility(View.VISIBLE);
+               }else{
+                   showFilter = true;
+                   layout_filter.setVisibility(View.GONE);
+               }
             }
         });
 
 
     }
 
-    private void getPhoneWidth(){
+    private void getPhoneWidth() {
         manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = manager.getDefaultDisplay();
     }
 
-    private void setupPicker(){
+    private void setupPicker() {
 
-        vote_averagePicker.setValue(5);
         vote_averagePicker.setMinValue(1);
         vote_averagePicker.setMaxValue(10);
+        vote_averagePicker.setValue(filmsFragmentViewModel.getVoteAverage().getValue());
 
         vote_averagePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
+                filmsFragmentViewModel.getVoteAverage().setValue(newVal);
             }
         });
 
     }
 
-    private void setupGenreFilterRecyclerView(){
+    private void setupGenreFilterRecyclerView() {
 
-        genresFilterAdapter = new RecyclerGenresFilterAdapter(context, getGenresFilerList());
+        genresFilterAdapter = new RecyclerGenresFilterAdapter(context, getGenresFilerList(), filterList, this);
         genreFilterRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         genreFilterRecyclerView.setHasFixedSize(true);
         genreFilterRecyclerView.setAdapter(genresFilterAdapter);
 
     }
+
+    private void selectedSpinnerItem(){
+
+        sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filmsFragmentViewModel.getSort_by().setValue(sortBySpinner.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    /**
+     * these items sets to genreIds which locate in ViewModel
+     */
+    private void setSelectedGenreRecyclerItemsToMutableLiveData(){
+        filmsFragmentViewModel.getGenreIds().setValue(convertGenreIdsToString(filterList));
+    }
+
+    private void clickedSaveFilter(){
+
+        selectedSpinnerItem();
+        saveFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout_filter.setVisibility(View.GONE);
+                filmsFragmentViewModel.resetVariables();
+                setSelectedGenreRecyclerItemsToMutableLiveData();
+                checkInternetConnectionAndSetWidgetsItem();
+            }
+        });
+
+    }
+
+    private void checkInternetConnectionAndSetWidgetsItem(){
+
+        CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean connection) {
+                if (connection) {
+                    setFilmsRecyclerView();
+                } else {
+                    Toast.makeText(context, "Check internet connection!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void saveFilterOptionsWhenLandscapeMode(){
+
+        filterList = filmsFragmentViewModel.getFilterGenreList().getValue();
+
+    }
+
+    /**
+     * we need genre id for api request
+     * and when clicked recycler item then it is added to list
+     * @param genre
+     */
+    @Override
+    public void onAddGenreItemCallBack(@NonNull String genre) {
+        filterList.add(getGenreFilterHashMap().get(genre));
+        genresFilterAdapter.updateFilterList(filterList);
+        filmsFragmentViewModel.getFilterGenreList().setValue(filterList);
+    }
+
+    /**
+     * and when clicked selected item then
+     * remove this id from list
+     * @param genre
+     */
+    @Override
+    public void onDeleteGenreItemCallBack(@NonNull String genre) {
+        filterList.remove(getGenreFilterHashMap().get(genre));
+        genresFilterAdapter.updateFilterList(filterList);
+        filmsFragmentViewModel.getFilterGenreList().setValue(filterList);
+    }
+
 
 }

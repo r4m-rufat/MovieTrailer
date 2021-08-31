@@ -312,7 +312,11 @@ public class FilmDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (heartButton.isChecked()) {
-                    filmDetailFragmentViewModel.addFilmToWishListDatabase(id, film_title, film_image, genresList, vote_average);
+                    try {
+                        filmDetailFragmentViewModel.addFilmToWishListDatabase(id, film_title, film_image, genresList, vote_average);
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                 } else {
                     filmDetailFragmentViewModel.removeFilmToWishListDatabase(id);
                 }
