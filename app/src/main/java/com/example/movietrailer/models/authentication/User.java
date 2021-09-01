@@ -6,12 +6,14 @@ public class User {
     private String email;
     private String password;
     private String username;
+    private String color;
 
-    public User(String uID, String email, String password, String username) {
+    public User(String uID, String email, String password, String username, String color) {
         this.uID = uID;
         this.email = email;
         this.password = password;
         this.username = username;
+        this.color = color;
     }
 
     public String getuID() {
@@ -28,5 +30,9 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getColor() {
+        return color;
     }
 }

@@ -350,7 +350,8 @@ public class LoginActivity extends AppCompatActivity {
                 uID,
                 email,
                 "",
-                username
+                username,
+                "#FF6F00"
         );
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

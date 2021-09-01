@@ -29,7 +29,7 @@
                     android:id="@+id/circleProfileBackground"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@color/teal_200" />
+                    android:src="@color/teal_200"/>
 
                 <TextView
                     android:id="@+id/capitalOfName"
@@ -44,6 +44,13 @@
                     android:textStyle="bold" />
 
             </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerProfileBackgroundColor"
+                android:scrollbars="none"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

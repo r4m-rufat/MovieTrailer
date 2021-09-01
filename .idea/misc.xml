@@ -62,6 +62,7 @@
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_filter.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_genre_recycler_view_item.xml" value="0.4" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_genres_filter_recycer_view_item.xml" value="0.4" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_profile_background_recycler_item.xml" value="0.25416666666666665" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_recycler_categories_item.xml" value="0.4" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_recycler_films_grid_item.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_shimmer_animation.xml" value="0.2" />

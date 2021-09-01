@@ -56,7 +56,8 @@ class AccountPageRepository {
                     val username = document.getString("username")
                     val password = document.getString("password")
                     val uID = document.getString("uID")
-                    userData.postValue(User(uID, email, password, username))
+                    val color = document.getString("color")
+                    userData.postValue(User(uID, email, password, username, color))
                     loading.postValue(false)
                     Log.d(TAG, "getAccountInfo: Successfully comes")
                 }
