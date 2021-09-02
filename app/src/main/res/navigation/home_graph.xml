@@ -29,6 +29,10 @@
         android:name="com.example.movietrailer.fragments.films.FilmDetailFragment"
         android:label="FilmDetailFragment">
 
+        <action
+            android:id="@+id/action_to_viewCastDetailFragment"
+            app:destination="@+id/viewCastDetailFragment"/>
+
     </fragment>
 
     <fragment
@@ -64,5 +68,10 @@
             app:destination="@+id/viewFilmDetailFragment"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/viewCastDetailFragment"
+        android:label="CastDetailFragment"
+        android:name="com.example.movietrailer.fragments.person.CastFragment"/>
 
 </navigation>

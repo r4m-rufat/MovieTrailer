@@ -5,6 +5,8 @@ import com.example.movietrailer.models.detail_model.details.DetailResponse
 import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse
 import com.example.movietrailer.models.detail_model.video.VideoResponse
 import com.example.movietrailer.models.discover_model.DiscoverResponse
+import com.example.movietrailer.models.person.cast_detail.CastDetailResponse
+import com.example.movietrailer.models.person.cast_images.CastImagesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -90,5 +92,19 @@ interface IApi {
         @Query("language") language: String?,
 
         ): Call<VideoResponse>
+
+    @GET("person/{person_id}?")
+    fun getCastDetailInfo(
+        @Path("person_id") id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String?,
+        ): Call<CastDetailResponse>
+
+    @GET("person/{person_id}/images?")
+    fun getCastImages(
+        @Path("person_id") id: Int,
+        @Query("api_key") api_key: String,
+    ): Call<CastImagesResponse>
+
 
 }

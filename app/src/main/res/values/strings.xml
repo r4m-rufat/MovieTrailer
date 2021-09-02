@@ -24,6 +24,10 @@
     <string name="current_password">Current password</string>
     <string name="new_password">New password</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="images">Images</string>
+    <string name="biography">Biography</string>
+    <string name="born">Born</string>
+    <string name="biography_error">There is no information about this person!</string>
 
     <string-array name="sort_by">
         <item>popularity.desc</item>

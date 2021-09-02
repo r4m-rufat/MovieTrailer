@@ -14,10 +14,12 @@
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_save_filter.xml" value="0.2703125" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_search_edit_text.xml" value="0.156" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_selected_filter_genre_item.xml" value="0.2703125" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shadow_for_cast_name.xml" value="0.2703125" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shadow_for_home_grid_item.xml" value="0.22592592592592592" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shadow_item.xml" value="0.18541666666666667" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_arrow_up_icon.xml" value="0.2703125" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_back_icon.xml" value="0.19739583333333333" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_back_icon_from_cast_fragment.xml" value="0.2703125" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_grid_item.xml" value="0.2194871794871795" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_shape_of_reset_page_image.xml" value="0.23072916666666668" />
         <entry key="..\:/MovieTrailer/app/src/main/res/drawable/background_signup_button.xml" value="0.2703125" />
@@ -49,11 +51,13 @@
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/dialog_for_change_password.xml" value="0.25416666666666665" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/dialog_for_edit_account_name.xml" value="0.25416666666666665" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_account.xml" value="0.2" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_cast.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_film_detail.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_films.xml" value="0.2" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/fragment_wish_list.xml" value="0.18125" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_app_bar.xml" value="0.264" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_bottom_navigation_bar.xml" value="0.1" />
+        <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_cast_person_images.xml" value="0.536" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_categories_bar.xml" value="0.2" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_detail_cast_recycler_view.xml" value="0.2418478260869565" />
         <entry key="..\:/MovieTrailer/app/src/main/res/layout/layout_detail_cast_recycler_view_item.xml" value="0.4" />

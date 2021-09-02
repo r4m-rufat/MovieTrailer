@@ -18,6 +18,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -38,7 +39,9 @@ import com.example.movietrailer.models.detail_model.details.GenresItem;
 import com.example.movietrailer.models.detail_model.similar_films.SimilarItem;
 import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse;
 import com.example.movietrailer.models.detail_model.video.VideoResponse;
+import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously;
 import com.example.movietrailer.viewmodels.films.FilmDetailFragmentViewModel;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -62,6 +65,8 @@ public class FilmDetailFragment extends Fragment {
     private YouTubePlayerView youTubePlayerView;
     private ImageView closeDialog;
     private ToggleButton heartButton;
+    private NestedScrollView nestedFilmDetail;
+    private SpinKitView progressBar;
 
     /**
      * get film id in onCreate and also FilmDetailFragmentViewModel
@@ -71,13 +76,13 @@ public class FilmDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getContext();
+        CheckConnectionAsynchronously.INSTANCE.init(context);
         if (getArguments() != null) {
             id = getArguments().getInt("id");
             Log.d(TAG, "onCreate: Film id is " + id);
             filmDetailFragmentViewModel = new ViewModelProvider(this).get(FilmDetailFragmentViewModel.class);
         }
-
-        context = getContext();
 
     }
 
@@ -88,11 +93,23 @@ public class FilmDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_film_detail, container, false);
 
         getWidgets(view);
-        getDetailLiveData();
-        getCastsLiveData();
-        getSimilarFilmsLiveData();
-        getVideoLiveData();
-        setHeartBorderOrFill();
+
+        CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean connection) {
+                if (connection){
+                    setHeartBorderOrFill();
+                    getDetailLiveData();
+                    getCastsLiveData();
+                    getSimilarFilmsLiveData();
+                    getVideoLiveData();
+                }else{
+                    nestedFilmDetail.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(context, "Check your internet connection!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return view;
 
@@ -102,6 +119,9 @@ public class FilmDetailFragment extends Fragment {
      * get film detail list and it is observable
      */
     private void getDetailLiveData() {
+
+        progressBar.setVisibility(View.VISIBLE);
+        nestedFilmDetail.setVisibility(View.GONE);
 
         filmDetailFragmentViewModel.getFilmList(id).observe(getActivity(), new Observer<DetailResponse>() {
             @Override
@@ -113,6 +133,8 @@ public class FilmDetailFragment extends Fragment {
                         detailResponse.getPosterPath(),
                         detailResponse.getVoteAverage(),
                         convertGenresListToString(detailResponse.getGenres()));
+                nestedFilmDetail.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -164,6 +186,8 @@ public class FilmDetailFragment extends Fragment {
         personalStaffRecyclerView = view.findViewById(R.id.personalStaffRecyclerView);
         similarFilmsRecyclerView = view.findViewById(R.id.similar_filmsRecyclerView);
         heartButton = view.findViewById(R.id.heart_button);
+        nestedFilmDetail = view.findViewById(R.id.nested_scroll_filmDetail);
+        progressBar = view.findViewById(R.id.circularProgressBar);
     }
 
     /**

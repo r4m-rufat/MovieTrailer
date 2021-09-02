@@ -2,7 +2,9 @@ package com.example.movietrailer.adapters.detail_page;
 
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -37,7 +40,7 @@ public class HorizontalPersonalStaffAdapter extends RecyclerView.Adapter<Horizon
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HorizontalPersonalStaffAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HorizontalPersonalStaffAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         String image_path = crewList.get(position).getProfilePath();
 
@@ -49,6 +52,15 @@ public class HorizontalPersonalStaffAdapter extends RecyclerView.Adapter<Horizon
 
         holder._person_name.setText(crewList.get(position).getName());
         holder._job_name.setText(crewList.get(position).getJob());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("castID", crewList.get(position).getId());
+                Navigation.findNavController(view).navigate(R.id.action_to_viewCastDetailFragment, bundle);
+            }
+        });
 
     }
 
