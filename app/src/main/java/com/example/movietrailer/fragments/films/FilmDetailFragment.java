@@ -1,9 +1,9 @@
 package com.example.movietrailer.fragments.films;
 
-import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 import static com.example.movietrailer.converters.BudgetConverterKt.convertValueToBudget;
 import static com.example.movietrailer.converters.GenresListToStringConverterKt.convertGenresListToString;
 import static com.example.movietrailer.converters.SecondToTimeConverterKt.convertSecondToTime;
+import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -31,6 +31,9 @@ import com.example.movietrailer.adapters.detail_page.HorizontalCastAdapter;
 import com.example.movietrailer.adapters.detail_page.HorizontalGenreAdapter;
 import com.example.movietrailer.adapters.detail_page.HorizontalPersonalStaffAdapter;
 import com.example.movietrailer.adapters.detail_page.HorizontalSimilarFilmsAdapter;
+import com.example.movietrailer.db.Dao;
+import com.example.movietrailer.db.History;
+import com.example.movietrailer.db.HistoryDatabase;
 import com.example.movietrailer.models.detail_model.casts.CastItem;
 import com.example.movietrailer.models.detail_model.casts.CastResponse;
 import com.example.movietrailer.models.detail_model.casts.CrewItem;
@@ -67,6 +70,9 @@ public class FilmDetailFragment extends Fragment {
     private ToggleButton heartButton;
     private NestedScrollView nestedFilmDetail;
     private SpinKitView progressBar;
+    private History history;
+
+    private Dao dao;
 
     /**
      * get film id in onCreate and also FilmDetailFragmentViewModel
@@ -82,6 +88,7 @@ public class FilmDetailFragment extends Fragment {
             id = getArguments().getInt("id");
             Log.d(TAG, "onCreate: Film id is " + id);
             filmDetailFragmentViewModel = new ViewModelProvider(this).get(FilmDetailFragmentViewModel.class);
+            dao = HistoryDatabase.Companion.getHistoryDatabase(context).getDao();
         }
 
     }
@@ -97,13 +104,13 @@ public class FilmDetailFragment extends Fragment {
         CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean connection) {
-                if (connection){
+                if (connection) {
                     setHeartBorderOrFill();
                     getDetailLiveData();
                     getCastsLiveData();
                     getSimilarFilmsLiveData();
                     getVideoLiveData();
-                }else{
+                } else {
                     nestedFilmDetail.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.VISIBLE);
                     Toast.makeText(context, "Check your internet connection!", Toast.LENGTH_SHORT).show();
@@ -133,10 +140,38 @@ public class FilmDetailFragment extends Fragment {
                         detailResponse.getPosterPath(),
                         detailResponse.getVoteAverage(),
                         convertGenresListToString(detailResponse.getGenres()));
+
+                if (history == null) {
+                    history = new History(
+                            0,
+                            id,
+                            detailResponse.getTitle(),
+                            detailResponse.getPosterPath(),
+                            convertGenresListToString(detailResponse.getGenres()),
+                            detailResponse.getVoteAverage()
+                    );
+                }
+
+                addFilmToHistory();
+
                 nestedFilmDetail.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });
+
+    }
+
+    private void addFilmToHistory() {
+
+        /**
+         * if film exists in database then delete this film from database and insert that again
+         * because this last film should swipe up to top
+         * this means this film seen last time
+         */
+        if (dao.existsFilm(id)) {
+            filmDetailFragmentViewModel.deleteHistory(id);
+        }
+        filmDetailFragmentViewModel.insertHistory(history);
 
     }
 
@@ -338,7 +373,7 @@ public class FilmDetailFragment extends Fragment {
                 if (heartButton.isChecked()) {
                     try {
                         filmDetailFragmentViewModel.addFilmToWishListDatabase(id, film_title, film_image, genresList, vote_average);
-                    }catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
                 } else {

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -49,7 +51,7 @@ public class WishListFragment extends Fragment {
         setUpBottomNavigationView(bottomNavigation, view);
         setUpRecyclerView();
         setObservableDataToRecyclerView();
-        setShimmerAnimationWhenLoading();
+        setProgressBarWhenLoading();
 
         return view;
     }
@@ -75,6 +77,9 @@ public class WishListFragment extends Fragment {
         wishListFragmentViewModel.getWishList().observe(getViewLifecycleOwner(), new Observer<List<WishList>>() {
             @Override
             public void onChanged(List<WishList> wishLists) {
+                LayoutAnimationController controller =
+                        AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation);
+                recyclerWishList.setLayoutAnimation(controller);
                 wishListAdapter.updateWishList(wishLists);
             }
         });
@@ -83,7 +88,7 @@ public class WishListFragment extends Fragment {
 
     }
 
-    private void setShimmerAnimationWhenLoading(){
+    private void setProgressBarWhenLoading(){
 
         wishListFragmentViewModel.getLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override

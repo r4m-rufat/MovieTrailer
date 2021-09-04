@@ -25,6 +25,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
 
     private Context context;
     private List<WishList> wishLists;
+    private int lastPosition = -1;
 
     public WishListAdapter(Context context) {
         this.context = context;
@@ -59,7 +60,6 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
                 Navigation.findNavController(view).navigate(R.id.viewFilmDetail, bundle);
             }
         });
-
     }
 
     @Override

@@ -372,7 +372,6 @@ public class FilmsFragment extends Fragment
             }
         });
 
-
     }
 
     private void getPhoneWidth() {
@@ -486,6 +485,5 @@ public class FilmsFragment extends Fragment
         genresFilterAdapter.updateFilterList(filterList);
         filmsFragmentViewModel.getFilterGenreList().setValue(filterList);
     }
-
 
 }

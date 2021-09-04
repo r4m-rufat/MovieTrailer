@@ -135,4 +135,9 @@ dependencies {
     // Circular progress bar
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
+    // Room components
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    implementation "androidx.room:room-runtime:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+
 }

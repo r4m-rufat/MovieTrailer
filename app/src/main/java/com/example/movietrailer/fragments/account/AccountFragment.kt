@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
@@ -49,6 +50,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private lateinit var capitalOfName: TextView
     private lateinit var editAccountName: ImageView
     private lateinit var editPassword: ImageView
+    private lateinit var icHistory: ImageView
     private lateinit var signOut: Button
     private lateinit var circularProgressBar: SpinKitView
     private lateinit var linearLayout: LinearLayout
@@ -90,6 +92,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         clickedSignOutButton()
         clickedEditAccountName()
         clickedChangePasswordButton()
+        clickedIconHistory()
 
         bottomNavigation.show(BottomNavigationBarItems.ACCOUNT.ordinal, true);
         setUpBottomNavigationView(bottomNavigation, view)
@@ -116,6 +119,8 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         linearLayout = view.findViewById(R.id.linearAccount)
         circularProfileBackground = view.findViewById(R.id.circleProfileBackground)
         backgroundRecycler = view.findViewById(R.id.recyclerProfileBackgroundColor)
+        icHistory = view.findViewById(R.id.ic_history)
+
     }
 
     private fun getAccountInfo() {
@@ -143,6 +148,12 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
                 })
 
         })
+    }
+
+    private fun clickedIconHistory(){
+        icHistory.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_to_viewHistoryFragment)
+        }
     }
 
     private fun clickedSignOutButton() {

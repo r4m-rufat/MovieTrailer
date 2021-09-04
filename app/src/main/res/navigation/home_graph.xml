@@ -40,13 +40,16 @@
         android:name="com.example.movietrailer.fragments.account.AccountFragment"
         android:label="AccountFragment">
 
-
         <action
             android:id="@+id/action_to_filmsFragment"
             app:destination="@id/filmsFragment" />
         <action
             android:id="@+id/action_to_wishListFragment"
             app:destination="@id/wishListFragment" />
+
+        <action
+            android:id="@+id/action_to_viewHistoryFragment"
+            app:destination="@id/viewHistoryFragment"/>
 
     </fragment>
     <fragment
@@ -73,5 +76,10 @@
         android:id="@+id/viewCastDetailFragment"
         android:label="CastDetailFragment"
         android:name="com.example.movietrailer.fragments.person.CastFragment"/>
+
+    <fragment
+        android:id="@+id/viewHistoryFragment"
+        android:label="HistoryFragment"
+        android:name="com.example.movietrailer.fragments.account.HistoryFragment"/>
 
 </navigation>
