@@ -10,8 +10,10 @@ import com.example.movietrailer.db.HistoryDatabase
 import com.example.movietrailer.models.detail_model.casts.CastResponse
 import com.example.movietrailer.models.detail_model.details.DetailResponse
 import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse
+import com.example.movietrailer.models.detail_model.video.ResultsItem
 import com.example.movietrailer.models.detail_model.video.VideoResponse
 import com.example.movietrailer.repository.details_page.FilmDetailRepository
+import com.example.movietrailer.repository.details_page.FilmReviewsRepository
 import com.example.movietrailer.repository.details_page.SimilarFilmsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,9 +28,7 @@ class FilmDetailFragmentViewModel(app: Application) : AndroidViewModel(app) {
     private var loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     private var filmInWishListOrNot: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    private var historyList: MutableLiveData<List<History>> = MutableLiveData()
     private val dao = HistoryDatabase.getHistoryDatabase((getApplication())).getDao()
-    private var checkFilm: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun getFilmList(id: Int): LiveData<DetailResponse> {
 
@@ -77,6 +77,10 @@ class FilmDetailFragmentViewModel(app: Application) : AndroidViewModel(app) {
 
         return FilmDetailRepository.instance()!!.checkFilmInDatabase(id, filmInWishListOrNot)
 
+    }
+
+    fun getObservableFilmReviews(filmID: Int): LiveData<List<com.example.movietrailer.models.film_reviews.ResultsItem>>{
+        return FilmReviewsRepository.instance().getFilmReviews(filmID)
     }
 
     fun addFilmToWishListDatabase(

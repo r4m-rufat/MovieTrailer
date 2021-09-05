@@ -2,7 +2,7 @@ package com.example.movietrailer.fragments.films;
 
 import static com.example.movietrailer.converters.BudgetConverterKt.convertValueToBudget;
 import static com.example.movietrailer.converters.GenresListToStringConverterKt.convertGenresListToString;
-import static com.example.movietrailer.converters.SecondToTimeConverterKt.convertSecondToTime;
+import static com.example.movietrailer.converters.MinuteToTimeFormatConverterKt.convertMinuteToTimeFormat;
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
 
 import android.app.Dialog;
@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.movietrailer.R;
+import com.example.movietrailer.adapters.detail_page.FilmReviewsAdapter;
 import com.example.movietrailer.adapters.detail_page.HorizontalCastAdapter;
 import com.example.movietrailer.adapters.detail_page.HorizontalGenreAdapter;
 import com.example.movietrailer.adapters.detail_page.HorizontalPersonalStaffAdapter;
@@ -42,6 +43,7 @@ import com.example.movietrailer.models.detail_model.details.GenresItem;
 import com.example.movietrailer.models.detail_model.similar_films.SimilarItem;
 import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse;
 import com.example.movietrailer.models.detail_model.video.VideoResponse;
+import com.example.movietrailer.models.film_reviews.ResultsItem;
 import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously;
 import com.example.movietrailer.viewmodels.films.FilmDetailFragmentViewModel;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -57,13 +59,14 @@ public class FilmDetailFragment extends Fragment {
     private FilmDetailFragmentViewModel filmDetailFragmentViewModel;
     private int id;
     private ImageView detailVideoPicture, icPlayVideo, filmBackdropImage;
-    private TextView filmTitle, trailerTime, rating, budget, overview, releaseDate;
+    private TextView filmTitle, trailerTime, rating, budget, overview, releaseDate, txt_empty_review;
     private Context context;
-    private RecyclerView genreRecyclerView, castsRecyclerView, personalStaffRecyclerView, similarFilmsRecyclerView;
+    private RecyclerView genreRecyclerView, castsRecyclerView, personalStaffRecyclerView, similarFilmsRecyclerView,  reviewsRecyclerView;
     private HorizontalGenreAdapter horizontalGenreAdapter;
     private HorizontalCastAdapter horizontalCastAdapter;
     private HorizontalPersonalStaffAdapter horizontalPersonalStaffAdapter;
     private HorizontalSimilarFilmsAdapter horizontalSimilarFilmsAdapter;
+    private FilmReviewsAdapter reviewsAdapter;
     private Dialog videoDialog;
     private YouTubePlayerView youTubePlayerView;
     private ImageView closeDialog;
@@ -109,6 +112,7 @@ public class FilmDetailFragment extends Fragment {
                     getDetailLiveData();
                     getCastsLiveData();
                     getSimilarFilmsLiveData();
+                    getObservablesReviewAndSet();
                     getVideoLiveData();
                 } else {
                     nestedFilmDetail.setVisibility(View.INVISIBLE);
@@ -223,6 +227,8 @@ public class FilmDetailFragment extends Fragment {
         heartButton = view.findViewById(R.id.heart_button);
         nestedFilmDetail = view.findViewById(R.id.nested_scroll_filmDetail);
         progressBar = view.findViewById(R.id.circularProgressBar);
+        reviewsRecyclerView = view.findViewById(R.id.reviewsRecyclerView);
+        txt_empty_review = view.findViewById(R.id.txt_empty_review);
     }
 
     /**
@@ -236,9 +242,13 @@ public class FilmDetailFragment extends Fragment {
         Glide.with(context).load(IMAGE_BEGIN_URL + detailResponse.getBackdropPath()).into(filmBackdropImage);
 
         filmTitle.setText(detailResponse.getTitle());
-        trailerTime.setText(convertSecondToTime(detailResponse.getRuntime()));
+        trailerTime.setText(convertMinuteToTimeFormat(detailResponse.getRuntime()));
         rating.setText(String.valueOf(detailResponse.getVoteAverage()));
-        budget.setText(convertValueToBudget(detailResponse.getBudget()));
+        if (detailResponse.getBudget() == 0){
+            budget.setText("No info");
+        }else{
+            budget.setText(convertValueToBudget(detailResponse.getBudget()));
+        }
         overview.setText(detailResponse.getOverview());
         releaseDate.setText(detailResponse.getReleaseDate());
 
@@ -273,6 +283,29 @@ public class FilmDetailFragment extends Fragment {
         horizontalSimilarFilmsAdapter = new HorizontalSimilarFilmsAdapter(context, similarFilmList);
         setupHorizontalRecyclerView(similarFilmsRecyclerView);
         similarFilmsRecyclerView.setAdapter(horizontalSimilarFilmsAdapter);
+
+    }
+
+    private void getObservablesReviewAndSet(){
+        setupReviewsRecyclerView();
+        filmDetailFragmentViewModel.getObservableFilmReviews(id).observe(getViewLifecycleOwner(), new Observer<List<ResultsItem>>() {
+            @Override
+            public void onChanged(List<ResultsItem> resultsItems) {
+                reviewsAdapter.updateReviewList(resultsItems);
+                if (resultsItems.size() == 0){
+                    txt_empty_review.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+    }
+
+    private void setupReviewsRecyclerView(){
+
+        reviewsAdapter = new FilmReviewsAdapter(context);
+        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        reviewsRecyclerView.setHasFixedSize(false);
+        reviewsRecyclerView.setAdapter(reviewsAdapter);
 
     }
 

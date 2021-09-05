@@ -5,6 +5,7 @@ import com.example.movietrailer.models.detail_model.details.DetailResponse
 import com.example.movietrailer.models.detail_model.similar_films.SimilarResponse
 import com.example.movietrailer.models.detail_model.video.VideoResponse
 import com.example.movietrailer.models.discover_model.DiscoverResponse
+import com.example.movietrailer.models.film_reviews.ReviewResponse
 import com.example.movietrailer.models.person.cast_detail.CastDetailResponse
 import com.example.movietrailer.models.person.cast_images.CastImagesResponse
 import retrofit2.Call
@@ -106,5 +107,12 @@ interface IApi {
         @Query("api_key") api_key: String,
     ): Call<CastImagesResponse>
 
+    @GET("movie/{movie_id}/reviews")
+    fun getFilmReviews(
+        @Path("movie_id") id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String?,
+        @Query("page") page: Int,
+    ): Call<ReviewResponse>
 
 }

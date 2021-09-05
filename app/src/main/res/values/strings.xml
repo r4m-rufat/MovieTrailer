@@ -28,6 +28,7 @@
     <string name="biography">Biography</string>
     <string name="born">Born</string>
     <string name="biography_error">There is no information about this person!</string>
+    <string name="reviews">Reviews</string>
 
     <string-array name="sort_by">
         <item>popularity.desc</item>

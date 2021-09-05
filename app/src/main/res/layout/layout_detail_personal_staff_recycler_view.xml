@@ -10,6 +10,7 @@
         android:layout_margin="10dp"
         android:text="@string/personal_staff"
         android:textColor="@color/black"
+        android:fontFamily="@font/libre_baskerville_regular"
         android:textSize="18sp"
         android:textStyle="bold" />
 

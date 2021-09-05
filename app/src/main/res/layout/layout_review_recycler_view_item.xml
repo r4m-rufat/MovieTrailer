@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circle_reviewPersonImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_person"
+        app:civ_border_color="@color/progress_orange"
+        app:civ_border_width="0.5dp" />
+
+    <LinearLayout
+        android:id="@+id/linear_personName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_toRightOf="@id/circle_reviewPersonImage">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="10dp"
+            android:src="@drawable/ic_circle"
+            android:layout_marginTop="1dp"
+            app:tint="@color/black"/>
+
+        <TextView
+            android:id="@+id/txt_reviewPersonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rufat Nasirov"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/gray" />
+
+    </LinearLayout>
+
+    <com.chaek.android.RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_review"
+        android:layout_toRightOf="@id/circle_reviewPersonImage"
+        android:text="Hello World!"
+        app:rating_flag="TEN"
+        android:layout_marginTop="10dp"
+        app:rating_star_color="#FF9900"
+        app:rating_star_empty_color="#8e7d7d"
+        app:rating_star_height="12dp"
+        app:rating_star_margin="5dp"
+        app:rating_star_width="12dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_personName"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/circle_reviewPersonImage"
+        android:text="It has beautiful animation and beautiful characters. It is a funny, sweet and emotional roller coaster of a crowd-pleaser that manages to win your heart."
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_reviewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_review"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:text="2017-02-24"
+        android:textColor="@color/gray"
+        android:textSize="13sp" />
+
+    <View
+        android:layout_width="100dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_reviewDate"
+        android:layout_alignParentRight="true"
+        android:background="@color/black" />
+
+</RelativeLayout>
