@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +16,12 @@ import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.example.movietrailer.R
 import com.example.movietrailer.activities.registration.LoginActivity
 import com.example.movietrailer.adapters.account_page.ProfileBackgroundAdapter
+import com.example.movietrailer.db.Dao
+import com.example.movietrailer.db.HistoryDatabase
 import com.example.movietrailer.dialogs.changePasswordBottomSheetDialog
 import com.example.movietrailer.dialogs.editAccountBottomSheetDialog
+import com.example.movietrailer.models.wish_list.WishList
+import com.example.movietrailer.utils.balloons.showEditBalloon
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems
 import com.example.movietrailer.utils.bottom_navigation.setUpBottomNavigationView
 import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously
@@ -29,6 +32,7 @@ import com.example.movietrailer.viewmodels.account.AccountFragmentViewModel
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -48,8 +52,11 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private lateinit var accountName: TextView
     private lateinit var emailName: TextView
     private lateinit var capitalOfName: TextView
+    private lateinit var txtFavoriteListSize: TextView
+    private lateinit var txtHistoryListSize: TextView
     private lateinit var editAccountName: ImageView
     private lateinit var editPassword: ImageView
+    private lateinit var icPalette: ImageView
     private lateinit var icHistory: ImageView
     private lateinit var signOut: Button
     private lateinit var circularProgressBar: SpinKitView
@@ -62,6 +69,9 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomNavigation: MeowBottomNavigation
 
+    private lateinit var dbreference: DatabaseReference
+    private lateinit var dao: Dao
+
     private lateinit var firebaseAuth: FirebaseAuth
     private var viewModel: AccountFragmentViewModel? = null
 
@@ -70,6 +80,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dao = HistoryDatabase.getHistoryDatabase(requireContext()).getDao()!!
         if (viewModel == null) {
             viewModel = ViewModelProvider(this)[AccountFragmentViewModel::class.java]
         }
@@ -84,10 +95,13 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        dbreference = FirebaseDatabase.getInstance().reference
 
         CheckConnectionAsynchronously.init(requireContext())
 
         initializeWidgets(view)
+        setHistorySize()
+        setFavoriteSize()
         getAccountInfo()
         clickedSignOutButton()
         clickedEditAccountName()
@@ -101,7 +115,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
         // background colors adapter
         setupRecyclerView()
-        clickedCircularProfile()
+        clickedPaletteIcon()
 
         return view
     }
@@ -120,6 +134,40 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         circularProfileBackground = view.findViewById(R.id.circleProfileBackground)
         backgroundRecycler = view.findViewById(R.id.recyclerProfileBackgroundColor)
         icHistory = view.findViewById(R.id.ic_history)
+        icPalette = view.findViewById(R.id.ic_palette)
+        txtFavoriteListSize = view.findViewById(R.id.txt_favoriteListSize)
+        txtHistoryListSize = view.findViewById(R.id.txt_historyListSize)
+
+    }
+
+    private fun setHistorySize(){
+
+        txtHistoryListSize.text = dao.getAllHistoryList().size.toString()
+
+    }
+
+    private fun setFavoriteSize(){
+
+        dbreference.child("user_wish_list")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var size = 0
+                    if (snapshot.exists()){
+                        for (single_snapshot in snapshot.children){
+                            size+=1
+                        }
+                        txtFavoriteListSize.text = size.toString()
+                    }else{
+                        txtFavoriteListSize.text = "0"
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, "onCancelled: Error is ${error.message}")
+                }
+
+            })
 
     }
 
@@ -171,18 +219,25 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         bottomSheetDialog = BottomSheetDialog(requireActivity())
         editAccountName.setOnClickListener {
 
-            firebaseAuth.currentUser?.let { it1 ->
-                editAccountBottomSheetDialog(
-                    requireContext(),
-                    previousUsername = accountName.text.toString(),
-                    db,
-                    user = it1,
-                    bottomSheetDialog = bottomSheetDialog,
-                    onCLick = {
-                        viewModel!!.getUserInfo()
+            showEditBalloon(
+                context = requireContext(),
+                editAccountName,
+                "You can edit your profile name",
+                onClick = {
+                    firebaseAuth.currentUser?.let { it1 ->
+                        editAccountBottomSheetDialog(
+                            requireContext(),
+                            previousUsername = accountName.text.toString(),
+                            db,
+                            user = it1,
+                            bottomSheetDialog = bottomSheetDialog,
+                            onCLick = {
+                                viewModel!!.getUserInfo()
+                            }
+                        )
                     }
-                )
-            }
+                }
+            )
 
         }
 
@@ -208,12 +263,19 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
             }
 
         editPassword.setOnClickListener {
-            changePasswordBottomSheetDialog(
-                requireContext(),
-                password,
-                db,
-                firebaseAuth.currentUser!!,
-                bottomSheetDialog
+            showEditBalloon(
+                context = requireContext(),
+                editPassword,
+                "You can change password",
+                onClick = {
+                    changePasswordBottomSheetDialog(
+                        requireContext(),
+                        password,
+                        db,
+                        firebaseAuth.currentUser!!,
+                        bottomSheetDialog
+                    )
+                }
             )
         }
 
@@ -240,9 +302,9 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
     }
 
-    private fun clickedCircularProfile() {
+    private fun clickedPaletteIcon() {
 
-        circularProfileBackground.setOnClickListener {
+        icPalette.setOnClickListener {
             if (showBackgroundAdapter) {
                 backgroundRecycler.visibility = View.VISIBLE
                 showBackgroundAdapter = false

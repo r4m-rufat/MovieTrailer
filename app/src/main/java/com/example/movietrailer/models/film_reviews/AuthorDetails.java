@@ -7,7 +7,7 @@ public class AuthorDetails{
 	@SerializedName("avatar_path")
 	private String avatarPath;
 	private String name;
-	private int rating;
+	private double rating;
 	private String username;
 
 	public String getAvatarPath(){
@@ -18,7 +18,7 @@ public class AuthorDetails{
 		return name;
 	}
 
-	public int getRating(){
+	public double getRating(){
 		return rating;
 	}
 

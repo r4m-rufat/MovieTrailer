@@ -98,6 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:id="@+id/linearFilmTime"
                         android:gravity="center">
 
                         <ImageView
@@ -123,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_alignParentEnd="true"
+                        android:id="@+id/linearRating"
                         android:gravity="center">
 
                         <ImageView
@@ -160,6 +162,7 @@
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:orientation="horizontal"
+                       android:id="@+id/linearBudget"
                        android:gravity="center">
 
                        <ImageView
@@ -184,6 +187,7 @@
                        android:layout_height="wrap_content"
                        android:layout_alignParentRight="true"
                        android:orientation="horizontal"
+                       android:id="@+id/linearCalendar"
                        android:gravity="center">
 
                        <ImageView

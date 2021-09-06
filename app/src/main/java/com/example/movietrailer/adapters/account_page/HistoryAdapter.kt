@@ -1,11 +1,13 @@
 package com.example.movietrailer.adapters.account_page
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movietrailer.R
@@ -33,6 +35,13 @@ class HistoryAdapter(context: Context): RecyclerView.Adapter<HistoryAdapter.View
         holder.filmPopularity.text = historyList[position].filmRating.toString()
 
         Glide.with(context).load(IMAGE_BEGIN_URL + historyList[position].filmImage).into(holder.filmImage)
+
+        holder.itemView.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("id", historyList[position].filmID)
+            Navigation.findNavController(it).navigate(R.id.action_to_viewFilmDetailFragment, bundle)
+        }
+
     }
 
     override fun getItemCount(): Int {

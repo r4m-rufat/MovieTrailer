@@ -64,9 +64,9 @@ public class FilmReviewsAdapter extends RecyclerView.Adapter<FilmReviewsAdapter.
         holder._txt_review.setText(reviewList.get(position).getContent());
         holder._txt_review_date.setText(reviewList.get(position).getCreatedAt().substring(0,10));
 
-        int rating = reviewList.get(position).getAuthorDetails().getRating();
+        double rating = reviewList.get(position).getAuthorDetails().getRating();
         if (rating != 0){
-            holder._rating_bar.setScore(rating);
+            holder._rating_bar.setScore((float) rating);
         }else{
             holder._rating_bar.setVisibility(View.INVISIBLE);
         }

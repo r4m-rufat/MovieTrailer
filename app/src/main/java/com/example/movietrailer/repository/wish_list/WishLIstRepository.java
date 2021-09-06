@@ -60,8 +60,8 @@ public class WishLIstRepository {
                                  * is added should show in the top of recycler view
                                  */
                                 Collections.reverse(wishList);
-                                if (wishList.size() > 20){
-                                    wishList.subList(20, (wishList.size())).clear();
+                                if (wishList.size() > 40){
+                                    wishList.subList(40, (wishList.size())).clear();
                                 }
                                 loading.setValue(false);
 
@@ -77,6 +77,8 @@ public class WishLIstRepository {
                                         }
                                     }));
 
+                        }else{
+                            loading.setValue(false);
                         }
                     }
 

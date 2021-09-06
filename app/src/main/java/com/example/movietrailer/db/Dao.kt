@@ -17,6 +17,9 @@ interface Dao {
     @Query("DELETE FROM history_table WHERE filmID = :filmID")
     fun deleteFilm(filmID: Int)
 
+    @Query("DELETE FROM history_table")
+    fun deleteAllHistory()
+
     @Query("SELECT EXISTS (SELECT 1 FROM history_table WHERE filmID = :filmID)")
     fun existsFilm(filmID: Int): Boolean
 
