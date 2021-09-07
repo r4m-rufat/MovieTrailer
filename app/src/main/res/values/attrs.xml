@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="txt_white_black" format="color"/>
+    <attr name="background_white_black" format="color"/>
+    <attr name="bg_history_item" format="color"/>
+    <attr name="background_filter" format="color"/>
+    <attr name="fc_white_black" format="color"/>
+    <attr name="txt_black_white" format="color"/>
+    <attr name="blue_white" format="color"/>
+    <attr name="gray_white" format="color"/>
+
+</resources>

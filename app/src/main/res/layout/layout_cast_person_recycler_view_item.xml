@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="0.5dp"
+        app:cardBackgroundColor="?attr/background_white_black"
         app:cardCornerRadius="15dp">
 
         <ImageView

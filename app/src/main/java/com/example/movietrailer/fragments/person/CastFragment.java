@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.movietrailer.R;
 import com.example.movietrailer.adapters.detail_page.HorizontalCastImagesAdapter;
+import com.example.movietrailer.internal_storage.PreferenceManager;
 import com.example.movietrailer.models.person.cast_detail.CastDetailResponse;
 import com.example.movietrailer.models.person.cast_images.CastImagesResponse;
 import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously;
@@ -43,6 +44,7 @@ public class CastFragment extends Fragment {
     private HorizontalCastImagesAdapter castImagesAdapter;
     private SpinKitView progressBar;
     private LinearLayout linearCast;
+    private PreferenceManager preferenceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,12 @@ public class CastFragment extends Fragment {
         context = requireContext();
         if (getArguments() != null) {
             castID = getArguments().getInt("castID");
+        }
+        preferenceManager = new PreferenceManager(context);
+        if (preferenceManager.getBoolean("dark_mode")) {
+            requireContext().setTheme(R.style.AppTheme_Base_Night);
+        } else {
+            requireContext().setTheme(R.style.AppTheme);
         }
         CheckConnectionAsynchronously.INSTANCE.init(context);
     }

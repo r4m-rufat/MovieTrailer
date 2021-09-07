@@ -8,6 +8,6 @@
         android:color="@color/progress_orange"/>
 
     <solid
-        android:color="#EFEFEF"/>
+        android:color="?attr/bg_history_item"/>
 
 </shape>

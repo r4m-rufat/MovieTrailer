@@ -28,7 +28,7 @@
             android:layout_height="10dp"
             android:src="@drawable/ic_circle"
             android:layout_marginTop="1dp"
-            app:tint="@color/black"/>
+            app:tint="?attr/txt_black_white"/>
 
         <TextView
             android:id="@+id/txt_reviewPersonName"
@@ -47,16 +47,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_review"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/circle_reviewPersonImage"
         android:text="Hello World!"
         app:rating_flag="TEN"
-        android:layout_marginTop="10dp"
         app:rating_star_color="#FF9900"
-        app:rating_star_empty_color="#8e7d7d"
+        app:rating_star_empty_color="?attr/gray_white"
         app:rating_star_height="12dp"
         app:rating_star_margin="5dp"
-        app:rating_star_width="12dp"
-        />
+        app:rating_star_width="12dp" />
 
     <TextView
         android:id="@+id/txt_review"
@@ -66,7 +65,7 @@
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/circle_reviewPersonImage"
         android:text="It has beautiful animation and beautiful characters. It is a funny, sweet and emotional roller coaster of a crowd-pleaser that manages to win your heart."
-        android:textColor="@color/black"
+        android:textColor="?attr/txt_black_white"
         android:textSize="12sp" />
 
     <TextView
@@ -87,6 +86,6 @@
         android:layout_height="1dp"
         android:layout_below="@id/txt_reviewDate"
         android:layout_alignParentRight="true"
-        android:background="@color/black" />
+        android:background="?attr/txt_black_white" />
 
 </RelativeLayout>

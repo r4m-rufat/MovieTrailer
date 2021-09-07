@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -20,6 +21,7 @@ import com.example.movietrailer.db.Dao
 import com.example.movietrailer.db.HistoryDatabase
 import com.example.movietrailer.dialogs.changePasswordBottomSheetDialog
 import com.example.movietrailer.dialogs.editAccountBottomSheetDialog
+import com.example.movietrailer.internal_storage.PreferenceManager
 import com.example.movietrailer.models.wish_list.WishList
 import com.example.movietrailer.utils.balloons.showEditBalloon
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems
@@ -34,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.vimalcvs.switchdn.DayNightSwitch
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -64,6 +67,9 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private lateinit var backgroundRecycler: RecyclerView
     private lateinit var profileBackgroundAdapter: ProfileBackgroundAdapter
     private lateinit var circularProfileBackground: CircleImageView
+    private lateinit var dayNightSwitch: DayNightSwitch
+
+    private lateinit var preferenceManager: PreferenceManager
 
     private lateinit var db: FirebaseFirestore
     private lateinit var bottomSheetDialog: BottomSheetDialog
@@ -83,6 +89,12 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         dao = HistoryDatabase.getHistoryDatabase(requireContext()).getDao()!!
         if (viewModel == null) {
             viewModel = ViewModelProvider(this)[AccountFragmentViewModel::class.java]
+        }
+        preferenceManager = PreferenceManager(requireContext())
+        if (preferenceManager.getBoolean("dark_mode")) {
+            requireContext().setTheme(R.style.AppTheme_Base_Night)
+        } else {
+            requireContext().setTheme(R.style.AppTheme)
         }
     }
 
@@ -107,11 +119,10 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         clickedEditAccountName()
         clickedChangePasswordButton()
         clickedIconHistory()
+        switchedDarkMode()
 
         bottomNavigation.show(BottomNavigationBarItems.ACCOUNT.ordinal, true);
         setUpBottomNavigationView(bottomNavigation, view)
-
-        setProgressBar()
 
         // background colors adapter
         setupRecyclerView()
@@ -137,6 +148,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         icPalette = view.findViewById(R.id.ic_palette)
         txtFavoriteListSize = view.findViewById(R.id.txt_favoriteListSize)
         txtHistoryListSize = view.findViewById(R.id.txt_historyListSize)
+        dayNightSwitch = view.findViewById(R.id.switch_mode)
 
     }
 
@@ -161,6 +173,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
                     }else{
                         txtFavoriteListSize.text = "0"
                     }
+                    setProgressBar()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -183,7 +196,11 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
                             accountName.text = user.username
                             emailName.text = user.email
-                            capitalOfName.text = user.username[0].uppercase()
+                            try {
+                                capitalOfName.text = user.username[0].uppercase()
+                            }catch (e: IndexOutOfBoundsException){
+                                e.printStackTrace()
+                            }
                             colorInDatabase = user.color
                             circularProfileBackground.setImageResource(
                                 getProfileBackgroundColorHashMap()[colorInDatabase]!!)
@@ -212,6 +229,17 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
             requireActivity().finish()
         }
 
+    }
+
+    private fun switchedDarkMode(){
+        dayNightSwitch.setListener { isNight ->
+            if (isNight){
+                preferenceManager.putBoolean("dark_mode", true)
+            }else{
+                preferenceManager.putBoolean("dark_mode", false)
+            }
+        }
+        dayNightSwitch.setIsNight(preferenceManager.getBoolean("dark_mode"))
     }
 
     private fun clickedEditAccountName() {

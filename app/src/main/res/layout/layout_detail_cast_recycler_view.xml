@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="@string/cast_series"
-        android:textColor="@color/black"
+        android:textColor="?attr/txt_black_white"
         android:fontFamily="@font/libre_baskerville_regular"
         android:textSize="18sp"
         android:textStyle="bold" />

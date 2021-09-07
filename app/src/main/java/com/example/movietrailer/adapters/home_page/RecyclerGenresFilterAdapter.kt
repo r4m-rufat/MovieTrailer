@@ -1,5 +1,6 @@
 package com.example.movietrailer.adapters.home_page
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,7 @@ class RecyclerGenresFilterAdapter(context: Context, genreList: List<String>, fil
         return ViewHolder(view)
     }
 
+    @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: RecyclerGenresFilterAdapter.ViewHolder, position: Int) {
         holder._filter_genre.text = genreList[position]
 
@@ -40,7 +42,6 @@ class RecyclerGenresFilterAdapter(context: Context, genreList: List<String>, fil
                 holder._filter_genre.setTextColor(ContextCompat.getColor(context, R.color.white))
             }else{
                 holder._filter_genre.background = ContextCompat.getDrawable(context, R.drawable.background_unselected_filter_genre_item)
-                holder._filter_genre.setTextColor(ContextCompat.getColor(context, R.color.black))
             }
         }
 

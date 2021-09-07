@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
-    app:cardBackgroundColor="#EFEFEF"
+    app:cardBackgroundColor="?attr/background_filter"
     android:orientation="vertical"
     app:cardCornerRadius="10dp">
 
@@ -28,7 +28,7 @@
                 android:fontFamily="@font/libre_baskerville_regular"
                 android:padding="10dp"
                 android:text="Sort by:"
-                android:textColor="@color/black"
+                android:textColor="?attr/txt_black_white"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/libre_baskerville_regular"
                     android:text="Genres :"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/txt_black_white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/libre_baskerville_regular"
                     android:text="Vote average :"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/txt_black_white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 

@@ -33,9 +33,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.movietrailer.activities.home.HomeActivity
 import android.content.Context.INPUT_METHOD_SERVICE
+import androidx.appcompat.app.AppCompatDelegate
 
 import androidx.core.content.ContextCompat.getSystemService
 import com.example.movietrailer.dialogs.showClearAllHistoryDialog
+import com.example.movietrailer.internal_storage.PreferenceManager
 import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -58,6 +60,7 @@ class HistoryFragment : Fragment() {
     private lateinit var icSearch: ImageView
     private lateinit var progressDialog: KProgressHUD
     private var string: String = ""
+    private lateinit var preferenceManager: PreferenceManager
 
     private lateinit var dao: Dao
 
@@ -65,6 +68,12 @@ class HistoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         dao = HistoryDatabase.getHistoryDatabase(requireContext()).getDao()!!
         viewModel = ViewModelProvider(this)[HistoryFragmentViewModel::class.java]
+        preferenceManager = PreferenceManager(context);
+        if (preferenceManager.getBoolean("dark_mode")) {
+            requireContext().setTheme(R.style.AppTheme_Base_Night);
+        } else {
+            requireContext().setTheme(R.style.AppTheme);
+        }
     }
 
     override fun onCreateView(

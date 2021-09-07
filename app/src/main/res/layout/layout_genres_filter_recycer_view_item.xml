@@ -15,7 +15,7 @@
         android:paddingRight="8dp"
         android:paddingLeft="8dp"
         android:text="Comedy"
-        android:textColor="@color/black"
+        android:textColor="?attr/txt_black_white"
         android:background="@drawable/background_unselected_filter_genre_item"/>
 
 </LinearLayout>

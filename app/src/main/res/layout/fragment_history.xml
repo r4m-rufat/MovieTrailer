@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/background_white_black"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.account.HistoryFragment">
 
@@ -37,7 +38,7 @@
                     android:inputType="text"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:textColor="@color/black" />
+                    android:textColor="?attr/txt_black_white" />
 
                 <ImageView
                     android:id="@+id/ic_search"
@@ -48,7 +49,7 @@
                     android:background="@drawable/background_search_icon"
                     android:padding="5dp"
                     android:src="@drawable/ic_search"
-                    app:tint="@color/blue" />
+                    app:tint="?attr/blue_white" />
 
                 <ImageView
                     android:id="@+id/ic_clearAll"
@@ -56,7 +57,7 @@
                     android:layout_height="45dp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/ic_delete"
-                    app:tint="@color/blue" />
+                    app:tint="?attr/blue_white" />
 
             </RelativeLayout>
 

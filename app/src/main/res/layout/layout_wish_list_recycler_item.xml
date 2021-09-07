@@ -12,6 +12,7 @@
         android:layout_width="120dp"
         android:layout_height="140dp"
         android:id="@+id/card_wish_list"
+        app:cardBackgroundColor="?attr/fc_white_black"
         app:cardCornerRadius="20dp">
 
         <ImageView
@@ -20,7 +21,6 @@
             android:src="@drawable/ic_logo"
             android:scaleType="centerCrop"
             android:id="@+id/wish_listImage"
-            android:background="@drawable/background_cast_item"
             />
 
     </androidx.cardview.widget.CardView>
@@ -37,7 +37,7 @@
         android:fontFamily="@font/libre_baskerville_regular"
         android:maxLines="2"
         android:text="The Suicide Squad"
-        android:textColor="@color/black"
+        android:textColor="?attr/txt_black_white"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -52,6 +52,7 @@
         android:layout_toRightOf="@id/card_wish_list"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="?attr/gray_white"
         android:text="Drama | Crime | Adventure"
         android:textSize="14sp"
         android:textStyle="italic" />

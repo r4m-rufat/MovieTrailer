@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.movietrailer.R;
 import com.example.movietrailer.adapters.wish_list.WishListAdapter;
+import com.example.movietrailer.internal_storage.PreferenceManager;
 import com.example.movietrailer.models.wish_list.WishList;
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems;
 import com.example.movietrailer.viewmodels.wish_list.WishListFragmentViewModel;
@@ -32,11 +33,18 @@ public class WishListFragment extends Fragment {
     private WishListFragmentViewModel wishListFragmentViewModel;
     private WishListAdapter wishListAdapter;
     private SpinKitView progressBar;
+    private PreferenceManager preferenceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         wishListFragmentViewModel = new ViewModelProvider(this).get(WishListFragmentViewModel.class);
+        preferenceManager = new PreferenceManager(requireContext());
+        if (preferenceManager.getBoolean("dark_mode")) {
+            requireContext().setTheme(R.style.AppTheme_Base_Night);
+        } else {
+            requireContext().setTheme(R.style.AppTheme);
+        }
     }
 
     @Override

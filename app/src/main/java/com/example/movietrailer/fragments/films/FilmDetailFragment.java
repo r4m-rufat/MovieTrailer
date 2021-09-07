@@ -35,6 +35,7 @@ import com.example.movietrailer.adapters.detail_page.HorizontalSimilarFilmsAdapt
 import com.example.movietrailer.db.Dao;
 import com.example.movietrailer.db.History;
 import com.example.movietrailer.db.HistoryDatabase;
+import com.example.movietrailer.internal_storage.PreferenceManager;
 import com.example.movietrailer.models.detail_model.casts.CastItem;
 import com.example.movietrailer.models.detail_model.casts.CastResponse;
 import com.example.movietrailer.models.detail_model.casts.CrewItem;
@@ -74,6 +75,7 @@ public class FilmDetailFragment extends Fragment {
     private NestedScrollView nestedFilmDetail;
     private SpinKitView progressBar;
     private History history;
+    private PreferenceManager preferenceManager;
 
     private Dao dao;
 
@@ -93,6 +95,13 @@ public class FilmDetailFragment extends Fragment {
             filmDetailFragmentViewModel = new ViewModelProvider(this).get(FilmDetailFragmentViewModel.class);
             dao = HistoryDatabase.Companion.getHistoryDatabase(context).getDao();
         }
+        preferenceManager = new PreferenceManager(context);
+        if (preferenceManager.getBoolean("dark_mode")) {
+            requireContext().setTheme(R.style.AppTheme_Base_Night);
+        } else {
+            requireContext().setTheme(R.style.AppTheme);
+        }
+        CheckConnectionAsynchronously.INSTANCE.init(context);
 
     }
 

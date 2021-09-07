@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/background_white_black"
     tools:context=".fragments.films.FilmDetailFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -21,9 +22,9 @@
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
+                    android:id="@+id/rel_video"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:id="@+id/rel_video">
+                    android:layout_height="250dp">
 
                     <ImageView
                         android:id="@+id/detailVideoPicture"
@@ -68,21 +69,21 @@
                 </RelativeLayout>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/small_card_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="10dp"
                     android:layout_below="@+id/rel_video"
-                    android:layout_marginTop="-75dp"
                     android:layout_marginLeft="10dp"
-                    android:id="@+id/small_card_image">
+                    android:layout_marginTop="-75dp"
+                    app:cardBackgroundColor="?attr/background_white_black"
+                    app:cardCornerRadius="10dp">
 
                     <ImageView
                         android:id="@+id/film_backdrop_image"
                         android:layout_width="100dp"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background"
-                        />
+                        android:src="@drawable/ic_launcher_background" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -90,125 +91,127 @@
                     android:id="@+id/rel_time_rating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/small_card_image"
                     android:layout_below="@id/rel_video"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/small_card_image">
 
                     <LinearLayout
+                        android:id="@+id/linearFilmTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/linearFilmTime"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginLeft="5dp"
-                            android:src="@drawable/ic_time"/>
+                            android:src="@drawable/ic_time" />
 
                         <TextView
                             android:id="@+id/txt_trailer_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:textColor="@color/gray"
-                            android:paddingLeft="5dp"
                             android:fontFamily="monospace"
-                            android:text="loading..."/>
+                            android:paddingLeft="5dp"
+                            android:text="loading..."
+                            android:textColor="?attr/gray_white"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linearRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_alignParentEnd="true"
-                        android:id="@+id/linearRating"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginLeft="5dp"
-                            android:src="@drawable/ic_star"/>
+                            android:src="@drawable/ic_star" />
 
                         <TextView
                             android:id="@+id/txt_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:textColor="@color/gray"
-                            android:textStyle="bold"
-                            android:paddingLeft="5dp"
                             android:layout_marginRight="10dp"
                             android:fontFamily="monospace"
-                            android:text="loading..."/>
+                            android:paddingLeft="5dp"
+                            android:text="loading..."
+                            android:textColor="?attr/gray_white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                 </RelativeLayout>
 
-               <RelativeLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="5dp"
-                   android:layout_marginLeft="5dp"
-                   android:layout_centerVertical="true"
-                   android:layout_below="@id/rel_time_rating"
-                   android:layout_toRightOf="@id/small_card_image">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rel_time_rating"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/small_card_image">
 
-                   <LinearLayout
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:orientation="horizontal"
-                       android:id="@+id/linearBudget"
-                       android:gravity="center">
+                    <LinearLayout
+                        android:id="@+id/linearBudget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                       <ImageView
-                           android:layout_width="24dp"
-                           android:layout_height="24dp"
-                           android:src="@drawable/ic_dollar"/>
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_dollar" />
 
-                       <TextView
-                           android:id="@+id/txt_budget"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:text="loading..."
-                           android:fontFamily="monospace"
-                           android:layout_marginLeft="5dp"
-                           android:textStyle="bold"
-                           android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/txt_budget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="monospace"
+                            android:text="loading..."
+                            android:textColor="?attr/gray_white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
-                   </LinearLayout>
+                    </LinearLayout>
 
-                   <LinearLayout
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_alignParentRight="true"
-                       android:orientation="horizontal"
-                       android:id="@+id/linearCalendar"
-                       android:gravity="center">
+                    <LinearLayout
+                        android:id="@+id/linearCalendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                       <ImageView
-                           android:layout_width="20dp"
-                           android:layout_height="20dp"
-                           android:src="@drawable/ic_calendar"/>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_calendar" />
 
-                       <TextView
-                           android:id="@+id/txt_release_date"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:text="loading..."
-                           android:fontFamily="monospace"
-                           android:layout_marginLeft="5dp"
-                           android:layout_marginRight="10dp"
-                           android:textStyle="bold"
-                           android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/txt_release_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:fontFamily="monospace"
+                            android:text="loading..."
+                            android:textColor="?attr/gray_white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
-                   </LinearLayout>
+                    </LinearLayout>
 
-               </RelativeLayout>
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -221,10 +224,11 @@
                     android:id="@+id/genreRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@+id/heart_button"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="15dp" />
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toLeftOf="@+id/heart_button"
+                    android:background="?attr/background_white_black" />
 
                 <ToggleButton
                     android:id="@+id/heart_button"
@@ -232,8 +236,8 @@
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="10dp"
                     android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
                     android:background="@drawable/selector_state_like_button"
                     android:textOff=""
                     android:textOn="" />
@@ -243,40 +247,36 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Storyline"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/libre_baskerville_regular"
-                android:textColor="@color/black"/>
+                android:text="Storyline"
+                android:textColor="?attr/txt_black_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/black"
+                android:layout_marginRight="10dp"
                 android:text="loading..."
-                android:textSize="14sp"/>
+                android:textColor="?attr/gray_white"
+                android:textSize="14sp" />
 
-            <include
-                layout="@layout/layout_detail_cast_recycler_view"/>
+            <include layout="@layout/layout_detail_cast_recycler_view" />
 
-            <include
-                layout="@layout/layout_detail_personal_staff_recycler_view"/>
+            <include layout="@layout/layout_detail_personal_staff_recycler_view" />
 
-            <include
-                layout="@layout/layout_similar_films_recycler_view"/>
+            <include layout="@layout/layout_similar_films_recycler_view" />
 
-            <include
-                layout="@layout/layout_review_recycler_view"/>
+            <include layout="@layout/layout_review_recycler_view" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp" />
 
         </LinearLayout>
 

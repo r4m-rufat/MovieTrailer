@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/background_white_black"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.films.FilmsFragment">
 
@@ -19,7 +20,8 @@
             android:id="@+id/rel_category"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:background="?attr/background_white_black">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_categories"
@@ -37,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/circularProgressBar"
             android:layout_below="@id/rel_category"
+            android:background="@android:color/transparent"
             android:layoutAnimation="@anim/layout_animation" />
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -80,6 +83,7 @@
         android:layout_alignParentRight="true"
         android:visibility="gone"
         android:layout_marginTop="5dp"
+        android:background="?attr/background_white_black"
         android:layout_marginRight="10dp">
 
         <include

@@ -146,4 +146,7 @@ dependencies {
     // Balloon
     implementation "com.github.skydoves:balloon:1.3.6"
 
+    // Day Night switch
+    implementation 'com.github.vimalcvs:Day-Night-Switch:1.0.3'
+
 }

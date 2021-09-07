@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="?attr/fc_white_black"
         android:layout_margin="0.5dp">
 
         <LinearLayout
@@ -36,7 +37,7 @@
                 android:paddingRight="5dp"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textColor="@color/black"
+                android:textColor="?attr/txt_black_white"
                 android:textStyle="bold"
                 android:text="Uday Chopra"/>
 
@@ -49,7 +50,7 @@
                 android:paddingRight="5dp"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textColor="@color/black"
+                android:textColor="?attr/txt_black_white"
                 android:fontFamily="sans-serif-thin"
                 android:text="Director"/>
 

@@ -40,6 +40,7 @@ import com.example.movietrailer.R;
 import com.example.movietrailer.adapters.home_page.HorizontalCategoryAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerFilmsAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerGenresFilterAdapter;
+import com.example.movietrailer.internal_storage.PreferenceManager;
 import com.example.movietrailer.models.discover_model.ResultsItem;
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems;
 import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously;
@@ -73,6 +74,7 @@ public class FilmsFragment extends Fragment
     private Spinner sortBySpinner;
     private TextView saveFilter;
     private boolean showFilter = true;
+    private PreferenceManager preferenceManager;
 
     // for width
     private WindowManager manager;
@@ -92,6 +94,13 @@ public class FilmsFragment extends Fragment
         super.onCreate(savedInstanceState);
         context = getContext();
         filmsFragmentViewModel = new ViewModelProvider(this).get(FilmsFragmentViewModel.class);
+        preferenceManager = new PreferenceManager(context);
+        if (preferenceManager.getBoolean("dark_mode")) {
+            requireContext().setTheme(R.style.AppTheme_Base_Night);
+        } else {
+            requireContext().setTheme(R.style.AppTheme);
+        }
+        CheckConnectionAsynchronously.INSTANCE.init(context);
     }
 
     @Override
@@ -105,7 +114,6 @@ public class FilmsFragment extends Fragment
         setCategoryRecyclerViewSetups();
         setUpRecyclerView();
 
-        CheckConnectionAsynchronously.INSTANCE.init(context);
         checkInternetConnectionAndSetWidgetsItem();
 
         // when progressbar visible or gone in loading proses

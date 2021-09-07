@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginBottom="3dp"
+    android:background="?attr/background_white_black"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
@@ -17,6 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?attr/background_white_black"
             android:gravity="center_vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -35,10 +37,11 @@
                 android:background="@drawable/selector_search_edit_text"
                 android:drawableRight="@drawable/selector_search_edit_text_icon"
                 android:hint="Search"
+                android:textColorHint="?attr/gray_white"
                 android:inputType="text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/txt_black_white" />
 
             <ImageView
                 android:id="@+id/ic_filter"

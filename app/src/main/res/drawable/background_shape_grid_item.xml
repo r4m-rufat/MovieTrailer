@@ -3,8 +3,11 @@
 
     <stroke
         android:width="0.5dp"
-        android:color="@color/gray"/>
+        android:color="?attr/gray_white"/>
 
     <corners android:radius="10dp"/>
+
+    <solid
+        android:color="?attr/background_white_black"/>
 
 </shape>

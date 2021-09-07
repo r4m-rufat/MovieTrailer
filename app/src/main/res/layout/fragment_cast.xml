@@ -10,6 +10,7 @@
         android:id="@+id/linearCast"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/background_white_black"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -99,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/txt_black_white"
                     android:text="@string/images"
                     android:layout_marginLeft="10dp"
                     android:textStyle="bold"
@@ -118,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/txt_black_white"
                     android:text="@string/biography"
                     android:layout_marginLeft="10dp"
                     android:textStyle="bold"
@@ -130,6 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
+                    android:textColor="?attr/gray_white"
                     android:text="Willi One Blood (born William Harbour, Jr.) is a reggae singer and actor, formerly New York-based and now in Miami. He is best known for the song"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"/>
@@ -138,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/txt_black_white"
                     android:text="@string/born"
                     android:layout_marginLeft="10dp"
                     android:textStyle="bold"
@@ -150,6 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
+                    android:textColor="?attr/gray_white"
                     android:text="October 15 2001"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"

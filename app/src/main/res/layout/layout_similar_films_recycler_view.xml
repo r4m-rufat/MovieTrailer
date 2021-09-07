@@ -10,7 +10,7 @@
         android:layout_margin="10dp"
         android:text="@string/similar_films"
         android:fontFamily="@font/libre_baskerville_regular"
-        android:textColor="@color/black"
+        android:textColor="?attr/txt_black_white"
         android:textSize="18sp"
         android:textStyle="bold" />
 

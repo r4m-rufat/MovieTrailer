@@ -1,6 +1,7 @@
 package com.example.movietrailer.dialogs
 
 import android.content.Context
+import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -28,20 +29,23 @@ fun editAccountBottomSheetDialog(
     saveButton!!.setOnClickListener {
 
         var hashMap: HashMap<String, Any> = HashMap()
-        hashMap["username"] = editAccount.text.toString()
-        db.collection("users")
-            .document(user.uid)
-            .update(hashMap)
-            .addOnSuccessListener {
-                Toast.makeText(context, "Username successfully changed", Toast.LENGTH_SHORT).show()
-                onCLick ()
-            }
-            .addOnFailureListener {
-                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
-            }
+        if (!TextUtils.isEmpty(editAccount.text.toString())){
+            hashMap["username"] = editAccount.text.toString()
+            db.collection("users")
+                .document(user.uid)
+                .update(hashMap)
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Username successfully changed", Toast.LENGTH_SHORT).show()
+                    onCLick ()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
 
-        bottomSheetDialog.dismiss()
-
+            bottomSheetDialog.dismiss()
+        }else if (editAccount.text.toString().length < 4){
+            editAccount.error = "Required 4 and more character"
+        }
     }
 
     bottomSheetDialog.show()
