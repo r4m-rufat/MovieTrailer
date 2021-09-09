@@ -1,9 +1,7 @@
 package com.example.movietrailer.db
 
+import androidx.room.*
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
 
 @Dao
 interface Dao {

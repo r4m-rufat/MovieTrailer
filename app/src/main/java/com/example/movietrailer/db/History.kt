@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 class History(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
+    var uid: String,
     var filmID: Int,
     var filmTitle: String? = null,
     var filmImage: String? = null,

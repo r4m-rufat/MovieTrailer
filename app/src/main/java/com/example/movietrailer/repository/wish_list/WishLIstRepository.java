@@ -25,7 +25,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class WishLIstRepository {
 
     private static WishLIstRepository repository;
-    private static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private static FirebaseUser user;
     private static FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static DatabaseReference reference = db.getReference();
     private static CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -42,6 +42,7 @@ public class WishLIstRepository {
             MutableLiveData<Boolean> loading
     ) {
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
         MutableLiveData<List<WishList>> listMutableLiveData = new MutableLiveData<>();
 
         reference.child("user_wish_list")

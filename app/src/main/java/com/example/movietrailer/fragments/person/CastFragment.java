@@ -56,9 +56,9 @@ public class CastFragment extends Fragment {
         }
         preferenceManager = new PreferenceManager(context);
         if (preferenceManager.getBoolean("dark_mode")) {
-            requireContext().setTheme(R.style.AppTheme_Base_Night);
+            context.setTheme(R.style.AppTheme_Base_Night);
         } else {
-            requireContext().setTheme(R.style.AppTheme);
+            context.setTheme(R.style.Theme_MovieTrailer);
         }
         CheckConnectionAsynchronously.INSTANCE.init(context);
     }

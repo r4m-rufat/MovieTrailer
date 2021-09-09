@@ -8,8 +8,6 @@ fun convertGenresListToString(list: List<GenresItem>): String{
     try {
         when(list.size){
 
-            0 -> string
-
             1 -> {
                 string = list[0].name
             }

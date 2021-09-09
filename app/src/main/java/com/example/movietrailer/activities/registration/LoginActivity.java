@@ -135,7 +135,6 @@ public class LoginActivity extends AppCompatActivity {
             circularSignInButton.startAnimation();
 
             auth = FirebaseAuth.getInstance();
-            user = auth.getCurrentUser();
 
             /**
              * checks username is email type or not if

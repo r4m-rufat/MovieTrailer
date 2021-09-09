@@ -70,9 +70,9 @@ class HistoryFragment : Fragment() {
         viewModel = ViewModelProvider(this)[HistoryFragmentViewModel::class.java]
         preferenceManager = PreferenceManager(context);
         if (preferenceManager.getBoolean("dark_mode")) {
-            requireContext().setTheme(R.style.AppTheme_Base_Night);
+            requireContext().setTheme(R.style.AppTheme_Base_Night)
         } else {
-            requireContext().setTheme(R.style.AppTheme);
+            requireContext().setTheme(R.style.Theme_MovieTrailer)
         }
     }
 

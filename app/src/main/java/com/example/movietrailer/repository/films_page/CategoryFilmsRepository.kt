@@ -52,10 +52,10 @@ class CategoryFilmsRepository {
                 if (film_list.value != null){
                     old_film_list = film_list.value
                     old_film_list?.let {
-                        new_film_list!!.addAll(it)
+                        new_film_list.addAll(it)
                     }
                 }
-                new_film_list!!.addAll(response.body()!!.results)
+                new_film_list.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
                 loading.postValue(false)
                 Log.d(TAG, "getTopRatedFilmList: top rated films successfully comes")

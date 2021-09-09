@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
@@ -21,8 +22,8 @@ import com.example.movietrailer.db.Dao
 import com.example.movietrailer.db.HistoryDatabase
 import com.example.movietrailer.dialogs.changePasswordBottomSheetDialog
 import com.example.movietrailer.dialogs.editAccountBottomSheetDialog
+import com.example.movietrailer.dialogs.signOutDialog
 import com.example.movietrailer.internal_storage.PreferenceManager
-import com.example.movietrailer.models.wish_list.WishList
 import com.example.movietrailer.utils.balloons.showEditBalloon
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems
 import com.example.movietrailer.utils.bottom_navigation.setUpBottomNavigationView
@@ -87,14 +88,13 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dao = HistoryDatabase.getHistoryDatabase(requireContext()).getDao()!!
-        if (viewModel == null) {
-            viewModel = ViewModelProvider(this)[AccountFragmentViewModel::class.java]
-        }
+
+        viewModel = ViewModelProvider(this)[AccountFragmentViewModel::class.java]
         preferenceManager = PreferenceManager(requireContext())
         if (preferenceManager.getBoolean("dark_mode")) {
             requireContext().setTheme(R.style.AppTheme_Base_Night)
         } else {
-            requireContext().setTheme(R.style.AppTheme)
+            requireContext().setTheme(R.style.Theme_MovieTrailer)
         }
     }
 
@@ -128,6 +128,8 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         setupRecyclerView()
         clickedPaletteIcon()
 
+        setProgressBar()
+
         return view
     }
 
@@ -152,35 +154,23 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
     }
 
-    private fun setHistorySize(){
+    private fun setHistorySize() {
 
-        txtHistoryListSize.text = dao.getAllHistoryList().size.toString()
+        var size = 0
+        for (i in dao.getAllHistoryList()){
+            if (i.uid == firebaseAuth.currentUser!!.uid){
+                size++
+            }
+        }
+        txtHistoryListSize.text = size.toString()
 
     }
 
-    private fun setFavoriteSize(){
+    private fun setFavoriteSize() {
 
-        dbreference.child("user_wish_list")
-            .child(FirebaseAuth.getInstance().currentUser!!.uid)
-            .addValueEventListener(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    var size = 0
-                    if (snapshot.exists()){
-                        for (single_snapshot in snapshot.children){
-                            size+=1
-                        }
-                        txtFavoriteListSize.text = size.toString()
-                    }else{
-                        txtFavoriteListSize.text = "0"
-                    }
-                    setProgressBar()
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d(TAG, "onCancelled: Error is ${error.message}")
-                }
-
-            })
+        viewModel!!.getFavoriteListSize().observe(viewLifecycleOwner, { size ->
+            txtFavoriteListSize.text = size.toString()
+        })
 
     }
 
@@ -188,7 +178,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
         CheckConnectionAsynchronously.observe(viewLifecycleOwner, {
 
-            viewModel!!.getUserInfo().observe(requireActivity(),
+            viewModel!!.getUserInfo().observe(viewLifecycleOwner,
                 { user ->
                     user?.let {
 
@@ -198,12 +188,13 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
                             emailName.text = user.email
                             try {
                                 capitalOfName.text = user.username[0].uppercase()
-                            }catch (e: IndexOutOfBoundsException){
+                            } catch (e: IndexOutOfBoundsException) {
                                 e.printStackTrace()
                             }
                             colorInDatabase = user.color
                             circularProfileBackground.setImageResource(
-                                getProfileBackgroundColorHashMap()[colorInDatabase]!!)
+                                getProfileBackgroundColorHashMap()[colorInDatabase]!!
+                            )
                             profileBackgroundAdapter.updateSelectedItem(colorInDatabase)
                             Log.d(TAG, "getAccountInfo: user info came")
 
@@ -215,7 +206,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         })
     }
 
-    private fun clickedIconHistory(){
+    private fun clickedIconHistory() {
         icHistory.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_to_viewHistoryFragment)
         }
@@ -224,21 +215,32 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private fun clickedSignOutButton() {
 
         signOut.setOnClickListener {
-            firebaseAuth.signOut()
-            startActivity(Intent(context, LoginActivity::class.java))
-            requireActivity().finish()
+            signOutDialog(
+                requireContext(),
+                onClickSignOut = {
+                    firebaseAuth.signOut()
+                    startActivity(Intent(context, LoginActivity::class.java))
+                    requireActivity().finish()
+                }
+            )
         }
 
     }
 
-    private fun switchedDarkMode(){
-        dayNightSwitch.setListener { isNight ->
-            if (isNight){
-                preferenceManager.putBoolean("dark_mode", true)
-            }else{
+    private fun switchedDarkMode() {
+        dayNightSwitch.setOnClickListener {
+            val navController: NavController = requireActivity().findNavController(R.id.main_nav_graph)
+            if (preferenceManager.getBoolean("dark_mode")){
                 preferenceManager.putBoolean("dark_mode", false)
+            }else{
+                preferenceManager.putBoolean("dark_mode", true)
+            }
+            navController.apply {
+                popBackStack()
+                navigate(R.id.viewAccountFragment)
             }
         }
+
         dayNightSwitch.setIsNight(preferenceManager.getBoolean("dark_mode"))
     }
 
@@ -346,39 +348,45 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
     private fun setupRecyclerView() {
         profileBackgroundAdapter =
-            ProfileBackgroundAdapter(requireContext(), getProfileBackgroundList(), colorInDatabase, this)
+            ProfileBackgroundAdapter(
+                requireContext(),
+                getProfileBackgroundList(),
+                colorInDatabase,
+                this
+            )
         backgroundRecycler.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(false)
             adapter = profileBackgroundAdapter
         }
     }
+
     private fun setBackgroundColorToGlobalDatabase(newColor: String) {
         val hasMap = HashMap<String, Any>()
         hasMap["color"] = newColor
 
-       CheckConnectionAsynchronously.observe(viewLifecycleOwner, { connection ->
+        CheckConnectionAsynchronously.observe(this, { connection ->
 
-           if (connection){
-               db.collection("users")
-                   .document(firebaseAuth.currentUser!!.uid)
-                   .update(hasMap)
-                   .addOnSuccessListener {
-                       Log.d(
-                           TAG,
-                           "setBackgroundColorToGlobalDatabase: color successfully added to global database. Color: $newColor"
-                       )
-                   }.addOnFailureListener {
-                       Log.d(
-                           TAG,
-                           "setBackgroundColorToGlobalDatabase: database error. Reason -> ${it.message}"
-                       )
-                   }
-           }else{
-               Toast.makeText(context, "Please, check internet connection!", Toast.LENGTH_SHORT)
-                   .show()
-           }
-       })
+            if (connection) {
+                db.collection("users")
+                    .document(firebaseAuth.currentUser!!.uid)
+                    .update(hasMap)
+                    .addOnSuccessListener {
+                        Log.d(
+                            TAG,
+                            "setBackgroundColorToGlobalDatabase: color successfully added to global database. Color: $newColor"
+                        )
+                    }.addOnFailureListener {
+                        Log.d(
+                            TAG,
+                            "setBackgroundColorToGlobalDatabase: database error. Reason -> ${it.message}"
+                        )
+                    }
+            } else {
+                Toast.makeText(context, "Please, check internet connection!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 
     override fun onClickedItemCallBack(color: String) {

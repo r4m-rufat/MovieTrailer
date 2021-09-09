@@ -45,9 +45,7 @@ class HistoryAdapter(context: Context): RecyclerView.Adapter<HistoryAdapter.View
     }
 
     override fun getItemCount(): Int {
-        if (historyList != null){
-            return historyList.size
-        }
+        return historyList.size
         return 0
     }
 

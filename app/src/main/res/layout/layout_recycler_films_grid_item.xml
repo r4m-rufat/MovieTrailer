@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="10dp"
+        app:cardBackgroundColor="?attr/fc_white_black"
         android:outlineSpotShadowColor="@color/white"
         app:cardCornerRadius="10dp">
 

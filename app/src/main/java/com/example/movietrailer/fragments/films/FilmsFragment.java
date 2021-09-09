@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,16 +90,29 @@ public class FilmsFragment extends Fragment
     private boolean clickCategoryItem = false;
     private TopCategoriesItem item = TopCategoriesItem.DISCOVER;
 
+    private String filter_routes[] = {
+            "popularity.desc",
+            "popularity.asc",
+            "release_date.desc",
+            "release_date.asc",
+            "revenue.desc",
+            "revenue.asc",
+            "vote_average.desc",
+            "vote_average.asc"
+    };
+
+    private ArrayAdapter<String> spinnerAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getContext();
+        context = requireContext();
         filmsFragmentViewModel = new ViewModelProvider(this).get(FilmsFragmentViewModel.class);
         preferenceManager = new PreferenceManager(context);
         if (preferenceManager.getBoolean("dark_mode")) {
-            requireContext().setTheme(R.style.AppTheme_Base_Night);
+            context.setTheme(R.style.AppTheme_Base_Night);
         } else {
-            requireContext().setTheme(R.style.AppTheme);
+            context.setTheme(R.style.Theme_MovieTrailer);
         }
         CheckConnectionAsynchronously.INSTANCE.init(context);
     }
@@ -413,6 +427,9 @@ public class FilmsFragment extends Fragment
 
     private void selectedSpinnerItem(){
 
+        spinnerAdapter = new ArrayAdapter(context, R.layout.layout_spinner_color, filter_routes);
+        spinnerAdapter.setDropDownViewResource(R.layout.layout_custom_dropdown_spinner);
+        sortBySpinner.setAdapter(spinnerAdapter);
         sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

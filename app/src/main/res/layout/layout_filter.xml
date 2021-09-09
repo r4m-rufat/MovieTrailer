@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_gravity="end"
     app:cardBackgroundColor="?attr/background_filter"
+    android:outlineSpotShadowColor="@android:color/transparent"
+    android:outlineAmbientShadowColor="@android:color/transparent"
     android:orientation="vertical"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="15dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -38,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginRight="5dp"
+                android:popupBackground="?attr/background_white_black"
                 android:background="@drawable/background_spinner_filter"
-                android:entries="@array/sort_by"
                 android:padding="8dp"/>
 
         </LinearLayout>
@@ -119,6 +121,5 @@
             android:layout_marginRight="10dp"/>
 
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>

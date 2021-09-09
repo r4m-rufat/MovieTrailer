@@ -36,12 +36,13 @@
                 android:layout_toRightOf="@+id/ic_logo"
                 android:background="@drawable/selector_search_edit_text"
                 android:drawableRight="@drawable/selector_search_edit_text_icon"
-                android:hint="Search"
-                android:textColorHint="?attr/gray_white"
+                android:hint="Search for a movie"
                 android:inputType="text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textColor="?attr/txt_black_white" />
+                android:ellipsize="end"
+                android:textColor="?attr/txt_black_white"
+                android:textColorHint="@color/gray"/>
 
             <ImageView
                 android:id="@+id/ic_filter"

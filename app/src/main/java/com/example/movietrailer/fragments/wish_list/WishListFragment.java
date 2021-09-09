@@ -2,6 +2,7 @@ package com.example.movietrailer.fragments.wish_list;
 
 import static com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarSetupKt.setUpBottomNavigationView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,16 +35,18 @@ public class WishListFragment extends Fragment {
     private WishListAdapter wishListAdapter;
     private SpinKitView progressBar;
     private PreferenceManager preferenceManager;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = requireContext();
         wishListFragmentViewModel = new ViewModelProvider(this).get(WishListFragmentViewModel.class);
-        preferenceManager = new PreferenceManager(requireContext());
+        preferenceManager = new PreferenceManager(context);
         if (preferenceManager.getBoolean("dark_mode")) {
-            requireContext().setTheme(R.style.AppTheme_Base_Night);
+            context.setTheme(R.style.AppTheme_Base_Night);
         } else {
-            requireContext().setTheme(R.style.AppTheme);
+            context.setTheme(R.style.Theme_MovieTrailer);
         }
     }
 
@@ -74,9 +77,9 @@ public class WishListFragment extends Fragment {
 
     private void setUpRecyclerView(){
 
-        recyclerWishList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerWishList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerWishList.setHasFixedSize(true);
-        wishListAdapter = new WishListAdapter(getContext());
+        wishListAdapter = new WishListAdapter(context);
 
     }
 
@@ -86,7 +89,7 @@ public class WishListFragment extends Fragment {
             @Override
             public void onChanged(List<WishList> wishLists) {
                 LayoutAnimationController controller =
-                        AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation);
+                        AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation);
                 recyclerWishList.setLayoutAnimation(controller);
                 wishListAdapter.updateWishList(wishLists);
             }

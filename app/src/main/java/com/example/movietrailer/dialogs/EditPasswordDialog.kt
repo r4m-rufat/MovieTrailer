@@ -27,11 +27,11 @@ fun changePasswordBottomSheetDialog(
 
     saveButton!!.setOnClickListener {
 
-        if (currentPassword!!.text.trim().toString() != password && !TextUtils.isEmpty(currentPassword!!.text)){
+        if (currentPassword!!.text.trim().toString() != password && !TextUtils.isEmpty(currentPassword.text)){
             Toast.makeText(context, "current password is false", Toast.LENGTH_SHORT).show()
         }
 
-        if (TextUtils.isEmpty(currentPassword!!.text)){
+        if (TextUtils.isEmpty(currentPassword.text)){
             currentPassword.error = "write a password"
         }
 
@@ -54,7 +54,7 @@ fun changePasswordBottomSheetDialog(
         if (newPassword.text.length >= 6
             && confirmPassword.text.length >= 6
             && !confirmPassword.text.equals(newPassword.text)
-            && currentPassword!!.text.equals(password)){
+            && currentPassword.text.equals(password)){
 
             Toast.makeText(context, "passwords don't match", Toast.LENGTH_SHORT).show()
 
@@ -63,7 +63,7 @@ fun changePasswordBottomSheetDialog(
         if (newPassword.text.length >= 6
             && confirmPassword.text.length >= 6
             && confirmPassword.text.trim().toString() == newPassword.text.trim().toString()
-            && currentPassword!!.text.trim().toString() == password){
+            && currentPassword.text.trim().toString() == password){
 
             var hashMap: HashMap<String, Any> = HashMap()
             hashMap["password"] = newPassword.text.trim().toString()

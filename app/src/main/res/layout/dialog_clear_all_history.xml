@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    app:cardBackgroundColor="?attr/background_white_black"
     app:cardCornerRadius="10dp">
 
     <LinearLayout
@@ -19,14 +20,14 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_close"
-            app:tint="@color/black" />
+            app:tint="?attr/txt_black_white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Are you sure clear all history?"
-            android:textColor="@color/black"
+            android:textColor="?attr/txt_black_white"
             android:textStyle="bold"
             android:textSize="16sp" />
 
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
+                android:textColor="?attr/gray_white"
                 android:text="If you clear all history, you can't recover it again!"
                 android:textSize="13sp" />
 
@@ -74,6 +76,7 @@
                     android:paddingRight="8dp"
                     android:paddingBottom="5dp"
                     android:text="Cancel"
+                    android:textColor="?attr/gray_white"
                     android:textSize="14sp" />
 
             </RelativeLayout>

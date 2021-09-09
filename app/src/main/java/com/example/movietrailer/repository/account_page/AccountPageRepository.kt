@@ -11,7 +11,10 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
@@ -35,8 +38,7 @@ class AccountPageRepository {
     }
 
     fun getAccountInfo(
-        userData: MutableLiveData<User>,
-        loading: MutableLiveData<Boolean>
+        userData: MutableLiveData<User>
     ): MutableLiveData<User>{
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -44,7 +46,6 @@ class AccountPageRepository {
 
         CoroutineScope(IO).launch {
 
-            loading.postValue(true)
             Log.d(TAG, "getAccountInfo: ${user!!.uid}")
 
             val source = Source.CACHE
@@ -58,7 +59,6 @@ class AccountPageRepository {
                     val uID = document.getString("uID")
                     val color = document.getString("color")
                     userData.postValue(User(uID, email, password, username, color))
-                    loading.postValue(false)
                     Log.d(TAG, "getAccountInfo: Successfully comes")
                 }
                 .addOnFailureListener {
@@ -69,6 +69,29 @@ class AccountPageRepository {
 
         return userData
 
+    }
+
+    fun getListSize(loading: MutableLiveData<Boolean>): MutableLiveData<Int>{
+        var size: MutableLiveData<Int> = MutableLiveData(0)
+        FirebaseDatabase.getInstance().reference.child("user_wish_list")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (single_snapshot in snapshot.children) {
+                            size.value = size.value!!.plus(1)
+                        }
+                    }
+                    loading.postValue(false)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(com.example.movietrailer.utils.constants.TAG, "onCancelled: Error is ${error.message}")
+                    loading.postValue(false)
+                }
+
+            })
+        return size
     }
 
 }

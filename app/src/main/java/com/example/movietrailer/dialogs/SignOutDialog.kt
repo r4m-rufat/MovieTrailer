@@ -7,14 +7,14 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.example.movietrailer.R
 
-fun showClearAllHistoryDialog(context: Context, onCLick: () -> Unit){
+fun signOutDialog(context: Context, onClickSignOut: () -> Unit){
 
     val dialog = Dialog(context, R.style.DialogStyle)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-    dialog.setContentView(R.layout.dialog_clear_all_history)
+    dialog.setContentView(R.layout.dialog_sign_out_account)
 
     val cancelButton = dialog.findViewById<RelativeLayout>(R.id.rel_cancel)
-    val clearButton = dialog.findViewById<RelativeLayout>(R.id.rel_clear)
+    val signOutButton = dialog.findViewById<RelativeLayout>(R.id.rel_singOut)
     val closeButton = dialog.findViewById<ImageView>(R.id.ic_closeDialog)
 
     cancelButton.setOnClickListener {
@@ -25,8 +25,8 @@ fun showClearAllHistoryDialog(context: Context, onCLick: () -> Unit){
         dialog.dismiss()
     }
 
-    clearButton.setOnClickListener {
-        onCLick()
+    signOutButton.setOnClickListener {
+        onClickSignOut()
         dialog.dismiss()
     }
 

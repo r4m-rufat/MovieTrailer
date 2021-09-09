@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.movietrailer.db.History
 import com.example.movietrailer.db.HistoryDatabase
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -26,7 +27,18 @@ class HistoryFragmentViewModel(app: Application): AndroidViewModel(app) {
 
         CoroutineScope(IO).launch {
 
-            historyList.postValue(dao?.getAllHistoryList())
+            var list: MutableList<History> = mutableListOf()
+
+            try {
+                for (film in dao!!.getAllHistoryList()){
+                    if (film.uid == FirebaseAuth.getInstance().currentUser!!.uid){
+                        list.add(film)
+                    }
+                }
+            }catch (e: NullPointerException){
+                e.printStackTrace()
+            }
+            historyList.postValue(list)
 
         }
     }

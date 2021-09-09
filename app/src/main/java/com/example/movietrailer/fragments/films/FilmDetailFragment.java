@@ -48,6 +48,7 @@ import com.example.movietrailer.models.film_reviews.ResultsItem;
 import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously;
 import com.example.movietrailer.viewmodels.films.FilmDetailFragmentViewModel;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -97,9 +98,9 @@ public class FilmDetailFragment extends Fragment {
         }
         preferenceManager = new PreferenceManager(context);
         if (preferenceManager.getBoolean("dark_mode")) {
-            requireContext().setTheme(R.style.AppTheme_Base_Night);
+            context.setTheme(R.style.AppTheme_Base_Night);
         } else {
-            requireContext().setTheme(R.style.AppTheme);
+            context.setTheme(R.style.Theme_MovieTrailer);
         }
         CheckConnectionAsynchronously.INSTANCE.init(context);
 
@@ -157,6 +158,7 @@ public class FilmDetailFragment extends Fragment {
                 if (history == null) {
                     history = new History(
                             0,
+                            FirebaseAuth.getInstance().getCurrentUser().getUid(),
                             id,
                             detailResponse.getTitle(),
                             detailResponse.getPosterPath(),

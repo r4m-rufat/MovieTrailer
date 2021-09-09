@@ -6,15 +6,22 @@ import androidx.lifecycle.ViewModel
 import com.example.movietrailer.models.authentication.User
 import com.example.movietrailer.repository.account_page.AccountPageRepository
 
-class AccountFragmentViewModel: ViewModel() {
+class AccountFragmentViewModel : ViewModel() {
 
     private val userData: MutableLiveData<User> = MutableLiveData()
     val loading: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    fun getUserInfo(): LiveData<User>{
+    fun getUserInfo(): LiveData<User> {
 
         return AccountPageRepository.instance()!!.getAccountInfo(
-            userData,
+            userData
+        )
+
+    }
+
+    fun getFavoriteListSize(): LiveData<Int> {
+
+        return AccountPageRepository.instance()!!.getListSize(
             loading
         )
 
