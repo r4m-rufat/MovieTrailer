@@ -17,9 +17,11 @@ class FilmsFragmentViewModel : ViewModel() {
 
     private val TAG = "ViewModelFilmsFragment"
     private val films_list = MutableLiveData<List<ResultsItem>?>()
+    private val suggestion_list = MutableLiveData<List<ResultsItem>?>()
     var page = MutableLiveData(1)
     var loading = MutableLiveData(true)
-    var query = MutableLiveData<String>()
+    var suggestionLoading = MutableLiveData(false) // because loading starts when write a string in search bar
+    var query = MutableLiveData("")
     var categorySelectedItem = MutableLiveData<TopCategoriesItem>(null)
     var sort_by = MutableLiveData("popularity.desc")
     var genreIds = MutableLiveData("")
@@ -62,7 +64,7 @@ class FilmsFragmentViewModel : ViewModel() {
             return films_list
         }
 
-    private fun getSearchDataSetToMutableLiveData() {
+    fun getSearchDataSetToMutableLiveData() {
 
         viewModelScope.launch {
 
@@ -72,6 +74,27 @@ class FilmsFragmentViewModel : ViewModel() {
                 query.value!!,
                 loading,
                 page.value!!
+            )
+
+        }
+
+    }
+
+    val suggestionResult: LiveData<List<ResultsItem>?>
+    get() {
+        getSuggestionSearchResult()
+        return suggestion_list
+    }
+
+    fun getSuggestionSearchResult() {
+
+        viewModelScope.launch {
+
+            SearchFilmsRepository.instance().getSuggestionSearchList(
+                suggestion_list,
+                query.value!!,
+                suggestionLoading,
+                1
             )
 
         }

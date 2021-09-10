@@ -153,6 +153,7 @@ class FilmDetailRepository {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
                         if (snapshot.exists()){
+
                             for (single_snapshot in snapshot.children){
 
                                 if (filmID == single_snapshot.getValue(WishList::class.java)?.filmID){

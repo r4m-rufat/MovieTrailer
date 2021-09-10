@@ -4,16 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginBottom="3dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:background="?attr/background_white_black"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,15 +42,13 @@
                 android:id="@+id/ic_filter"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/ic_filter"
-                android:padding="10dp"
-                android:layout_marginLeft="5dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/background_shape_arrow_up_icon"
-                app:tint="#fff"/>
+                android:padding="10dp"
+                android:src="@drawable/ic_filter"
+                app:tint="#fff" />
 
         </RelativeLayout>
-
-    </androidx.appcompat.widget.Toolbar>
 
 </RelativeLayout>

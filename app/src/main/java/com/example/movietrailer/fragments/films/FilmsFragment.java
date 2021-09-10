@@ -11,6 +11,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +44,7 @@ import com.example.movietrailer.R;
 import com.example.movietrailer.adapters.home_page.HorizontalCategoryAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerFilmsAdapter;
 import com.example.movietrailer.adapters.home_page.RecyclerGenresFilterAdapter;
+import com.example.movietrailer.adapters.home_page.SuggestionSearchAdapter;
 import com.example.movietrailer.internal_storage.PreferenceManager;
 import com.example.movietrailer.models.discover_model.ResultsItem;
 import com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarItems;
@@ -55,7 +59,8 @@ import java.util.List;
 @SuppressLint("ClickableViewAccessibility")
 public class FilmsFragment extends Fragment
         implements HorizontalCategoryAdapter.OnClickedCategoryItemListener,
-        RecyclerGenresFilterAdapter.OnClickedGenreItemListener {
+        RecyclerGenresFilterAdapter.OnClickedGenreItemListener,
+        SuggestionSearchAdapter.OnClickSuggestionSearchListener {
 
     private static final String TAG = "FilmsFragment";
     private RecyclerView categoryRecyclerView, filmsRecyclerView, genreFilterRecyclerView;
@@ -76,6 +81,13 @@ public class FilmsFragment extends Fragment
     private TextView saveFilter;
     private boolean showFilter = true;
     private PreferenceManager preferenceManager;
+
+    // suggestion search
+    private RecyclerView suggestionRecycler;
+    private SuggestionSearchAdapter searchAdapter;
+    private RelativeLayout relSuggestion;
+    private LinearLayout linear_emptyInfo;
+    private String clicked_suggestion_item = "";
 
     // for width
     private WindowManager manager;
@@ -146,6 +158,10 @@ public class FilmsFragment extends Fragment
         setupGenreFilterRecyclerView();
         clickedSaveFilter();
 
+        // suggestion search
+        setupRecyclerSearchSuggestion();
+        searchWatcher();
+
         return view;
     }
 
@@ -163,6 +179,9 @@ public class FilmsFragment extends Fragment
         genreFilterRecyclerView = view.findViewById(R.id.recycler_filter_genre);
         sortBySpinner = view.findViewById(R.id.sortBySpinner);
         saveFilter = view.findViewById(R.id.saveFilter);
+        suggestionRecycler = view.findViewById(R.id.recyclerSuggestionSearch);
+        relSuggestion = view.findViewById(R.id.rel_suggestion);
+        linear_emptyInfo = view.findViewById(R.id.linear_emptySuggestionInfo);
 
     }
 
@@ -384,13 +403,13 @@ public class FilmsFragment extends Fragment
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (showFilter){
-                   showFilter = false;
-                   layout_filter.setVisibility(View.VISIBLE);
-               }else{
-                   showFilter = true;
-                   layout_filter.setVisibility(View.GONE);
-               }
+                if (showFilter) {
+                    showFilter = false;
+                    layout_filter.setVisibility(View.VISIBLE);
+                } else {
+                    showFilter = true;
+                    layout_filter.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -425,7 +444,7 @@ public class FilmsFragment extends Fragment
 
     }
 
-    private void selectedSpinnerItem(){
+    private void selectedSpinnerItem() {
 
         spinnerAdapter = new ArrayAdapter(context, R.layout.layout_spinner_color, filter_routes);
         spinnerAdapter.setDropDownViewResource(R.layout.layout_custom_dropdown_spinner);
@@ -447,11 +466,11 @@ public class FilmsFragment extends Fragment
     /**
      * these items sets to genreIds which locate in ViewModel
      */
-    private void setSelectedGenreRecyclerItemsToMutableLiveData(){
+    private void setSelectedGenreRecyclerItemsToMutableLiveData() {
         filmsFragmentViewModel.getGenreIds().setValue(convertGenreIdsToString(filterList));
     }
 
-    private void clickedSaveFilter(){
+    private void clickedSaveFilter() {
 
         selectedSpinnerItem();
         saveFilter.setOnClickListener(new View.OnClickListener() {
@@ -466,7 +485,7 @@ public class FilmsFragment extends Fragment
 
     }
 
-    private void checkInternetConnectionAndSetWidgetsItem(){
+    private void checkInternetConnectionAndSetWidgetsItem() {
 
         CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
@@ -481,7 +500,63 @@ public class FilmsFragment extends Fragment
 
     }
 
-    private void saveFilterOptionsWhenLandscapeMode(){
+    private void setupRecyclerSearchSuggestion() {
+
+        searchAdapter = new SuggestionSearchAdapter(context, this);
+        suggestionRecycler.setHasFixedSize(true);
+        suggestionRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        suggestionRecycler.setAdapter(searchAdapter);
+
+        filmsFragmentViewModel.getSuggestionResult().observe(getViewLifecycleOwner(), new Observer<List<ResultsItem>>() {
+            @Override
+            public void onChanged(List<ResultsItem> list) {
+                if (list != null) {
+                    relSuggestion.setVisibility(View.VISIBLE);
+                    linear_emptyInfo.setVisibility(View.GONE);
+                    if (list.size() > 5) {
+                        searchAdapter.updateSuggestionList(list.subList(0, 5));
+                    } else {
+                        searchAdapter.updateSuggestionList(list);
+                    }
+                    if (list.size() == 0){
+                        linear_emptyInfo.setVisibility(View.VISIBLE);
+                    }
+                    if (clicked_suggestion_item.equals(editSearch.getText().toString())){
+                        Toast.makeText(context, "girdi", Toast.LENGTH_SHORT).show();
+                        relSuggestion.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void searchWatcher() {
+
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filmsFragmentViewModel.getQuery().setValue(s.toString());
+                filmsFragmentViewModel.getSuggestionSearchResult();
+                relSuggestion.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty() || clicked_suggestion_item.equals(s.toString())){
+                    relSuggestion.setVisibility(View.GONE);
+                }
+            }
+        });
+
+    }
+
+    private void saveFilterOptionsWhenLandscapeMode() {
 
         filterList = filmsFragmentViewModel.getFilterGenreList().getValue();
 
@@ -490,6 +565,7 @@ public class FilmsFragment extends Fragment
     /**
      * we need genre id for api request
      * and when clicked recycler item then it is added to list
+     *
      * @param genre
      */
     @Override
@@ -511,4 +587,19 @@ public class FilmsFragment extends Fragment
         filmsFragmentViewModel.getFilterGenreList().setValue(filterList);
     }
 
+    /**
+     * when clicked suggestion search item
+     * then film title set to search edittext and also to view model query
+     * and search it
+     * @param film_title
+     */
+    @Override
+    public void onClickSuggestionItem(String film_title) {
+        editSearch.setText(film_title);
+        clicked_suggestion_item = film_title;
+        relSuggestion.setVisibility(View.GONE);
+        filmsFragmentViewModel.getQuery().setValue(film_title);
+        filmsFragmentViewModel.resetVariables();
+        filmsFragmentViewModel.getSearchDataSetToMutableLiveData();
+    }
 }

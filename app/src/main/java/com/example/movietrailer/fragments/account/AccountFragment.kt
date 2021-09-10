@@ -157,10 +157,14 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private fun setHistorySize() {
 
         var size = 0
-        for (i in dao.getAllHistoryList()){
-            if (i.uid == firebaseAuth.currentUser!!.uid){
-                size++
+        try {
+            for (i in dao.getAllHistoryList()){
+                if (i.uid == firebaseAuth.currentUser!!.uid){
+                    size++
+                }
             }
+        }catch (e: NullPointerException){
+            e.printStackTrace()
         }
         txtHistoryListSize.text = size.toString()
 

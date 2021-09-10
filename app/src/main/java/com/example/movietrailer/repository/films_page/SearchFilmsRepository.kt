@@ -66,5 +66,34 @@ class SearchFilmsRepository {
         return film_list
     }
 
+    fun getSuggestionSearchList(
+        film_list: MutableLiveData<List<ResultsItem>?>,
+        query: String,
+        loading: MutableLiveData<Boolean?>,
+        page: Int
+    ): MutableLiveData<List<ResultsItem>?> {
+
+        // loading starts in here and that's why set true
+        loading.value = true
+        val iApi = ApiClient.getInstance().retrofit.create(IApi::class.java)
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val response = iApi.getSuggestionSearch(
+                API_KEY,
+                query,
+                page
+            ).awaitResponse()
+
+            if (response.isSuccessful) {
+                film_list.postValue(response.body()?.results)
+                loading.postValue(false)
+            } else {
+                Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
+                loading.postValue(false)
+            }
+
+        }
+        return film_list
+    }
 
 }

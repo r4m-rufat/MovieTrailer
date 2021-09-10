@@ -115,4 +115,11 @@ interface IApi {
         @Query("page") page: Int,
     ): Call<ReviewResponse>
 
+    @GET("search/movie?")
+    fun getSuggestionSearch(
+        @Query("api_key") api_key: String?,
+        @Query("query") query: String,
+        @Query("page") page: Int,
+    ): Call<DiscoverResponse>
+
 }

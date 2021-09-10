@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_suggestion_search_item"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_search"
+            app:tint="?attr/gray_white" />
+
+        <TextView
+            android:id="@+id/txt_suggestion_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Prison"
+            android:layout_marginRight="5dp"
+            android:textColor="?attr/txt_black_white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
