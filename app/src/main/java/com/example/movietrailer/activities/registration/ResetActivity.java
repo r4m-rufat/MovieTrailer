@@ -1,10 +1,7 @@
 package com.example.movietrailer.activities.registration;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.util.PatternsCompat;
-
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,12 +10,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.PatternsCompat;
+
 import com.example.movietrailer.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -46,6 +46,7 @@ public class ResetActivity extends AppCompatActivity {
         setupProgress();
         clickedNextButton();
         clickedResetButton();
+        clickedIcBack();
 
     }
 
@@ -69,6 +70,16 @@ public class ResetActivity extends AppCompatActivity {
             }
         });
         
+    }
+
+    private void clickedIcBack(){
+        ic_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, LoginActivity.class));
+                finish();
+            }
+        });
     }
 
     private void clickedNextButton(){
@@ -95,20 +106,24 @@ public class ResetActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()){
-                                    String password = "";
+                                    String password = null;
                                     for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
                                         uID = documentSnapshot.getString("uID");
                                         password = documentSnapshot.getString("password");
                                     }
 
-                                    if (password.equals("")) {
-                                        Toast.makeText(context, "You can't change password. Because you signed in with Google", Toast.LENGTH_LONG).show();
+                                    if (password != null){
+                                        if (password.equals("")) {
+                                            Toast.makeText(context, "You can't change password. Because you signed in with Google", Toast.LENGTH_LONG).show();
+                                        }else {
+                                            editEmail.setVisibility(View.GONE);
+                                            nextButton.setVisibility(View.GONE);
+                                            editNewPassword.setVisibility(View.VISIBLE);
+                                            editConfirmPassword.setVisibility(View.VISIBLE);
+                                            resetButton.setVisibility(View.VISIBLE);
+                                        }
                                     }else{
-                                        editEmail.setVisibility(View.GONE);
-                                        nextButton.setVisibility(View.GONE);
-                                        editNewPassword.setVisibility(View.VISIBLE);
-                                        editConfirmPassword.setVisibility(View.VISIBLE);
-                                        resetButton.setVisibility(View.VISIBLE);
+                                        Toast.makeText(context, "There is not account with this email", Toast.LENGTH_LONG).show();
                                     }
 
                                     progressDialog.dismiss(); // when gmail is found in database then progress dialog is dismiss

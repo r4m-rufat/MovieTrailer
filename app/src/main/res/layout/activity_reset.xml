@@ -6,121 +6,131 @@
     android:layout_height="match_parent"
     tools:context=".activities.registration.ResetActivity">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/secure" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/libre_baskerville_regular"
+                android:text="Reset Password"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter an email address you use to sign in to."
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_email_address_for_reset"
+                android:drawableLeft="@drawable/ic_email"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/selector_edit_text_email_icon_color"
+                android:hint="Email"
+                android:paddingLeft="10dp"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/edit_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_email_address_for_reset"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/selector_edit_text_email_icon_color"
+                android:hint="New password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/edit_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_email_address_for_reset"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/selector_edit_text_email_icon_color"
+                android:hint="Confirm password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/progress_orange"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/button_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/progress_orange"
+                android:text="Reset"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_marginBottom="10dp"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
     <ImageView
         android:id="@+id/ic_backFromReset"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/background_shape_back_icon"
         android:padding="10dp"
         android:src="@drawable/ic_back"
         app:tint="#02A682" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/secure" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/libre_baskerville_regular"
-            android:text="Reset Password"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter an email address you use to sign in to."
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/edit_email"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/shape_email_address_for_reset"
-            android:drawableLeft="@drawable/ic_email"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/black"
-            android:hint="Email"
-            android:paddingLeft="10dp"
-            android:textColor="@color/black" />
-
-        <EditText
-            android:id="@+id/edit_new_password"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/shape_email_address_for_reset"
-            android:drawableLeft="@drawable/ic_lock"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/black"
-            android:hint="New password"
-            android:inputType="textPassword"
-            android:paddingLeft="10dp"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-
-        <EditText
-            android:id="@+id/edit_confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/shape_email_address_for_reset"
-            android:drawableLeft="@drawable/ic_lock"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/black"
-            android:hint="Confirm password"
-            android:inputType="textPassword"
-            android:paddingLeft="10dp"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/button_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/progress_orange"
-            android:text="Next"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/progress_orange"
-            android:text="Reset"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-    </LinearLayout>
 
 </RelativeLayout>

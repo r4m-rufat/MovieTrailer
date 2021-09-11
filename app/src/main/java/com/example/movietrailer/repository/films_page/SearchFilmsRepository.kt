@@ -8,6 +8,8 @@ import com.example.movietrailer.network.IApi
 import com.example.movietrailer.utils.constants.API_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
 
@@ -40,7 +42,7 @@ class SearchFilmsRepository {
         var new_search_result: ArrayList<ResultsItem>? = ArrayList()
         var old_search_result: List<ResultsItem>?
         val iApi = ApiClient.getInstance().retrofit.create(IApi::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(IO).launch {
 
             val response = iApi.getSearchInformations(
                 API_KEY,
@@ -49,17 +51,20 @@ class SearchFilmsRepository {
                 page
             ).awaitResponse()
 
-            if (response.isSuccessful) {
-                old_search_result = film_list.value
-                old_search_result?.let {
-                    new_search_result!!.addAll(it)
+            CoroutineScope(IO).launch {
+                if (response.isSuccessful) {
+                    delay(1000L)
+                    loading.postValue(false)
+                    old_search_result = film_list.value
+                    old_search_result?.let {
+                        new_search_result!!.addAll(it)
+                    }
+                    new_search_result!!.addAll(response.body()!!.results)
+                    film_list.postValue(new_search_result)
+                } else {
+                    Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
+                    loading.postValue(true)
                 }
-                new_search_result!!.addAll(response.body()!!.results)
-                film_list.postValue(new_search_result)
-                loading.postValue(false)
-            } else {
-                Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
-                loading.postValue(true)
             }
 
         }

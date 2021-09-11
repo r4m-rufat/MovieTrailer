@@ -9,7 +9,7 @@ import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
 
 @SuppressLint("StaticFieldLeak")
-object CheckConnectionAsynchronously : LiveData<Boolean>() {
+object CheckConnectionAsynchronously : LiveData<Boolean>(false) {
 
     private lateinit var context: Context
     private lateinit var networkRequest: NetworkRequest

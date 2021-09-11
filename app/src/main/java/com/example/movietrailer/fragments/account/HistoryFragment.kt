@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
@@ -22,25 +20,19 @@ import com.example.movietrailer.adapters.account_page.HistoryAdapter
 import com.example.movietrailer.db.Dao
 import com.example.movietrailer.db.History
 import com.example.movietrailer.db.HistoryDatabase
-import com.example.movietrailer.models.discover_model.ResultsItem
-import com.example.movietrailer.utils.check_connection.CheckConnectionAsynchronously
 import com.example.movietrailer.viewmodels.history.HistoryFragmentViewModel
 import java.util.regex.Pattern
-import android.app.Activity
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.example.movietrailer.activities.home.HomeActivity
 import android.content.Context.INPUT_METHOD_SERVICE
-import androidx.appcompat.app.AppCompatDelegate
+import android.widget.RelativeLayout
 
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.movietrailer.dialogs.showClearAllHistoryDialog
 import com.example.movietrailer.internal_storage.PreferenceManager
 import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,6 +50,7 @@ class HistoryFragment : Fragment() {
     private lateinit var editSearch: EditText
     private lateinit var icClearAll: ImageView
     private lateinit var icSearch: ImageView
+    private lateinit var relSearch: RelativeLayout
     private lateinit var progressDialog: KProgressHUD
     private var string: String = ""
     private lateinit var preferenceManager: PreferenceManager
@@ -90,6 +83,7 @@ class HistoryFragment : Fragment() {
         editSearchTextWatcher()
         clickedIcSearch()
         clickedClearIcon()
+        searchIconWhenEditSearchFocusable()
 
         return view
     }
@@ -100,6 +94,7 @@ class HistoryFragment : Fragment() {
         editSearch = view.findViewById(R.id.edit_search)
         icClearAll = view.findViewById(R.id.ic_clearAll)
         icSearch = view.findViewById(R.id.ic_search)
+        relSearch = view.findViewById(R.id.rel_search)
 
     }
 
@@ -174,6 +169,7 @@ class HistoryFragment : Fragment() {
             }
         }
     }
+
     private fun setupClearingDialog(){
         progressDialog = KProgressHUD.create(context)
             .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -208,6 +204,23 @@ class HistoryFragment : Fragment() {
 
         })
 
+    }
+
+    @SuppressLint("ResourceType")
+    private fun searchIconWhenEditSearchFocusable(){
+        editSearch.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus){
+                icSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.progress_orange), android.graphics.PorterDuff.Mode.SRC_IN)
+                relSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_search_box_focusable)
+            }else{
+                relSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_search_icon)
+                if (preferenceManager.getBoolean("dark_mode")) {
+                    icSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN)
+                } else {
+                    icSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray), android.graphics.PorterDuff.Mode.SRC_IN)
+                }
+            }
+        }
     }
 
 }

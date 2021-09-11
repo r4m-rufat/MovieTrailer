@@ -57,6 +57,15 @@
 
     <style name="Theme.MovieTrailer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--  text input layout style  -->
+    <style name="TextInputLayoutHelperStyle" parent="TextAppearance.Design.HelperText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="TextInputLayoutOutlinedBoxStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="helperTextTextAppearance">@style/TextInputLayoutHelperStyle</item>
+    </style>
 
     <style name="AppTheme.Base.Night" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 

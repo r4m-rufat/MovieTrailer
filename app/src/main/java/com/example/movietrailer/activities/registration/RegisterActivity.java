@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String passwordText = "";
     private KProgressHUD progressDialog;
     private FirebaseUser firebaseUser;
-
+    private TextView signIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         initializeWidgets();
         setupProgress();
-
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getTexts();
-                createUser(firebaseAuth);
-            }
-        });
+        clickedSignIn();
+        clickedSignUp();
 
     }
 
@@ -71,6 +66,22 @@ public class RegisterActivity extends AppCompatActivity {
             usernameText = username.getText().toString().trim();
         }
 
+        if (TextUtils.isEmpty(emailText)) {
+            email.setError("Write your email");
+        } else {
+            usernameText = username.getText().toString().trim();
+        }
+
+    }
+
+    private void clickedSignUp(){
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getTexts();
+                createUser(firebaseAuth);
+            }
+        });
     }
 
     private void initializeWidgets() {
@@ -79,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.edit_password);
         email = findViewById(R.id.edit_email);
         signupButton = findViewById(R.id.button_signup);
+        signIn = findViewById(R.id.txt_signIn);
 
     }
 
@@ -138,6 +150,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private void clickedSignIn(){
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, LoginActivity.class));
+                finish();
+            }
+        });
+    }
+
     private void addNewUser(String email, String username, String password){
 
         String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -181,11 +203,6 @@ public class RegisterActivity extends AppCompatActivity {
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void showProgress(){

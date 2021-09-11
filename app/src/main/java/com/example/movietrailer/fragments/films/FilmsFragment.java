@@ -15,7 +15,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -32,7 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -72,7 +73,8 @@ public class FilmsFragment extends Fragment
     private MeowBottomNavigation bottomNavigation;
     private Context context;
     private GridLayoutManager gridLayoutManager;
-    private ImageView ic_arrowUp, filter;
+    private RelativeLayout rel_searchBox;
+    private ImageView ic_arrowUp, filter, ic_search;
     private LinearLayout layout_filter;
     private NumberPicker vote_averagePicker;
     private RecyclerGenresFilterAdapter genresFilterAdapter;
@@ -127,6 +129,20 @@ public class FilmsFragment extends Fragment
             context.setTheme(R.style.Theme_MovieTrailer);
         }
         CheckConnectionAsynchronously.INSTANCE.init(context);
+        /**
+         * only when page is created then okay it should request to the api
+         * but pass the another page and back to this page with back button
+         * then shouldn't request to the api again
+         */
+        CheckConnectionAsynchronously.INSTANCE.observe((LifecycleOwner) context, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    filmsFragmentViewModel.getDataSetToMutableLiveData();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -139,13 +155,14 @@ public class FilmsFragment extends Fragment
         getWidgets(view);
         setCategoryRecyclerViewSetups();
         setUpRecyclerView();
+        searchBoxWhenEditSearchFocusable();
 
-        checkInternetConnectionAndSetWidgetsItem();
+        setFilmsRecyclerView();
 
         // when progressbar visible or gone in loading proses
         showOrHideProgressBar();
 
-        clickedEditSearchRightDrawable();
+        clickedSearchIcon();
         clickedArrowUp();
 
         bottomNavigation.show(BottomNavigationBarItems.FILMS.ordinal(), true);
@@ -182,6 +199,8 @@ public class FilmsFragment extends Fragment
         suggestionRecycler = view.findViewById(R.id.recyclerSuggestionSearch);
         relSuggestion = view.findViewById(R.id.rel_suggestion);
         linear_emptyInfo = view.findViewById(R.id.linear_emptySuggestionInfo);
+        ic_search = view.findViewById(R.id.ic_search);
+        rel_searchBox = view.findViewById(R.id.rel_search);
 
     }
 
@@ -246,7 +265,7 @@ public class FilmsFragment extends Fragment
                     } else if (clickCategoryItem) {
                         filmsFragmentViewModel.getCategoryFilmListWhenClicked(item);
                     } else {
-                        filmsFragmentViewModel.getFilmList();
+                        filmsFragmentViewModel.getDataSetToMutableLiveData();
                     }
                 }
 
@@ -299,46 +318,61 @@ public class FilmsFragment extends Fragment
 
     }
 
-    private void clickedEditSearchRightDrawable() {
+    private void clickedSearchIcon() {
 
-        editSearch.setOnTouchListener(new View.OnTouchListener() {
+        ic_search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
+            public void onClick(View v) {
+                CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean connection) {
+                        if (connection) {
+                            // edit text string
+                            query = editSearch.getText().toString().trim();
+                            if (!query.isEmpty()) {
+                                filmsFragmentViewModel.getQuery().setValue(query);
+                                filmsFragmentViewModel.getSearchResult().observe(getActivity(), new Observer<List<ResultsItem>>() {
+                                    @Override
+                                    public void onChanged(List<ResultsItem> list) {
+                                        recyclerFilmsAdapter.updateFilmList(list);
+                                    }
+                                });
 
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (editSearch.getRight() - editSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                                clickSearchButton = true;
+                                clickCategoryItem = false;
 
-                        CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-                            @Override
-                            public void onChanged(Boolean connection) {
-                                if (connection) {
-                                    // edit text string
-                                    query = editSearch.getText().toString().trim();
-                                    filmsFragmentViewModel.getQuery().setValue(query);
-                                    filmsFragmentViewModel.getSearchResult().observe(getActivity(), new Observer<List<ResultsItem>>() {
-                                        @Override
-                                        public void onChanged(List<ResultsItem> list) {
-                                            recyclerFilmsAdapter.updateFilmList(list);
-                                        }
-                                    });
-
-                                    clickSearchButton = true;
-                                    clickCategoryItem = false;
-
-                                    // when clicked search button, should reset film list
-                                    filmsFragmentViewModel.resetVariables();
-
-                                }
+                                // when clicked search button, should reset film list
+                                filmsFragmentViewModel.resetVariables();
                             }
-                        });
-                        return true;
+                        }
                     }
-                }
-                return false;
+                });
+
+                // suggestion layout should be gone
+                relSuggestion.setVisibility(View.GONE);
+
             }
         });
 
+    }
+
+    private void searchBoxWhenEditSearchFocusable() {
+        editSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ic_search.setColorFilter(ContextCompat.getColor(requireContext(), R.color.progress_orange), android.graphics.PorterDuff.Mode.SRC_IN);
+                    rel_searchBox.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.background_search_box_focusable));
+                } else {
+                    rel_searchBox.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.background_search_icon));
+                    if (preferenceManager.getBoolean("dark_mode")) {
+                        ic_search.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                    } else {
+                        ic_search.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                    }
+                }
+            }
+        });
     }
 
     private void clickedArrowUp() {
@@ -487,11 +521,11 @@ public class FilmsFragment extends Fragment
 
     private void checkInternetConnectionAndSetWidgetsItem() {
 
-        CheckConnectionAsynchronously.INSTANCE.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        CheckConnectionAsynchronously.INSTANCE.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean connection) {
                 if (connection) {
-                    setFilmsRecyclerView();
+                    filmsFragmentViewModel.getDataSetToMutableLiveData();
                 } else {
                     Toast.makeText(context, "Check internet connection!", Toast.LENGTH_SHORT).show();
                 }
@@ -518,11 +552,10 @@ public class FilmsFragment extends Fragment
                     } else {
                         searchAdapter.updateSuggestionList(list);
                     }
-                    if (list.size() == 0){
+                    if (list.size() == 0) {
                         linear_emptyInfo.setVisibility(View.VISIBLE);
                     }
-                    if (clicked_suggestion_item.equals(editSearch.getText().toString())){
-                        Toast.makeText(context, "girdi", Toast.LENGTH_SHORT).show();
+                    if (clicked_suggestion_item.equals(editSearch.getText().toString())) {
                         relSuggestion.setVisibility(View.GONE);
                     }
                 }
@@ -542,13 +575,20 @@ public class FilmsFragment extends Fragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filmsFragmentViewModel.getQuery().setValue(s.toString());
-                filmsFragmentViewModel.getSuggestionSearchResult();
+                CheckConnectionAsynchronously.INSTANCE.observe((LifecycleOwner) context, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean connection) {
+                        if (connection) {
+                            filmsFragmentViewModel.getSuggestionSearchResult();
+                        }
+                    }
+                });
                 relSuggestion.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().isEmpty() || clicked_suggestion_item.equals(s.toString())){
+                if (s.toString().isEmpty() || clicked_suggestion_item.equals(s.toString())) {
                     relSuggestion.setVisibility(View.GONE);
                 }
             }
@@ -578,6 +618,7 @@ public class FilmsFragment extends Fragment
     /**
      * and when clicked selected item then
      * remove this id from list
+     *
      * @param genre
      */
     @Override
@@ -591,6 +632,7 @@ public class FilmsFragment extends Fragment
      * when clicked suggestion search item
      * then film title set to search edittext and also to view model query
      * and search it
+     *
      * @param film_title
      */
     @Override
@@ -602,4 +644,5 @@ public class FilmsFragment extends Fragment
         filmsFragmentViewModel.resetVariables();
         filmsFragmentViewModel.getSearchDataSetToMutableLiveData();
     }
+
 }

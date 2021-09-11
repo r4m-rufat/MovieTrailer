@@ -11,6 +11,7 @@ import com.example.movietrailer.repository.films_page.CategoryFilmsRepository
 import com.example.movietrailer.repository.films_page.DiscoverFilmsRepository
 import com.example.movietrailer.repository.films_page.SearchFilmsRepository
 import com.example.movietrailer.utils.default_lists.TopCategoriesItem
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FilmsFragmentViewModel : ViewModel() {
@@ -31,12 +32,11 @@ class FilmsFragmentViewModel : ViewModel() {
 
     val filmList: LiveData<List<ResultsItem>?>
         get() {
-            getDataSetToMutableLiveData()
             return films_list
         }
 
 
-    private fun getDataSetToMutableLiveData() {
+    fun getDataSetToMutableLiveData() {
 
         viewModelScope.launch {
 
@@ -82,7 +82,6 @@ class FilmsFragmentViewModel : ViewModel() {
 
     val suggestionResult: LiveData<List<ResultsItem>?>
     get() {
-        getSuggestionSearchResult()
         return suggestion_list
     }
 

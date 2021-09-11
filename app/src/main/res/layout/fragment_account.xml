@@ -38,8 +38,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circleProfileBackground"
                     android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@color/teal_200" />
+                    android:layout_height="100dp"/>
 
                 <TextView
                     android:id="@+id/capitalOfName"
@@ -48,7 +47,6 @@
                     android:layout_centerInParent="true"
                     android:autoSizeMaxTextSize="40sp"
                     android:fontFamily="@font/libre_baskerville_regular"
-                    android:text="R"
                     android:textColor="#fff"
                     android:textSize="40sp"
                     android:textStyle="bold" />
@@ -91,7 +89,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:fontFamily="@font/libre_baskerville_regular"
-                        android:text="0"
                         android:textColor="?attr/txt_black_white"
                         android:textSize="18sp" />
 
@@ -133,10 +130,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:fontFamily="@font/libre_baskerville_regular"
-                        android:text="0"
                         android:textColor="?attr/txt_black_white"
                         android:textSize="18sp" />
-
 
                 </LinearLayout>
 
@@ -164,7 +159,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/ic_account"
                     android:fontFamily="@font/libre_baskerville_regular"
-                    android:text="rufat_nasirov01"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -199,7 +193,6 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="?attr/gray_white"
                     android:fontFamily="@font/libre_baskerville_regular"
-                    android:text="rufet.nesirov.2001@gmail.com"
                     android:textStyle="bold" />
 
             </LinearLayout>

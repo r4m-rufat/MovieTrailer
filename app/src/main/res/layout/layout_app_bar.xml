@@ -17,35 +17,56 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ic_logo"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_logo" />
 
-            <EditText
-                android:id="@+id/edit_search"
+            <RelativeLayout
+                android:id="@+id/rel_search"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/ic_logo"
                 android:layout_toLeftOf="@+id/ic_filter"
-                android:layout_toRightOf="@+id/ic_logo"
-                android:background="@drawable/selector_search_edit_text"
-                android:drawableRight="@drawable/selector_search_edit_text_icon"
-                android:hint="Search for a movie"
-                android:inputType="text"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:ellipsize="end"
-                android:textColor="?attr/txt_black_white"
-                android:textColorHint="@color/gray"/>
+                android:background="@drawable/selector_search_edit_text">
+
+                <EditText
+                    android:id="@+id/edit_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="Search for a movie"
+                    android:inputType="text"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="40dp"
+                    android:textColor="?attr/txt_black_white"
+                    android:textColorHint="@color/gray" />
+
+                <ImageView
+                    android:id="@+id/ic_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:padding="8dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_search"
+                    app:tint="?attr/blue_white" />
+
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/ic_filter"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/background_shape_arrow_up_icon"
                 android:padding="10dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_filter"
                 app:tint="#fff" />
 

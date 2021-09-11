@@ -47,11 +47,12 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:hint="Email"
                     app:boxStrokeColor="@color/white"
                     app:hintTextColor="@color/white"
-                    app:startIconDrawable="@drawable/ic_email">
+                    app:startIconDrawable="@drawable/ic_email"
+                    app:startIconTint="@color/selector_edit_text_icon_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_email"
@@ -62,27 +63,31 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutOutlinedBoxStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:hint="Username"
+                    app:helperText="*Only english alphabets and no space"
+                    app:helperTextTextColor="#FF1500"
                     app:boxStrokeColor="@color/white"
                     app:hintTextColor="@color/white"
-                    app:startIconDrawable="@drawable/ic_person">
+                    app:startIconDrawable="@drawable/ic_person"
+                    app:startIconTint="@color/selector_edit_text_icon_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/TextInputLayoutOutlinedBoxStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -90,15 +95,18 @@
                     android:hint="Password"
                     app:boxStrokeColor="@color/white"
                     app:endIconMode="password_toggle"
+                    app:endIconTint="@color/selector_edit_text_icon_color"
                     app:helperText="*Password must contain 6 characters"
-                    app:helperTextTextColor="@color/progress_orange"
+                    app:helperTextTextColor="#FF1500"
                     app:hintTextColor="@color/white"
-                    app:startIconDrawable="@drawable/ic_lock">
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:startIconTint="@color/selector_edit_text_icon_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
                         android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -113,6 +121,32 @@
                     android:fontFamily="@font/libre_baskerville_regular"
                     android:text="Sign Up"
                     android:textAllCaps="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Do you have an account? "
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/txt_signIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/libre_baskerville_regular"
+                        android:padding="5dp"
+                        android:text="Sign In"
+                        android:textColor="#0048FF"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

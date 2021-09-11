@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
+                android:layoutAnimation="@anim/layout_animation"
                 android:background="@android:color/transparent" />
 
         </RelativeLayout>
@@ -39,8 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/circularProgressBar"
             android:layout_below="@id/rel_category"
-            android:background="@android:color/transparent"
-            android:layoutAnimation="@anim/layout_animation" />
+            android:background="@android:color/transparent"/>
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/circularProgressBar"
@@ -98,10 +98,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_app_bar"
-        android:layout_marginLeft="65dp"
+        android:layout_marginLeft="60dp"
         android:background="@drawable/background_suggestion_search_box"
         android:visibility="gone"
-        android:layout_marginRight="65dp">
+        android:layout_marginRight="60dp">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import com.example.movietrailer.network.IApi
 import com.example.movietrailer.utils.constants.API_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
@@ -49,6 +50,8 @@ class CategoryFilmsRepository {
             ).awaitResponse()
 
             if (response.isSuccessful) {
+                delay(1000L)
+                loading.postValue(false)
                 if (film_list.value != null){
                     old_film_list = film_list.value
                     old_film_list?.let {
@@ -57,7 +60,6 @@ class CategoryFilmsRepository {
                 }
                 new_film_list.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
-                loading.postValue(false)
                 Log.d(TAG, "getTopRatedFilmList: top rated films successfully comes")
             } else {
                 Log.d(TAG, "getSearchFilmList: Search result is failed ${response.code()}")
@@ -90,19 +92,19 @@ class CategoryFilmsRepository {
             ).awaitResponse()
 
             if (response.isSuccessful) {
+                delay(1000L)
+                loading.postValue(false)
                 old_film_list = film_list.value
                 old_film_list?.let {
                     new_film_list!!.addAll(it)
                 }
                 new_film_list!!.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
-                loading.postValue(false)
                 Log.d(TAG, "getPopularFilmList: Popular films comes ${response.body()!!.results[0].id}")
             } else {
                 Log.d(TAG, "getSearchFilmList: Category result is failed ${response.code()}")
                 loading.postValue(true)
             }
-
 
         }
         return film_list
@@ -129,13 +131,14 @@ class CategoryFilmsRepository {
             ).awaitResponse()
 
             if (response.isSuccessful) {
+                delay(1000L)
+                loading.postValue(false)
                 old_film_list = film_list.value
                 old_film_list?.let {
                     new_film_list!!.addAll(it)
                 }
                 new_film_list!!.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
-                loading.postValue(false)
             } else {
                 Log.d(TAG, "getSearchFilmList: Upcoming result is failed ${response.code()}")
                 loading.postValue(true)
@@ -167,13 +170,14 @@ class CategoryFilmsRepository {
             ).awaitResponse()
 
             if (response.isSuccessful) {
+                delay(1000L)
+                loading.postValue(false)
                 old_film_list = film_list.value
                 old_film_list?.let {
                     new_film_list!!.addAll(it)
                 }
                 new_film_list!!.addAll(response.body()!!.results)
                 film_list.postValue(new_film_list)
-                loading.postValue(false)
             } else {
                 Log.d(TAG, "getSearchFilmList: Noting result is failed ${response.code()}")
                 loading.postValue(true)
