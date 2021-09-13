@@ -23,7 +23,7 @@ class HistoryFragmentViewModel(app: Application): AndroidViewModel(app) {
 
     }
 
-    private fun postHistoryToObservableData(){
+    fun postHistoryToObservableData(){
 
         CoroutineScope(IO).launch {
 

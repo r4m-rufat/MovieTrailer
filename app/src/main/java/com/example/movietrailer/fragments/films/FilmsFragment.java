@@ -1,7 +1,7 @@
 package com.example.movietrailer.fragments.films;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.example.movietrailer.converters.GenresIdToStringConverterKt.convertGenreIdsToString;
-import static com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarSetupKt.setUpBottomNavigationView;
 import static com.example.movietrailer.utils.constants.ConstantsKt.PAGE_SIZE;
 import static com.example.movietrailer.utils.default_lists.FilmCategoriesListKt.FilmCategoriesList;
 import static com.example.movietrailer.utils.default_lists.FilterGenresListKt.getGenreFilterHashMap;
@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -64,17 +67,17 @@ public class FilmsFragment extends Fragment
         SuggestionSearchAdapter.OnClickSuggestionSearchListener {
 
     private static final String TAG = "FilmsFragment";
+    private View view;
     private RecyclerView categoryRecyclerView, filmsRecyclerView, genreFilterRecyclerView;
     private HorizontalCategoryAdapter horizontalCategoryAdapter;
     private FilmsFragmentViewModel filmsFragmentViewModel;
     private SpinKitView progressBar;
     private EditText editSearch;
     private RecyclerFilmsAdapter recyclerFilmsAdapter;
-    private MeowBottomNavigation bottomNavigation;
     private Context context;
     private GridLayoutManager gridLayoutManager;
     private RelativeLayout rel_searchBox;
-    private ImageView ic_arrowUp, filter, ic_search;
+    private ImageView ic_arrowUp, filter, ic_search, ic_logo;
     private LinearLayout layout_filter;
     private NumberPicker vote_averagePicker;
     private RecyclerGenresFilterAdapter genresFilterAdapter;
@@ -120,6 +123,7 @@ public class FilmsFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         context = requireContext();
         filmsFragmentViewModel = new ViewModelProvider(this).get(FilmsFragmentViewModel.class);
         preferenceManager = new PreferenceManager(context);
@@ -149,10 +153,17 @@ public class FilmsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_films, container, false);
+        view = inflater.inflate(R.layout.fragment_films, container, false);
+
+        if (requireActivity().findViewById(R.id.bottom_navigation_view) != null){
+            // showing Bottom Navigation View
+            requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.VISIBLE);
+            ((MeowBottomNavigation)requireActivity().findViewById(R.id.bottom_navigation_view)).show(BottomNavigationBarItems.FILMS.ordinal(), true);
+        }
 
         getPhoneWidth();
         getWidgets(view);
+        setIc_logo();
         setCategoryRecyclerViewSetups();
         setUpRecyclerView();
         searchBoxWhenEditSearchFocusable();
@@ -164,9 +175,6 @@ public class FilmsFragment extends Fragment
 
         clickedSearchIcon();
         clickedArrowUp();
-
-        bottomNavigation.show(BottomNavigationBarItems.FILMS.ordinal(), true);
-        setUpBottomNavigationView(bottomNavigation, view);
 
         // filter setups
         saveFilterOptionsWhenLandscapeMode();
@@ -188,7 +196,6 @@ public class FilmsFragment extends Fragment
         filmsRecyclerView = view.findViewById(R.id.film_recycler_view);
         progressBar = view.findViewById(R.id.circularProgressBar);
         editSearch = view.findViewById(R.id.edit_search);
-        bottomNavigation = view.findViewById(R.id.bottom_navigation_view);
         ic_arrowUp = view.findViewById(R.id.ic_arrowUp);
         filter = view.findViewById(R.id.ic_filter);
         layout_filter = view.findViewById(R.id.layout_filter);
@@ -201,6 +208,7 @@ public class FilmsFragment extends Fragment
         linear_emptyInfo = view.findViewById(R.id.linear_emptySuggestionInfo);
         ic_search = view.findViewById(R.id.ic_search);
         rel_searchBox = view.findViewById(R.id.rel_search);
+        ic_logo = view.findViewById(R.id.ic_logo);
 
     }
 
@@ -211,6 +219,14 @@ public class FilmsFragment extends Fragment
         horizontalCategoryAdapter = new HorizontalCategoryAdapter(FilmCategoriesList(), getActivity(), filmsFragmentViewModel, FilmsFragment.this);
         categoryRecyclerView.setAdapter(horizontalCategoryAdapter);
 
+    }
+
+    private void setIc_logo(){
+        if (preferenceManager.getBoolean("dark_mode")){
+            ic_logo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_logo_white));
+        }else{
+            ic_logo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_logo));
+        }
     }
 
     private void setFilmsRecyclerView() {
@@ -344,12 +360,22 @@ public class FilmsFragment extends Fragment
                                 // when clicked search button, should reset film list
                                 filmsFragmentViewModel.resetVariables();
                             }
+                        }else{
+                            Toast.makeText(context, "Please, check internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
+                // hide keyboard and unfocused search edittext
+                editSearch.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                hideKeyboard(view);
+
                 // suggestion layout should be gone
                 relSuggestion.setVisibility(View.GONE);
+
+                // filter has gone
+                layout_filter.setVisibility(View.GONE);
+                showFilter = true;
 
             }
         });
@@ -363,6 +389,8 @@ public class FilmsFragment extends Fragment
                 if (hasFocus) {
                     ic_search.setColorFilter(ContextCompat.getColor(requireContext(), R.color.progress_orange), android.graphics.PorterDuff.Mode.SRC_IN);
                     rel_searchBox.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.background_search_box_focusable));
+                    layout_filter.setVisibility(View.GONE);
+                    showFilter = true;
                 } else {
                     rel_searchBox.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.background_search_icon));
                     if (preferenceManager.getBoolean("dark_mode")) {
@@ -514,6 +542,8 @@ public class FilmsFragment extends Fragment
                 filmsFragmentViewModel.resetVariables();
                 setSelectedGenreRecyclerItemsToMutableLiveData();
                 checkInternetConnectionAndSetWidgetsItem();
+                editSearch.setText("");
+                showFilter = true;
             }
         });
 
@@ -532,6 +562,11 @@ public class FilmsFragment extends Fragment
             }
         });
 
+    }
+
+    private void hideKeyboard(View view){
+        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
     private void setupRecyclerSearchSuggestion() {
@@ -569,7 +604,7 @@ public class FilmsFragment extends Fragment
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                relSuggestion.setVisibility(View.GONE);
             }
 
             @Override
@@ -639,10 +674,32 @@ public class FilmsFragment extends Fragment
     public void onClickSuggestionItem(String film_title) {
         editSearch.setText(film_title);
         clicked_suggestion_item = film_title;
+        // close keyboard
+        editSearch.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        hideKeyboard(view);
         relSuggestion.setVisibility(View.GONE);
         filmsFragmentViewModel.getQuery().setValue(film_title);
         filmsFragmentViewModel.resetVariables();
         filmsFragmentViewModel.getSearchDataSetToMutableLiveData();
+    }
+
+    /**
+     * when click phone back button then activity is finished
+     * @param context
+     */
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finish();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
 }

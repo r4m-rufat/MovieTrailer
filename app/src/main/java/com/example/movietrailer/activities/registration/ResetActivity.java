@@ -33,7 +33,7 @@ public class ResetActivity extends AppCompatActivity {
     private ImageView ic_back;
     private Context context;
     private FirebaseFirestore db;
-    private KProgressHUD progressDialog;
+    private KProgressHUD progressDialogEmail, progressDialogPassword;
     private String uID;
 
     @Override
@@ -99,7 +99,7 @@ public class ResetActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(getEmail)){
             if (isValidEmail()){
-                progressDialog.show();
+                progressDialogEmail.show();
                 db.collection("users").whereEqualTo("email", getEmail)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -126,7 +126,7 @@ public class ResetActivity extends AppCompatActivity {
                                         Toast.makeText(context, "There is not account with this email", Toast.LENGTH_LONG).show();
                                     }
 
-                                    progressDialog.dismiss(); // when gmail is found in database then progress dialog is dismiss
+                                    progressDialogEmail.dismiss(); // when gmail is found in database then progress dialog is dismiss
 
                                 }
                             }
@@ -135,7 +135,7 @@ public class ResetActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Toast.makeText(context, "There is not account with this email", Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
+                                progressDialogEmail.dismiss();
                             }
                         });
 
@@ -158,11 +158,18 @@ public class ResetActivity extends AppCompatActivity {
             editNewPassword.setError("Please enter a password");
         }else if (!TextUtils.isEmpty(newPasswordValue) && TextUtils.isEmpty(confirmPasswordValue)){
             editConfirmPassword.setError("Please enter a password");
+        }else if (confirmPasswordValue.length() < 6 && newPasswordValue.length() < 6){
+            editConfirmPassword.setError("Password must be 6 and more characters");
+            editNewPassword.setError("Password must be 6 and more characters");
+        }else if (newPasswordValue.length() < 6){
+            editNewPassword.setError("Password must be 6 and more characters");
+        }else if (confirmPasswordValue.length() < 6){
+            editConfirmPassword.setError("Password must be 6 and more characters");
         }else{
             if (newPasswordValue.equals(confirmPasswordValue)){
                 setNewPassword(newPasswordValue);
             }else{
-                Toast.makeText(context, "Passwords don't match.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Passwords don't match", Toast.LENGTH_SHORT).show();
             }
         }
         
@@ -174,17 +181,23 @@ public class ResetActivity extends AppCompatActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("password", newPassword);
 
+        progressDialogPassword.show();
+
         db.collection("users").document(uID).update(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(context, "changed", Toast.LENGTH_SHORT).show();
+                        progressDialogPassword.dismiss();
+                        Toast.makeText(context, "Password successfully changed. You can sign in your account", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(context, LoginActivity.class));
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+                        progressDialogPassword.dismiss();
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -197,9 +210,16 @@ public class ResetActivity extends AppCompatActivity {
 
     private void setupProgress(){
 
-        progressDialog = KProgressHUD.create(context)
+        progressDialogEmail = KProgressHUD.create(context)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Checking your email. Please wait...")
+                .setCancellable(true)
+                .setAnimationSpeed(1)
+                .setDimAmount(0.5f);
+
+        progressDialogPassword = KProgressHUD.create(context)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("The password is reset...")
                 .setCancellable(true)
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);

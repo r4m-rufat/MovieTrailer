@@ -1,7 +1,5 @@
 package com.example.movietrailer.fragments.wish_list;
 
-import static com.example.movietrailer.utils.bottom_navigation.BottomNavigationBarSetupKt.setUpBottomNavigationView;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,17 +30,19 @@ import java.util.List;
 
 public class WishListFragment extends Fragment {
 
-    private MeowBottomNavigation bottomNavigation;
+    private LinearLayout lin_empty;
     private RecyclerView recyclerWishList;
     private WishListFragmentViewModel wishListFragmentViewModel;
     private WishListAdapter wishListAdapter;
     private SpinKitView progressBar;
     private PreferenceManager preferenceManager;
     private Context context;
+    private static final String TAG = "WishListFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         context = requireContext();
         wishListFragmentViewModel = new ViewModelProvider(this).get(WishListFragmentViewModel.class);
         preferenceManager = new PreferenceManager(context);
@@ -54,12 +57,13 @@ public class WishListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // showing Bottom Navigation View
+        requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.VISIBLE);
+        ((MeowBottomNavigation) requireActivity().findViewById(R.id.bottom_navigation_view)).show(BottomNavigationBarItems.WISHLIST.ordinal(), true);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wish_list, container, false);
         getWidgets(view);
-        bottomNavigation.show(BottomNavigationBarItems.WISHLIST.ordinal(), true);
-
-        setUpBottomNavigationView(bottomNavigation, view);
         setUpRecyclerView();
         setObservableDataToRecyclerView();
         setProgressBarWhenLoading();
@@ -67,15 +71,15 @@ public class WishListFragment extends Fragment {
         return view;
     }
 
-    private void getWidgets(View view){
+    private void getWidgets(View view) {
 
-        bottomNavigation = view.findViewById(R.id.bottom_navigation_view);
         recyclerWishList = view.findViewById(R.id.recycler_wishList);
         progressBar = view.findViewById(R.id.progressBar);
+        lin_empty = view.findViewById(R.id.lin_layoutEmpty);
 
     }
 
-    private void setUpRecyclerView(){
+    private void setUpRecyclerView() {
 
         recyclerWishList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerWishList.setHasFixedSize(true);
@@ -83,15 +87,20 @@ public class WishListFragment extends Fragment {
 
     }
 
-    private void setObservableDataToRecyclerView(){
+    private void setObservableDataToRecyclerView() {
 
         wishListFragmentViewModel.getWishList().observe(getViewLifecycleOwner(), new Observer<List<WishList>>() {
             @Override
             public void onChanged(List<WishList> wishLists) {
-                LayoutAnimationController controller =
-                        AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation);
-                recyclerWishList.setLayoutAnimation(controller);
-                wishListAdapter.updateWishList(wishLists);
+                if (!wishLists.isEmpty()){
+                    LayoutAnimationController controller =
+                            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation);
+                    recyclerWishList.setLayoutAnimation(controller);
+                    wishListAdapter.updateWishList(wishLists);
+                    lin_empty.setVisibility(View.GONE);
+                }else{
+                    lin_empty.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -99,14 +108,14 @@ public class WishListFragment extends Fragment {
 
     }
 
-    private void setProgressBarWhenLoading(){
+    private void setProgressBarWhenLoading() {
 
         wishListFragmentViewModel.getLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loading) {
-                if (loading){
+                if (loading) {
                     progressBar.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     progressBar.setVisibility(View.GONE);
                 }
             }
@@ -114,4 +123,22 @@ public class WishListFragment extends Fragment {
 
     }
 
+    /**
+     * when click phone back button then activity is finished
+     * @param context
+     */
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finish();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
+    }
 }

@@ -75,7 +75,7 @@
                     android:layout_below="@+id/rel_video"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="-75dp"
-                    app:cardBackgroundColor="?attr/background_white_black"
+                    app:cardBackgroundColor="?attr/fc_white_black"
                     app:cardCornerRadius="10dp">
 
                     <ImageView

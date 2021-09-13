@@ -12,15 +12,21 @@
 
         <action
             android:id="@+id/viewFilmDetail"
-            app:destination="@+id/viewFilmDetailFragment"/>
+            app:destination="@+id/viewFilmDetailFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
         <action
             android:id="@+id/action_to_viewAccountFragment"
-            app:destination="@id/viewAccountFragment" />
+            app:destination="@id/viewAccountFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
         <action
             android:id="@+id/action_to_wishListFragment"
-            app:destination="@id/wishListFragment" />
+            app:destination="@id/wishListFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
     </fragment>
 
@@ -31,7 +37,9 @@
 
         <action
             android:id="@+id/action_to_viewCastDetailFragment"
-            app:destination="@+id/viewCastDetailFragment"/>
+            app:destination="@+id/viewCastDetailFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
     </fragment>
 
@@ -42,16 +50,24 @@
 
         <action
             android:id="@+id/action_to_filmsFragment"
-            app:destination="@id/filmsFragment" />
+            app:destination="@id/filmsFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
+
         <action
             android:id="@+id/action_to_wishListFragment"
-            app:destination="@id/wishListFragment" />
+            app:destination="@id/wishListFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
         <action
             android:id="@+id/action_to_viewHistoryFragment"
-            app:destination="@id/viewHistoryFragment"/>
+            app:destination="@id/viewHistoryFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
     </fragment>
+
     <fragment
         android:id="@+id/wishListFragment"
         android:name="com.example.movietrailer.fragments.wish_list.WishListFragment"
@@ -60,15 +76,21 @@
 
         <action
             android:id="@+id/action_to_viewAccountFragment"
-            app:destination="@id/viewAccountFragment" />
+            app:destination="@id/viewAccountFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
         <action
             android:id="@+id/action_to_filmsFragment"
-            app:destination="@id/filmsFragment" />
+            app:destination="@id/filmsFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
         <action
             android:id="@+id/viewFilmDetail"
-            app:destination="@+id/viewFilmDetailFragment"/>
+            app:destination="@+id/viewFilmDetailFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
 
     </fragment>
 
@@ -81,9 +103,13 @@
         android:id="@+id/viewHistoryFragment"
         android:label="HistoryFragment"
         android:name="com.example.movietrailer.fragments.account.HistoryFragment">
+
         <action
             android:id="@+id/action_to_viewFilmDetailFragment"
-            app:destination="@id/viewFilmDetailFragment" />
+            app:destination="@id/viewFilmDetailFragment"
+            app:enterAnim="@anim/scale_enter"
+            app:exitAnim="@anim/scale_exit" />
+
     </fragment>
 
 </navigation>

@@ -26,25 +26,42 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="15dp"
                 android:id="@+id/recycler_wishList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:layout_marginTop="15dp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="70dp"/>
+                android:layout_height="70dp" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/bottom_navigation_bar"
-        layout="@layout/layout_bottom_navigation_bar"
+    <LinearLayout
+        android:id="@+id/lin_layoutEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_info"
+            app:tint="?attr/blue_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wish list is empty now !"
+            android:textColor="?attr/gray_white"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
 
 </RelativeLayout>

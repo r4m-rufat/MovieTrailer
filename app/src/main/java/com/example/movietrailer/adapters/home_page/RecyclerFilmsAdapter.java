@@ -2,18 +2,16 @@ package com.example.movietrailer.adapters.home_page;
 
 import static com.example.movietrailer.utils.canditions.ProgressIndicatorColorConditionKt.setProgressIndicatorColor;
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
+import static com.example.movietrailer.utils.icon_setup.SetDefaultMovieIconKt.setDefaultMovieIcon;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -55,7 +53,14 @@ public class RecyclerFilmsAdapter extends RecyclerView.Adapter<RecyclerFilmsAdap
         int rate = (int) (films_list.get(position).getVoteAverage() * 10);
         holder._film_rate.setText( rate + "%");
         setProgressIndicatorColor(rate, holder._progress_bar, context);
-        Glide.with(context).load(IMAGE_BEGIN_URL + films_list.get(position).getPosterPath()).into(holder._film_image);
+        String imagePath = films_list.get(position).getPosterPath();
+        if (imagePath != null){
+            holder._film_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(context).load(IMAGE_BEGIN_URL + imagePath).into(holder._film_image);
+        }else{
+            setDefaultMovieIcon(context, holder._film_image);
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

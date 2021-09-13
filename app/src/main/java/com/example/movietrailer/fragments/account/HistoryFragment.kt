@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,13 +22,14 @@ import com.example.movietrailer.viewmodels.history.HistoryFragmentViewModel
 import java.util.regex.Pattern
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.widget.RelativeLayout
+import android.util.Log
+import android.widget.*
 
 import com.example.movietrailer.dialogs.showClearAllHistoryDialog
 import com.example.movietrailer.internal_storage.PreferenceManager
+import com.example.movietrailer.utils.constants.TAG
 import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -51,6 +50,7 @@ class HistoryFragment : Fragment() {
     private lateinit var icClearAll: ImageView
     private lateinit var icSearch: ImageView
     private lateinit var relSearch: RelativeLayout
+    private lateinit var linEmpty: LinearLayout
     private lateinit var progressDialog: KProgressHUD
     private var string: String = ""
     private lateinit var preferenceManager: PreferenceManager
@@ -59,9 +59,14 @@ class HistoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // hiding Bottom Navigation View
+        requireActivity().findViewById<View>(R.id.bottom_navigation_view).visibility =
+            View.GONE
+
         dao = HistoryDatabase.getHistoryDatabase(requireContext()).getDao()!!
         viewModel = ViewModelProvider(this)[HistoryFragmentViewModel::class.java]
-        preferenceManager = PreferenceManager(context);
+        preferenceManager = PreferenceManager(context)
         if (preferenceManager.getBoolean("dark_mode")) {
             requireContext().setTheme(R.style.AppTheme_Base_Night)
         } else {
@@ -95,6 +100,7 @@ class HistoryFragment : Fragment() {
         icClearAll = view.findViewById(R.id.ic_clearAll)
         icSearch = view.findViewById(R.id.ic_search)
         relSearch = view.findViewById(R.id.rel_search)
+        linEmpty = view.findViewById(R.id.lin_layoutEmpty)
 
     }
 
@@ -113,10 +119,10 @@ class HistoryFragment : Fragment() {
                         list.add(item)
                     }
                 }
-                if (s.toString() == ""){
-                    historyAdapter.updateHistoryList(dao.getAllHistoryList())
+                if (editSearch.text != null){
+                    historyAdapter.updateHistoryList(list)
+                    Log.d(TAG, "onTextChanged: 2")
                 }
-                historyAdapter.updateHistoryList(list)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -159,9 +165,11 @@ class HistoryFragment : Fragment() {
                     onCLick = {
                         showClearingDialog()
                         CoroutineScope(Main).launch {
-                            delay(1000L)
                             dao.deleteAllHistory()
-                            historyAdapter.updateHistoryList(listOf())
+                            delay(1000L)
+                            viewModel.postHistoryToObservableData()
+                            editSearch.text = null
+                            editSearch.onEditorAction(EditorInfo.IME_ACTION_DONE)
                             dismissClearingDialog()
                         }
                     }
@@ -190,18 +198,21 @@ class HistoryFragment : Fragment() {
     private fun hideKeyboard(view: View){
         val inputMethodManager = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
         inputMethodManager!!.hideSoftInputFromWindow(view.applicationWindowToken, 0)
-
     }
 
     private fun getObservableDataAndSetRecyclerView() {
 
         viewModel.getHistoryList().observe(viewLifecycleOwner, Observer { historyList ->
-            val controller = AnimationUtils.loadLayoutAnimation(
-                context, R.anim.layout_animation
-            )
-            historyRecycler.layoutAnimation = controller
+            if (historyList.isNotEmpty()){
+                linEmpty.visibility = View.GONE
+                val controller = AnimationUtils.loadLayoutAnimation(
+                    context, R.anim.layout_animation
+                )
+                historyRecycler.layoutAnimation = controller
+            }else{
+                linEmpty.visibility = View.VISIBLE
+            }
             historyAdapter.updateHistoryList(historyList)
-
         })
 
     }

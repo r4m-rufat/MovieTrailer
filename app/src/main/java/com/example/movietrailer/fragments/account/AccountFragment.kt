@@ -1,5 +1,6 @@
 package com.example.movietrailer.fragments.account
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat.setLayerType
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -62,6 +65,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private lateinit var editPassword: ImageView
     private lateinit var icPalette: ImageView
     private lateinit var icHistory: ImageView
+    private lateinit var icHeart: ImageView
     private lateinit var signOut: Button
     private lateinit var circularProgressBar: SpinKitView
     private lateinit var linearLayout: LinearLayout
@@ -74,7 +78,6 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
     private lateinit var db: FirebaseFirestore
     private lateinit var bottomSheetDialog: BottomSheetDialog
-    private lateinit var bottomNavigation: MeowBottomNavigation
 
     private lateinit var dbreference: DatabaseReference
     private lateinit var dao: Dao
@@ -87,6 +90,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         dao = HistoryDatabase.getHistoryDatabase(requireContext()).getDao()!!
 
         viewModel = ViewModelProvider(this)[AccountFragmentViewModel::class.java]
@@ -105,6 +109,13 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
 
         val view = inflater.inflate(R.layout.fragment_account, container, false)
 
+        view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+
+        // showing Bottom Navigation View
+        requireActivity().findViewById<MeowBottomNavigation>(R.id.bottom_navigation_view).show(BottomNavigationBarItems.ACCOUNT.ordinal, true);
+        requireActivity().findViewById<MeowBottomNavigation>(R.id.bottom_navigation_view).visibility =
+            View.VISIBLE
+
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         dbreference = FirebaseDatabase.getInstance().reference
@@ -119,10 +130,8 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         clickedEditAccountName()
         clickedChangePasswordButton()
         clickedIconHistory()
+        clickedIconFavorite()
         switchedDarkMode()
-
-        bottomNavigation.show(BottomNavigationBarItems.ACCOUNT.ordinal, true);
-        setUpBottomNavigationView(bottomNavigation, view)
 
         // background colors adapter
         setupRecyclerView()
@@ -141,7 +150,6 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         editAccountName = view.findViewById(R.id.ic_editName)
         editPassword = view.findViewById(R.id.ic_editPassword)
         signOut = view.findViewById(R.id.button_signOut)
-        bottomNavigation = view.findViewById(R.id.bottom_navigation_view)
         circularProgressBar = view.findViewById(R.id.circularProgressBar)
         linearLayout = view.findViewById(R.id.linearAccount)
         circularProfileBackground = view.findViewById(R.id.circleProfileBackground)
@@ -151,6 +159,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         txtFavoriteListSize = view.findViewById(R.id.txt_favoriteListSize)
         txtHistoryListSize = view.findViewById(R.id.txt_historyListSize)
         dayNightSwitch = view.findViewById(R.id.switch_mode)
+        icHeart= view.findViewById(R.id.ic_favorite)
 
     }
 
@@ -213,6 +222,12 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private fun clickedIconHistory() {
         icHistory.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_to_viewHistoryFragment)
+        }
+    }
+
+    private fun clickedIconFavorite() {
+        icHeart.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_to_wishListFragment)
         }
     }
 
@@ -399,4 +414,18 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         setBackgroundColorToGlobalDatabase(color)
     }
 
+    /**
+     * when click phone back button then activity is finished
+     * @param context
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+    
 }

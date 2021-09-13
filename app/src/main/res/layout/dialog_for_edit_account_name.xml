@@ -3,14 +3,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/background_white_black">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="@font/libre_baskerville_regular"
-        android:textColor="@color/black"
+        android:textColor="?attr/txt_black_white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:text="@string/edit_account"/>
@@ -24,8 +24,9 @@
         android:textColor="@color/black"
         android:paddingLeft="10dp"
         android:textSize="14sp"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
         android:drawableLeft="@drawable/ic_person"
-        android:drawableTint="@color/black"
+        android:drawableTint="@color/selector_edit_text_email_icon_color"
         android:drawablePadding="10dp"
         />
 

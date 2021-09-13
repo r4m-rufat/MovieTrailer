@@ -1,6 +1,7 @@
 package com.example.movietrailer.adapters.wish_list;
 
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
+import static com.example.movietrailer.utils.icon_setup.SetDefaultMovieIconKt.setDefaultMovieIcon;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -50,7 +51,13 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
         holder._film_genres.setText(wishLists.get(position).getFilmGenres());
         holder._film_rating.setText(String.valueOf(wishLists.get(position).getVoteAverage()));
 
-        Glide.with(context).load(IMAGE_BEGIN_URL + wishLists.get(position).getFilmImage()).into(holder._film_image);
+        String image_path = wishLists.get(position).getFilmImage();
+        if (image_path != null){
+            holder._film_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(context).load(IMAGE_BEGIN_URL + image_path).into(holder._film_image);
+        }else{
+            setDefaultMovieIcon(context, holder._film_image);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

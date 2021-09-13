@@ -49,6 +49,10 @@ public class CastFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // showing Bottom Navigation View
+        requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
+
         viewModel = new ViewModelProvider(this).get(CastDetailFragmentViewModel.class);
         context = requireContext();
         if (getArguments() != null) {

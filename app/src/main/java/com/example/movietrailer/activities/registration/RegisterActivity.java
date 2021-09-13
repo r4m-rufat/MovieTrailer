@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.PatternsCompat;
 
 import com.example.movietrailer.R;
 import com.example.movietrailer.models.authentication.User;
@@ -54,34 +56,47 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void getTexts(){
+    private void getTexts() {
 
         emailText = email.getText().toString().trim();
         passwordText = password.getText().toString().trim();
         usernameText = username.getText().toString().trim();
 
         if (TextUtils.isEmpty(usernameText)) {
-            username.setError("Write your email");
+            username.setError("Write your username");
+        } else if (usernameText.length() < 4) {
+            username.setError("Required 4 and more characters");
         } else {
             usernameText = username.getText().toString().trim();
         }
 
         if (TextUtils.isEmpty(emailText)) {
             email.setError("Write your email");
+        }else if (!PatternsCompat.EMAIL_ADDRESS.matcher(emailText).matches()) {
+            email.setError("It is not valid email");
         } else {
             usernameText = username.getText().toString().trim();
         }
 
+
+
     }
 
-    private void clickedSignUp(){
+    private void clickedSignUp() {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // hide keyboard
+                hideKeyboard(v);
                 getTexts();
                 createUser(firebaseAuth);
             }
         });
+    }
+
+    private void hideKeyboard(View view){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
     private void initializeWidgets() {
@@ -96,7 +111,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createUser(FirebaseAuth auth) {
 
-        if (!TextUtils.isEmpty(emailText) && !TextUtils.isEmpty(usernameText) && passwordText.length() >=6){
+        if (!TextUtils.isEmpty(emailText)
+                && !TextUtils.isEmpty(usernameText)
+                && passwordText.length() >= 6
+                && PatternsCompat.EMAIL_ADDRESS.matcher(usernameText).matches()
+                && usernameText.length() < 4) {
 
             showProgress();
 
@@ -104,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 hideProgress();
                                 firebaseUser = auth.getCurrentUser();
                                 sendEmailVerification();
@@ -120,37 +139,36 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
 
-
         }
 
     }
 
-    private void sendEmailVerification(){
+    private void sendEmailVerification() {
 
-        if (firebaseUser != null){
+        if (firebaseUser != null) {
             firebaseUser.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 addNewUser(emailText, usernameText, passwordText);
                                 Toast.makeText(context, "The email verification is sent your email", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(context, "couldn't send verification email", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "couldn't send verification email", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "couldn't send verification email", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
 
     }
 
-    private void clickedSignIn(){
+    private void clickedSignIn() {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void addNewUser(String email, String username, String password){
+    private void addNewUser(String email, String username, String password) {
 
         String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -194,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void setupProgress(){
+    private void setupProgress() {
 
         progressDialog = KProgressHUD.create(context)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -205,13 +223,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void showProgress(){
+    private void showProgress() {
 
         progressDialog.show();
 
     }
 
-    private void hideProgress(){
+    private void hideProgress() {
         progressDialog.dismiss();
     }
 

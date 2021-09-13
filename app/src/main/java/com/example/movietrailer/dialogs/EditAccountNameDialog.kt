@@ -44,7 +44,7 @@ fun editAccountBottomSheetDialog(
 
             bottomSheetDialog.dismiss()
         }else if (editAccount.text.toString().length < 4){
-            editAccount.error = "Required 4 and more character"
+            editAccount.error = "Required 4 and more characters"
         }
     }
 

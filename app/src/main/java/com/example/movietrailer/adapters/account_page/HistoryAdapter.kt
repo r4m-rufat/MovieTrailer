@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.movietrailer.R
 import com.example.movietrailer.db.History
 import com.example.movietrailer.utils.constants.IMAGE_BEGIN_URL
+import com.example.movietrailer.utils.icon_setup.setDefaultMovieIcon
 
 class HistoryAdapter(context: Context): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
@@ -34,7 +35,13 @@ class HistoryAdapter(context: Context): RecyclerView.Adapter<HistoryAdapter.View
         holder.filmGenres.text = historyList[position].filmGenres
         holder.filmPopularity.text = historyList[position].filmRating.toString()
 
-        Glide.with(context).load(IMAGE_BEGIN_URL + historyList[position].filmImage).into(holder.filmImage)
+        val imagePath: String? = historyList[position].filmImage
+        if (imagePath != null) {
+            holder.filmImage.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(context).load(IMAGE_BEGIN_URL + imagePath).into(holder.filmImage)
+        } else {
+            setDefaultMovieIcon(context, holder.filmImage)
+        }
 
         holder.itemView.setOnClickListener {
             val bundle = Bundle()

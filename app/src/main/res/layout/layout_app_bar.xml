@@ -15,11 +15,13 @@
             android:background="?attr/background_white_black"
             android:gravity="center_vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/ic_logo"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
+                android:scaleX="1.45"
+                android:scaleY="1.45"
                 android:src="@drawable/ic_logo" />
 
             <RelativeLayout
@@ -40,6 +42,7 @@
                     android:background="@null"
                     android:ellipsize="end"
                     android:hint="Search for a movie"
+                    android:focusable="true"
                     android:inputType="text"
                     android:paddingStart="8dp"
                     android:paddingEnd="40dp"
@@ -51,8 +54,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
-                    android:padding="8dp"
                     android:background="@android:color/transparent"
+                    android:padding="8dp"
                     android:src="@drawable/ic_search"
                     app:tint="?attr/blue_white" />
 
@@ -63,10 +66,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/background_shape_arrow_up_icon"
-                android:padding="10dp"
-                android:layout_centerVertical="true"
+                android:padding="8dp"
                 android:src="@drawable/ic_filter"
                 app:tint="#fff" />
 

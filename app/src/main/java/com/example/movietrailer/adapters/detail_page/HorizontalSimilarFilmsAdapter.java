@@ -2,6 +2,7 @@ package com.example.movietrailer.adapters.detail_page;
 
 import static com.example.movietrailer.utils.canditions.ProgressIndicatorColorConditionKt.setProgressIndicatorColor;
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
+import static com.example.movietrailer.utils.icon_setup.SetDefaultMovieIconKt.setDefaultMovieIcon;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,9 +46,10 @@ public class HorizontalSimilarFilmsAdapter extends RecyclerView.Adapter<Horizont
 
         String image_path = similarFilmList.get(position).getPosterPath();
         if (image_path != null){
+            holder._film_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
             Glide.with(context).load(IMAGE_BEGIN_URL + image_path).into(holder._film_image);
         }else{
-            holder._film_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_logo));
+            setDefaultMovieIcon(context, holder._film_image);
         }
         holder._film_title.setText(similarFilmList.get(position).getTitle());
         int rate = (int) (similarFilmList.get(position).getVoteAverage() * 10);

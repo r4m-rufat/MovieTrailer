@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, ResetActivity.class));
+                finish();
             }
         });
 
@@ -98,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, RegisterActivity.class));
+                finish();
             }
         });
 
@@ -120,17 +122,18 @@ public class LoginActivity extends AppCompatActivity {
         usernameValue = username.getText().toString().trim();
 
         if (TextUtils.isEmpty(usernameValue)) {
-            username.setError("Write your email");
+            username.setError("Write your username");
+        } else if (usernameValue.length() < 4) {
+            username.setError("Required 4 and more characters");
         } else {
             usernameValue = username.getText().toString().trim();
         }
-
 
     }
 
     private void clickedSignInButton() {
 
-        if (passwordValue.length() >= 6 && !TextUtils.isEmpty(usernameValue)) {
+        if (passwordValue.length() >= 6 && usernameValue.length() >= 4) {
 
             circularSignInButton.startAnimation();
 
@@ -240,6 +243,7 @@ public class LoginActivity extends AppCompatActivity {
                                     circularSignInButton.revertAnimation();
                                 } catch (NullPointerException e) {
                                     e.printStackTrace();
+                                    circularSignInButton.revertAnimation();
                                     Toast.makeText(context, "There is no an account.", Toast.LENGTH_SHORT).show();
                                 }
 

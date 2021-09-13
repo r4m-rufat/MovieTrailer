@@ -20,6 +20,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_logo"
             android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
             android:id="@+id/wish_listImage"
             />
 

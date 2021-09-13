@@ -10,7 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                     app:boxStrokeColor="@color/white"
                     app:endIconMode="password_toggle"
                     app:endIconTint="@color/selector_edit_text_icon_color"
-                    app:helperText="*Password must contain 6 characters"
+                    app:helperText="*Password must be 6 or more characters"
                     app:helperTextTextColor="#FF1500"
                     app:hintTextColor="@color/white"
                     app:startIconDrawable="@drawable/ic_lock"

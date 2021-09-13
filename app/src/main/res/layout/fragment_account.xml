@@ -38,7 +38,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circleProfileBackground"
                     android:layout_width="100dp"
-                    android:layout_height="100dp"/>
+                    android:layout_height="100dp" />
 
                 <TextView
                     android:id="@+id/capitalOfName"
@@ -81,7 +81,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ic_favorite"
-                        app:tint="?attr/blue_white"/>
+                        app:tint="?attr/blue_white" />
 
                     <TextView
                         android:id="@+id/txt_favoriteListSize"
@@ -122,7 +122,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ic_history"
-                        app:tint="?attr/blue_white"/>
+                        app:tint="?attr/blue_white" />
 
                     <TextView
                         android:id="@+id/txt_historyListSize"
@@ -148,17 +148,17 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_person"
-                    app:tint="?attr/blue_white"/>
+                    app:tint="?attr/blue_white" />
 
                 <TextView
                     android:id="@+id/txt_accountName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:textColor="?attr/gray_white"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/ic_account"
                     android:fontFamily="@font/libre_baskerville_regular"
+                    android:textColor="?attr/gray_white"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -168,7 +168,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_edit"
-                    app:tint="?attr/blue_white"/>
+                    app:tint="?attr/blue_white" />
 
             </RelativeLayout>
 
@@ -191,8 +191,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:textColor="?attr/gray_white"
                     android:fontFamily="@font/libre_baskerville_regular"
+                    android:textColor="?attr/gray_white"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -207,7 +207,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_lock"
-                    app:tint="?attr/blue_white"/>
+                    app:tint="?attr/blue_white" />
 
                 <TextView
                     android:id="@+id/txt_password"
@@ -228,7 +228,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_edit"
-                    app:tint="?attr/blue_white"/>
+                    app:tint="?attr/blue_white" />
 
             </RelativeLayout>
 
@@ -250,13 +250,6 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <include
-        android:id="@+id/bottom_navigation_bar"
-        layout="@layout/layout_bottom_navigation_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         xmlns:app="http://schemas.android.com/apk/res-auto"

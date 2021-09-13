@@ -73,4 +73,30 @@
         android:layout_below="@+id/layout_search_bar"
         android:layout_marginTop="15dp" />
 
+
+    <LinearLayout
+        android:id="@+id/lin_layoutEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_info"
+            app:tint="?attr/blue_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History is empty now !"
+            android:textColor="?attr/gray_white"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+
 </RelativeLayout>

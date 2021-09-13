@@ -4,6 +4,7 @@ import static com.example.movietrailer.converters.BudgetConverterKt.convertValue
 import static com.example.movietrailer.converters.GenresListToStringConverterKt.convertGenresListToString;
 import static com.example.movietrailer.converters.MinuteToTimeFormatConverterKt.convertMinuteToTimeFormat;
 import static com.example.movietrailer.utils.constants.ConstantsKt.IMAGE_BEGIN_URL;
+import static com.example.movietrailer.utils.icon_setup.SetDefaultMovieIconKt.setDefaultMovieIcon;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -88,6 +89,10 @@ public class FilmDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // hiding Bottom Navigation View
+        requireActivity().findViewById(R.id.bottom_navigation_view).setVisibility(View.GONE);
+
         context = getContext();
         CheckConnectionAsynchronously.INSTANCE.init(context);
         if (getArguments() != null) {
@@ -249,19 +254,53 @@ public class FilmDetailFragment extends Fragment {
      */
     private void setItemsToWidgets(DetailResponse detailResponse) {
 
-        Glide.with(context).load(IMAGE_BEGIN_URL + detailResponse.getPosterPath()).into(detailVideoPicture);
-        Glide.with(context).load(IMAGE_BEGIN_URL + detailResponse.getBackdropPath()).into(filmBackdropImage);
+        String videoImage = detailResponse.getPosterPath();
+        String filmImage = detailResponse.getBackdropPath();
+        if (videoImage != null){
+            detailVideoPicture.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(context).load(IMAGE_BEGIN_URL + videoImage).into(detailVideoPicture);
+        }else{
+            setDefaultMovieIcon(context, detailVideoPicture);
+        }
+        if (filmImage != null){
+            filmBackdropImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(context).load(IMAGE_BEGIN_URL + filmImage).into(filmBackdropImage);
+        }else{
+            setDefaultMovieIcon(context, filmBackdropImage);
+        }
 
         filmTitle.setText(detailResponse.getTitle());
-        trailerTime.setText(convertMinuteToTimeFormat(detailResponse.getRuntime()));
-        rating.setText(String.valueOf(detailResponse.getVoteAverage()));
+
+        if (detailResponse.getRuntime() == 0){
+            trailerTime.setText("No info");
+        }else{
+            trailerTime.setText(convertMinuteToTimeFormat(detailResponse.getRuntime()));
+        }
+
+        if (detailResponse.getVoteAverage() == 0){
+            rating.setText("No info");
+        }else{
+            rating.setText(String.valueOf(detailResponse.getVoteAverage()));
+        }
+
         if (detailResponse.getBudget() == 0){
             budget.setText("No info");
         }else{
             budget.setText(convertValueToBudget(detailResponse.getBudget()));
         }
+
+        if (detailResponse.getReleaseDate() != null){
+            if (!detailResponse.getReleaseDate().equals("")){
+                releaseDate.setText(detailResponse.getReleaseDate());
+            }else{
+                releaseDate.setText("No info");
+            }
+        }else{
+            releaseDate.setText("No info");
+        }
+
         overview.setText(detailResponse.getOverview());
-        releaseDate.setText(detailResponse.getReleaseDate());
+
 
     }
 

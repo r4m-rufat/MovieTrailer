@@ -1,11 +1,11 @@
 package com.example.movietrailer.utils.bottom_navigation
 
-import android.view.View
 import androidx.navigation.Navigation
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.example.movietrailer.R
+import com.example.movietrailer.activities.home.HomeActivity
 
-fun setUpBottomNavigationView(bottomNavigation: MeowBottomNavigation, view: View) {
+fun setUpBottomNavigationView(bottomNavigation: MeowBottomNavigation, activity: HomeActivity) {
     bottomNavigation.add(
         MeowBottomNavigation.Model(
             BottomNavigationBarItems.WISHLIST.ordinal,
@@ -28,13 +28,13 @@ fun setUpBottomNavigationView(bottomNavigation: MeowBottomNavigation, view: View
     bottomNavigation.setOnClickMenuListener { model: MeowBottomNavigation.Model ->
         when (model.icon) {
             R.drawable.ic_favorite -> {
-                Navigation.findNavController(view).navigate(R.id.action_to_wishListFragment)
+                Navigation.findNavController(activity, R.id.main_nav_graph).navigate(R.id.action_to_wishListFragment)
             }
             R.drawable.ic_films -> {
-                Navigation.findNavController(view).navigate(R.id.action_to_filmsFragment)
+                Navigation.findNavController(activity, R.id.main_nav_graph).navigate(R.id.action_to_filmsFragment)
             }
             R.drawable.ic_account -> {
-                Navigation.findNavController(view).navigate(R.id.action_to_viewAccountFragment)
+                Navigation.findNavController(activity, R.id.main_nav_graph).navigate(R.id.action_to_viewAccountFragment)
             }
         }
     }

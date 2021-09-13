@@ -79,12 +79,14 @@ public class WishLIstRepository {
                                     }));
 
                         }else{
+                            listMutableLiveData.setValue(new ArrayList<>());
                             loading.setValue(false);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        listMutableLiveData.setValue(new ArrayList<>());
                         loading.setValue(false);
                     }
                 });
