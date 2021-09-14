@@ -19,6 +19,7 @@
     <color name="default_icon">#CC1E1E1E</color>
     <color name="bg_history_gray">#EFEFEF</color>
     <color name="green">#45FF00</color>
+    <color name="success">#2EAA00</color>
     <color name="progress_red">#F0DC1200</color>
     <color name="progress_orange">#FF6F00</color>
     <color name="progress_yellow">#FFD500</color>

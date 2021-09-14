@@ -129,7 +129,7 @@ dependencies {
     // Circleimageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    // Shimmer Animation
+    // Shimmer animation
     implementation 'xyz.peridy.shimmer:shimmerlayout:1.1'
 
     // Circular progress bar
@@ -148,5 +148,11 @@ dependencies {
 
     // Day Night switch
     implementation 'com.github.vimalcvs:Day-Night-Switch:1.0.3'
+
+    // Custom toast
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    // Memory leak
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
 }

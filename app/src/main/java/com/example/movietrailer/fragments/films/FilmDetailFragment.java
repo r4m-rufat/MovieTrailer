@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -56,13 +55,16 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class FilmDetailFragment extends Fragment {
 
     private static final String TAG = "FilmDetailFragment";
     private FilmDetailFragmentViewModel filmDetailFragmentViewModel;
     private int id;
     private ImageView detailVideoPicture, icPlayVideo, filmBackdropImage;
-    private TextView filmTitle, trailerTime, rating, budget, overview, releaseDate, txt_empty_review;
+    private TextView filmTitle, trailerTime, rating, budget, overview, releaseDate,
+            txt_empty_review, txt_empty_cast, txt_empty_personalStaff, txt_empty_similarFilms;
     private Context context;
     private RecyclerView genreRecyclerView, castsRecyclerView, personalStaffRecyclerView, similarFilmsRecyclerView,  reviewsRecyclerView;
     private HorizontalGenreAdapter horizontalGenreAdapter;
@@ -78,6 +80,7 @@ public class FilmDetailFragment extends Fragment {
     private SpinKitView progressBar;
     private History history;
     private PreferenceManager preferenceManager;
+    private View view;
 
     private Dao dao;
 
@@ -115,7 +118,7 @@ public class FilmDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_film_detail, container, false);
+        view = inflater.inflate(R.layout.fragment_film_detail, container, false);
 
         getWidgets(view);
 
@@ -132,7 +135,6 @@ public class FilmDetailFragment extends Fragment {
                 } else {
                     nestedFilmDetail.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(context, "Check your internet connection!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -205,6 +207,12 @@ public class FilmDetailFragment extends Fragment {
             public void onChanged(CastResponse castResponse) {
                 setupCastsRecyclerView(castResponse.getCast());
                 setupCrewRecyclerView(castResponse.getCrew());
+                if (castResponse.getCast().size() == 0){
+                    txt_empty_cast.setVisibility(View.VISIBLE);
+                }
+                if (castResponse.getCrew().size() == 0){
+                    txt_empty_personalStaff.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -219,6 +227,9 @@ public class FilmDetailFragment extends Fragment {
             @Override
             public void onChanged(SimilarResponse similarResponse) {
                 setupSimilarFilmsRecyclerView(similarResponse.getResults());
+                if (similarResponse.getResults().size() == 0){
+                    txt_empty_similarFilms.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -245,6 +256,9 @@ public class FilmDetailFragment extends Fragment {
         progressBar = view.findViewById(R.id.circularProgressBar);
         reviewsRecyclerView = view.findViewById(R.id.reviewsRecyclerView);
         txt_empty_review = view.findViewById(R.id.txt_empty_review);
+        txt_empty_similarFilms = view.findViewById(R.id.txt_empty_similarFilms);
+        txt_empty_cast = view.findViewById(R.id.txt_empty_castSeries);
+        txt_empty_personalStaff = view.findViewById(R.id.txt_empty_personalStaff);
     }
 
     /**
@@ -396,7 +410,7 @@ public class FilmDetailFragment extends Fragment {
                 if (videoID != null) {
                     showVideoDialogue(videoID);
                 } else {
-                    Toast.makeText(context, "Video is not available yet.", Toast.LENGTH_SHORT).show();
+                    Toasty.custom(context, getString(R.string.not_available), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                 }
             }
         });
@@ -467,4 +481,9 @@ public class FilmDetailFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        view = null;
+    }
 }

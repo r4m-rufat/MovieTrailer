@@ -29,16 +29,14 @@
     <string name="born">Born</string>
     <string name="biography_error">There is no information about this person!</string>
     <string name="reviews">Reviews</string>
-
-    <string-array name="sort_by">
-        <item>popularity.desc</item>
-        <item>popularity.asc</item>
-        <item>release_date.desc</item>
-        <item>release_date.asc</item>
-        <item>revenue.desc</item>
-        <item>revenue.asc</item>
-        <item>vote_average.desc</item>
-        <item>vote_average.asc</item>
-    </string-array>
+    <string name="account_not_found">Account is not found</string>
+    <string name="dont_match">Passwords don\'t match</string>
+    <string name="cant_change_password">You can\'t change password. Because you signed in with Google</string>
+    <string name="successfully_changed">Password successfully changed</string>
+    <string name="went_wrong">Something went wrong</string>
+    <string name="verification_sent">The email verification is sent your email</string>
+    <string name="verification_not_sent">Couldn\'t send verification email</string>
+    <string name="list_empty">List is already empty</string>
+    <string name="not_available">Video is not available yet</string>
 
 </resources>

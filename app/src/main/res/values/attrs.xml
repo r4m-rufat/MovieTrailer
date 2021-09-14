@@ -9,5 +9,6 @@
     <attr name="txt_black_white" format="color"/>
     <attr name="blue_white" format="color"/>
     <attr name="gray_white" format="color"/>
+    <attr name="snack_bar" format="color"/>
 
 </resources>

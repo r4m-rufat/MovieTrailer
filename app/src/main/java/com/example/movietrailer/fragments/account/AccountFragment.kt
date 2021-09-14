@@ -67,7 +67,7 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
     private lateinit var icHistory: ImageView
     private lateinit var icHeart: ImageView
     private lateinit var signOut: Button
-    private lateinit var circularProgressBar: SpinKitView
+    private var circularProgressBar: SpinKitView? = null
     private lateinit var linearLayout: LinearLayout
     private lateinit var backgroundRecycler: RecyclerView
     private lateinit var profileBackgroundAdapter: ProfileBackgroundAdapter
@@ -338,10 +338,10 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
                     CoroutineScope(Main).launch {
 
                         if (!it) {
-                            circularProgressBar.visibility = View.GONE
+                            circularProgressBar?.visibility = View.GONE
                             linearLayout.visibility = View.VISIBLE
                         } else {
-                            circularProgressBar.visibility = View.VISIBLE
+                            circularProgressBar?.visibility = View.VISIBLE
                             linearLayout.visibility = View.GONE
                         }
                     }
@@ -401,9 +401,6 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
                             "setBackgroundColorToGlobalDatabase: database error. Reason -> ${it.message}"
                         )
                     }
-            } else {
-                Toast.makeText(context, "Please, check internet connection!", Toast.LENGTH_SHORT)
-                    .show()
             }
         })
     }
@@ -427,5 +424,9 @@ class AccountFragment : Fragment(), ProfileBackgroundAdapter.OnClickColorListene
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
-    
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        circularProgressBar = null
+    }
 }

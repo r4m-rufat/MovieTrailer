@@ -31,6 +31,7 @@ import com.example.movietrailer.dialogs.showClearAllHistoryDialog
 import com.example.movietrailer.internal_storage.PreferenceManager
 import com.example.movietrailer.utils.constants.TAG
 import com.kaopiz.kprogresshud.KProgressHUD
+import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
@@ -43,8 +44,8 @@ import kotlinx.coroutines.launch
  */
 class HistoryFragment : Fragment() {
 
-    private lateinit var historyRecycler: RecyclerView
-    private lateinit var historyAdapter: HistoryAdapter
+    private var historyRecycler: RecyclerView? = null
+    private var historyAdapter: HistoryAdapter? = null
     private lateinit var viewModel: HistoryFragmentViewModel
     private lateinit var editSearch: EditText
     private lateinit var icClearAll: ImageView
@@ -120,7 +121,7 @@ class HistoryFragment : Fragment() {
                     }
                 }
                 if (editSearch.text != null){
-                    historyAdapter.updateHistoryList(list)
+                    historyAdapter?.updateHistoryList(list)
                     Log.d(TAG, "onTextChanged: 2")
                 }
             }
@@ -137,7 +138,7 @@ class HistoryFragment : Fragment() {
 
         historyAdapter = HistoryAdapter(requireContext())
 
-        historyRecycler.apply {
+        historyRecycler?.apply {
             setHasFixedSize(false)
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = historyAdapter
@@ -148,7 +149,7 @@ class HistoryFragment : Fragment() {
     private fun clickedIcSearch(){
         icSearch.setOnClickListener {
             if (string == ""){
-                historyAdapter.updateHistoryList(dao.getAllHistoryList())
+                historyAdapter?.updateHistoryList(dao.getAllHistoryList())
             }
             editSearch.onEditorAction(EditorInfo.IME_ACTION_DONE)
             hideKeyboard(it)
@@ -158,7 +159,16 @@ class HistoryFragment : Fragment() {
     private fun clickedClearIcon(){
         icClearAll.setOnClickListener {
             if (dao.getAllHistoryList().isEmpty()){
-                Toast.makeText(context, "List is already empty", Toast.LENGTH_SHORT).show()
+                Toasty.custom(
+                    requireContext(),
+                    getString(R.string.list_empty),
+                    R.drawable.ic_info,
+                    R.color.blue,
+                    Toasty.LENGTH_SHORT,
+                    true,
+                    true
+                ).show()
+
             }else{
                 showClearAllHistoryDialog(
                     requireContext(),
@@ -208,18 +218,18 @@ class HistoryFragment : Fragment() {
                 val controller = AnimationUtils.loadLayoutAnimation(
                     context, R.anim.layout_animation
                 )
-                historyRecycler.layoutAnimation = controller
+                historyRecycler?.layoutAnimation = controller
             }else{
                 linEmpty.visibility = View.VISIBLE
             }
-            historyAdapter.updateHistoryList(historyList)
+            historyAdapter?.updateHistoryList(historyList)
         })
 
     }
 
     @SuppressLint("ResourceType")
     private fun searchIconWhenEditSearchFocusable(){
-        editSearch.setOnFocusChangeListener { v, hasFocus ->
+        editSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 icSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.progress_orange), android.graphics.PorterDuff.Mode.SRC_IN)
                 relSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_search_box_focusable)
@@ -234,4 +244,9 @@ class HistoryFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        historyAdapter = null
+        historyRecycler = null
+    }
 }

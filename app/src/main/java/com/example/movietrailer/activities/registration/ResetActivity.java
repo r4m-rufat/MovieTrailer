@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +24,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.HashMap;
+
+import es.dmoral.toasty.Toasty;
 
 public class ResetActivity extends AppCompatActivity {
 
@@ -114,7 +115,7 @@ public class ResetActivity extends AppCompatActivity {
 
                                     if (password != null){
                                         if (password.equals("")) {
-                                            Toast.makeText(context, "You can't change password. Because you signed in with Google", Toast.LENGTH_LONG).show();
+                                            Toasty.custom(context, getString(R.string.cant_change_password), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                                         }else {
                                             editEmail.setVisibility(View.GONE);
                                             nextButton.setVisibility(View.GONE);
@@ -123,7 +124,7 @@ public class ResetActivity extends AppCompatActivity {
                                             resetButton.setVisibility(View.VISIBLE);
                                         }
                                     }else{
-                                        Toast.makeText(context, "There is not account with this email", Toast.LENGTH_LONG).show();
+                                        Toasty.custom(context, getString(R.string.account_not_found), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                                     }
 
                                     progressDialogEmail.dismiss(); // when gmail is found in database then progress dialog is dismiss
@@ -134,7 +135,7 @@ public class ResetActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "There is not account with this email", Toast.LENGTH_SHORT).show();
+                                Toasty.custom(context, getString(R.string.account_not_found), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                                 progressDialogEmail.dismiss();
                             }
                         });
@@ -169,7 +170,7 @@ public class ResetActivity extends AppCompatActivity {
             if (newPasswordValue.equals(confirmPasswordValue)){
                 setNewPassword(newPasswordValue);
             }else{
-                Toast.makeText(context, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                Toasty.custom(context, getString(R.string.dont_match), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
             }
         }
         
@@ -188,7 +189,7 @@ public class ResetActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         progressDialogPassword.dismiss();
-                        Toast.makeText(context, "Password successfully changed. You can sign in your account", Toast.LENGTH_SHORT).show();
+                        Toasty.custom(context, getString(R.string.successfully_changed), R.drawable.ic_check, R.color.success, Toasty.LENGTH_LONG, true, true).show();
                         startActivity(new Intent(context, LoginActivity.class));
                         finish();
                     }
@@ -197,7 +198,7 @@ public class ResetActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialogPassword.dismiss();
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toasty.custom(context, getString(R.string.went_wrong), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                     }
                 });
     }

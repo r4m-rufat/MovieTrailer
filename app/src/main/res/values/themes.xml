@@ -25,6 +25,7 @@
         <item name="background_filter">@color/filter</item>
         <item name="gray_white">@color/gray</item>
         <item name="bg_history_item">@color/bg_history_gray</item>
+        <item name="snack_bar">#D6D6D6</item>
 
     </style>
 
@@ -90,6 +91,7 @@
         <item name="background_filter">@color/fc_black</item>
         <item name="gray_white">@color/white</item>
         <item name="bg_history_item">@color/fc_black</item>
+        <item name="snack_bar">@color/fc_black</item>
 
     </style>
 

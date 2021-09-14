@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kaopiz.kprogresshud.KProgressHUD;
+
+import es.dmoral.toasty.Toasty;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -135,7 +136,7 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             hideProgress();
                             Log.d(TAG, "onFailure: Reason -> " + e.getMessage());
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toasty.custom(context, e.getMessage(), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                         }
                     });
 
@@ -152,16 +153,16 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 addNewUser(emailText, usernameText, passwordText);
-                                Toast.makeText(context, "The email verification is sent your email", Toast.LENGTH_SHORT).show();
+                                Toasty.custom(context, getString(R.string.verification_sent), R.drawable.ic_verified, R.color.success, Toasty.LENGTH_LONG, true, true).show();
                             } else {
-                                Toast.makeText(context, "couldn't send verification email", Toast.LENGTH_SHORT).show();
+                                Toasty.custom(context, getString(R.string.verification_not_sent), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                             }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "couldn't send verification email", Toast.LENGTH_SHORT).show();
+                            Toasty.custom(context, e.getMessage(), R.drawable.ic_info, R.color.red, Toasty.LENGTH_LONG, true, true).show();
                         }
                     });
         }
@@ -199,7 +200,6 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "onSuccess: User informations added to database");
-                        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(context, LoginActivity.class));
                     }
                 })

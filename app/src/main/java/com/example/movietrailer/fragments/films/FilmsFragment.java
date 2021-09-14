@@ -30,8 +30,6 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -309,7 +307,7 @@ public class FilmsFragment extends Fragment
                         public void run() {
                             ic_arrowUp.setVisibility(View.GONE);
                         }
-                    }, 7000L); // delay of 7 seconds before hiding the fab
+                    }, 5000L); // delay of 5 seconds before hiding the fab
                 }
 
             }
@@ -360,8 +358,6 @@ public class FilmsFragment extends Fragment
                                 // when clicked search button, should reset film list
                                 filmsFragmentViewModel.resetVariables();
                             }
-                        }else{
-                            Toast.makeText(context, "Please, check internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -472,6 +468,7 @@ public class FilmsFragment extends Fragment
                     showFilter = true;
                     layout_filter.setVisibility(View.GONE);
                 }
+                hideKeyboard(v);
             }
         });
 
@@ -557,7 +554,7 @@ public class FilmsFragment extends Fragment
                 if (connection) {
                     filmsFragmentViewModel.getDataSetToMutableLiveData();
                 } else {
-                    Toast.makeText(context, "Check internet connection!", Toast.LENGTH_SHORT).show();
+//                    showConnectionSnackBar(requireActivity(), view);
                 }
             }
         });
@@ -702,4 +699,9 @@ public class FilmsFragment extends Fragment
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        view = null;
+    }
 }

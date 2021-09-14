@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
+import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,9 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     private String usernameValue;
     private String passwordValue = "";
     private FirebaseAuth auth;
-    private FirebaseUser user;
     private Context context;
-    private TextView txt_signUp, forgot_password;
+    private TextView txt_signUp, forgot_password, txt_needHelp;
     private FirebaseFirestore db;
     private Button buttonSignIn;
     private GoogleSignInOptions googleSignInOptions;
@@ -68,7 +69,8 @@ public class LoginActivity extends AppCompatActivity {
         initializeWidgets();
         circularSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                hideKeyboard(view);
                 getTexts();
                 clickedSignInButton();
             }
@@ -78,7 +80,13 @@ public class LoginActivity extends AppCompatActivity {
         clickedSignUp();
         signInWithGoogle();
         clickedSignInWithGoogleButton();
+        clickedNeedHelp();
 
+    }
+
+    private void hideKeyboard(View view){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
     private void clickedForgotPassword() {
@@ -105,12 +113,22 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void clickedNeedHelp(){
+        txt_needHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, HelpActivity.class));
+            }
+        });
+    }
+
     private void initializeWidgets() {
 
         username = findViewById(R.id.edit_username);
         password = findViewById(R.id.edit_password);
         circularSignInButton = findViewById(R.id.circular_button_sign_in);
         txt_signUp = findViewById(R.id.txt_signUp);
+        txt_needHelp = findViewById(R.id.txt_needHelp);
         buttonSignIn = findViewById(R.id.button_sign_in);
         forgot_password = findViewById(R.id.forgot_password);
 
@@ -177,11 +195,11 @@ public class LoginActivity extends AppCompatActivity {
                                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     startActivity(intent);
                                                                 } else {
-                                                                    Toast.makeText(context, "Email is not verified", Toast.LENGTH_SHORT).show();
+                                                                    Toasty.custom(context, "Email is not verified", R.drawable.ic_info, R.color.red, Toasty.LENGTH_SHORT, true, true).show();
                                                                 }
                                                             }
                                                         } catch (NullPointerException e) {
-                                                            Toast.makeText(context, "Authentication error. Please contact us", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(context, "Authentication error. You signed in again", Toast.LENGTH_LONG).show();
                                                             Log.d(TAG, "onComplete: Exception is " + e.getMessage());
                                                         }
 
@@ -198,13 +216,13 @@ public class LoginActivity extends AppCompatActivity {
                                                     }
                                                 });
                                     } else {
-                                        Toast.makeText(context, "Please write your account informations correctly.", Toast.LENGTH_SHORT).show();
+                                        Toasty.custom(context, getString(R.string.account_not_found), R.drawable.ic_info, R.color.red, Toasty.LENGTH_SHORT, true, true).show();
                                         circularSignInButton.revertAnimation();
                                     }
 
 
                                 } else {
-                                    Toast.makeText(context, "Please write your account informations correctly.", Toast.LENGTH_SHORT).show();
+                                    Toasty.custom(context, getString(R.string.account_not_found), R.drawable.ic_info, R.color.red, Toasty.LENGTH_SHORT, true, true).show();
                                     circularSignInButton.revertAnimation();
                                 }
 
@@ -213,7 +231,7 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "Please write informations correctly.", Toast.LENGTH_SHORT).show();
+                                Toasty.custom(context, getString(R.string.account_not_found), R.drawable.ic_info, R.color.red, Toasty.LENGTH_SHORT, true, true).show();
                                 circularSignInButton.revertAnimation();
                             }
                         });
@@ -244,7 +262,7 @@ public class LoginActivity extends AppCompatActivity {
                                 } catch (NullPointerException e) {
                                     e.printStackTrace();
                                     circularSignInButton.revertAnimation();
-                                    Toast.makeText(context, "There is no an account.", Toast.LENGTH_SHORT).show();
+                                    Toasty.custom(context, getString(R.string.account_not_found), R.drawable.ic_info, R.color.progress_orange, Toasty.LENGTH_SHORT, true, true).show();
                                 }
 
                             }
