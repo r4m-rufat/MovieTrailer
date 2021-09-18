@@ -32,6 +32,17 @@ Movie Trailer is available on the Google Play Store.
 14. Gradle
 15. Custom Fonts
 
+# Screenshots
+<img src="https://user-images.githubusercontent.com/53703480/133890573-bb9bbd9b-ee29-432e-b80f-89dc9f1712c5.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890577-cad6b715-4216-400d-94bb-b4ac14ddd8a8.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890579-f33f3958-16ab-4209-b66f-671cbd2f21d5.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890580-0a5986de-2c60-4c80-98aa-2c52d51086aa.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890583-fe626fa8-570d-4eef-b1d4-15973cde5c57.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890586-ba5d0bd6-74a4-4e94-9261-b4a280f531d7.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890587-9328e057-68ed-4a7d-89a9-792f6d45dda8.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890597-9076115b-b274-4b18-b917-54e0db71d22b.jpg" width="200" height="400"></img>
+<img src="https://user-images.githubusercontent.com/53703480/133890591-5e66c0d4-311d-4025-9ade-ca88c75797c2.jpg" width="200" height="400"></img>
+
 # Libraries
 1. Firebase Authentication <br />
     ```
